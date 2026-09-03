@@ -14,7 +14,7 @@ O sistema será desenvolvido para substituir essas etapas por um fluxo digital, 
 
 A principal finalidade é reduzir erros de contagem e digitação, facilitar a comparação entre fornecedores, manter um histórico das compras e permitir um melhor controle dos produtos que foram pedidos e recebidos. 
 
-** Funcionamento atual do estoque: **
+__ Funcionamento atual do estoque: __
 
 Atualmente, o processo de estoque é realizado seguindo algumas etapas principais: 
 
