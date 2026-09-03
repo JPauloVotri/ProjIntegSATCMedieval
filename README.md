@@ -1,11 +1,10 @@
 # ProjIntegSATCMedieval
-Sistema Web de controle de estoque para a Churrascaria Medieval
+##Sistema Web de controle de estoque para a Churrascaria Medieval
 
 Documentação do Sistema de Gerenciamento de Estoque para Restaurante 
 
- 
 
-Introdução: 
+###Introdução: 
 
 O aplicativo de gerenciamento de estoque tem como objetivo digitalizar e centralizar o processo de controle de estoque, realização de pedidos, cotação com fornecedores, comparação de preços e conferência das mercadorias recebidas. 
 
