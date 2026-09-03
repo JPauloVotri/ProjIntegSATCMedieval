@@ -61,17 +61,11 @@ O sistema também poderá identificar automaticamente quais listas precisam ser 
 A digitalização dessa etapa permitirá: 
 
 - Eliminar a necessidade de impressão das listas;  
-
 - Evitar perda ou dano das folhas;  
-
 - Manter um histórico das contagens;  
-
 - Identificar quem realizou a contagem;  
-
 - Facilitar a atualização dos produtos;  
-
 - Organizar automaticamente as listas por categoria;  
-
 - Evitar que produtos sejam esquecidos durante a contagem. 
 
  
@@ -88,7 +82,7 @@ O funcionário verifica fisicamente o estoque e anota a quantidade disponível.
 
 Por exemplo: 
 
-|Produto|Quantidade encontrada |
+|Produto | Quantidade encontrada |
 |---|---|
 |Coca-Cola 2L| 8 |
 |Guaraná 2L| 5 |
@@ -123,41 +117,28 @@ Quantidade sugerida para compra:
 
 Entretanto, o sistema deverá permitir que o funcionário altere manualmente a quantidade sugerida, pois a necessidade de compra pode variar de acordo com o movimento esperado do restaurante. 
 
- 
 
-Terceiro passo — Transferência da contagem para o Excel 
+### Terceiro passo — Transferência da contagem para o Excel 
 
-Atualmente, após realizar a contagem física, os dados anotados na lista são transferidos para uma planilha do Excel. 
+Atualmente, após realizar a contagem física, os dados anotados na lista são transferidos para uma planilha do Excel. Essa etapa representa uma segunda digitação das informações. 
 
-Essa etapa representa uma segunda digitação das informações. 
+**Problema do processo atual:**
 
-Problema do processo atual: 
+- O funcionário precisa: 
+- Contar o produto;  
+- Anotar na lista;  
+- Abrir o Excel;  
+- Localizar o produto;  
+- Digitar novamente a quantidade.  
 
-O funcionário precisa: 
+ Isso pode causar erros, como: 
+- Digitação incorreta;  
+- Quantidade digitada no produto errado;  
+- Produtos esquecidos;  
+- Informações duplicadas;  
+- Perda de tempo.  
 
-Contar o produto;  
-
-Anotar na lista;  
-
-Abrir o Excel;  
-
-Localizar o produto;  
-
-Digitar novamente a quantidade.  
-
-Isso pode causar erros, como: 
-
-Digitação incorreta;  
-
-Quantidade digitada no produto errado;  
-
-Produtos esquecidos;  
-
-Informações duplicadas;  
-
-Perda de tempo.  
-
-Incorporação no aplicativo: 
+**Incorporação no aplicativo:**
 
 O Excel será substituído pelo banco de dados do aplicativo. 
 
