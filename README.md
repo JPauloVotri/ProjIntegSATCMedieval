@@ -14,112 +14,90 @@ O sistema será desenvolvido para substituir essas etapas por um fluxo digital, 
 
 A principal finalidade é reduzir erros de contagem e digitação, facilitar a comparação entre fornecedores, manter um histórico das compras e permitir um melhor controle dos produtos que foram pedidos e recebidos. 
 
-__ Funcionamento atual do estoque: __
+**Funcionamento atual do estoque:**
 
 Atualmente, o processo de estoque é realizado seguindo algumas etapas principais: 
 
-Impressão das listas de estoque;  
+- Impressão das listas de estoque;  
 
-Contagem física dos produtos;  
+- Contagem física dos produtos;  
 
-Transferência das quantidades para o Excel;  
+- Transferência das quantidades para o Excel;  
 
-Realização de cotações com fornecedores;  
+- Realização de cotações com fornecedores;  
 
-Comparação dos preços e definição das compras, manualmente; 
+- Comparação dos preços e definição das compras, manualmente; 
 
-Envio dos pedidos aos fornecedores;  
+- Envio dos pedidos aos fornecedores;  
 
-Recebimento e conferência das mercadorias; 
+- Recebimento e conferência das mercadorias; 
 
 O aplicativo será desenvolvido considerando esse processo existente, procurando digitalizar as atividades sem alterar desnecessariamente a rotina dos funcionários. 
 
-Primeiro passo — Impressão das listas de estoque 
+### Primeiro passo — Impressão das listas de estoque:
 
 Atualmente, as listas de estoque são impressas de acordo com a categoria dos produtos e o dia previsto para realização do pedido. 
 
 A organização atual é: 
 
-Categoria 
-
-Dia da lista 
-
-Dia previsto para chegada 
-
-Bebidas 
-
-Domingo 
-
-Terça-feira 
-
-Carnes 
-
-Quinta-feira 
-
-Sexta-feira 
-
-Linha seca 
-
-Terça-feira 
-
-Quarta-feira 
+| Categoria | Dia da lista | Dia previsto para chegada |
+|-----------|--------------|---------------------------|
+| Bebidas | Domingo | Terça-feira|
+| Carnes | Quinta-feira |Sexta-feira|
+| Linha seca | Terça-feira |Quarta-feira|
 
 Essas são algumas das listas utilizadas pelos funcionários para realizar a contagem física dos produtos disponíveis no restaurante. 
 
-Incorporação no aplicativo 
+**Incorporação no aplicativo:**
 
 No aplicativo, as listas impressas serão substituídas por listas digitais de estoque. 
 
 O sistema poderá organizar automaticamente os produtos de acordo com sua categoria e o dia de contagem. 
-
- 
-
 O responsável poderá acessar a lista diretamente pelo aplicativo e informar a quantidade encontrada no estoque. 
-
 O sistema também poderá identificar automaticamente quais listas precisam ser realizadas naquele dia. 
 
-Benefícios 
+**Benefícios:**
 
 A digitalização dessa etapa permitirá: 
 
-Eliminar a necessidade de impressão das listas;  
+- Eliminar a necessidade de impressão das listas;  
 
-Evitar perda ou dano das folhas;  
+- Evitar perda ou dano das folhas;  
 
-Manter um histórico das contagens;  
+- Manter um histórico das contagens;  
 
-Identificar quem realizou a contagem;  
+- Identificar quem realizou a contagem;  
 
-Facilitar a atualização dos produtos;  
+- Facilitar a atualização dos produtos;  
 
-Organizar automaticamente as listas por categoria;  
+- Organizar automaticamente as listas por categoria;  
 
-Evitar que produtos sejam esquecidos durante a contagem. 
+- Evitar que produtos sejam esquecidos durante a contagem. 
 
  
 
-Segundo passo — Contagem dos itens para o pedido 
+### Segundo passo — Contagem dos itens para o pedido:
 
 Após receber ou abrir a lista de estoque, o funcionário realiza a contagem física dos produtos. 
 
 Essa etapa é importante porque determina quais produtos precisam ser comprados e em qual quantidade. 
 
-Funcionamento atual 
+**Funcionamento atual:**
 
-O funcionário verifica fisicamente o estoque e anota a quantidade disponível. 
+O funcionário verifica fisicamente o estoque e anota a quantidade disponível.
 
 Por exemplo: 
 
-Produto          Quantidade encontrada 
-Coca-Cola 2L             8 
-Guaraná 2L                 5 
-Água 500ml              20 
+|Produto|Quantidade encontrada |
+|---|---|
+|Coca-Cola 2L| 8 |
+|Guaraná 2L| 5 |
+|Água 500ml| 20 |
 
 Posteriormente, essas informações são utilizadas para determinar a quantidade necessária para o próximo pedido. 
 
- 
 
-Incorporação no aplicativo 
+**Incorporação no aplicativo:**
 
 O aplicativo terá um campo específico para registrar a quantidade encontrada. 
 
