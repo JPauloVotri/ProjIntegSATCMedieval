@@ -1,0 +1,674 @@
+Project Medieval {
+  database_type: "PostgreSQL"
+  Note: "Sistema de gerenciamento de orçamentos, compras e estoque de restaurante"
+}
+
+
+// ======================================================
+// ENUMS
+// ======================================================
+
+Enum usuario_status {
+  ativo
+  inativo
+}
+
+Enum grupo_usuario {
+  administrador
+  consulta
+}
+
+Enum status_cotacao_item {
+  pendente
+  selecionado
+  cancelado
+}
+
+Enum status_pedido_compra {
+  rascunho
+  enviado
+  parcialmente_recebido
+  recebido
+  cancelado
+}
+
+Enum tipo_movimentacao_estoque {
+  entrada
+  saida
+  ajuste
+  perda
+  devolucao
+}
+
+Enum origem_movimentacao {
+  pedido_compra
+  saida_estoque
+  ajuste_manual
+  inventario
+  devolucao
+  perda
+}
+
+Enum tipo_saida_estoque {
+  consumo
+  perda
+  vencimento
+  devolucao
+  ajuste
+  outro
+}
+
+Enum status_saida_estoque {
+  rascunho
+  confirmada
+  cancelada
+}
+
+Enum tipo_auditoria {
+  INSERT
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  OUTRO
+}
+
+Enum status_cotacao {
+  rascunho
+  enviada
+  em_resposta
+  encerrada
+  cancelada
+}
+
+
+// ======================================================
+// USUÁRIO
+// ======================================================
+
+Table usuario {
+  usuario_id bigint [pk, increment]
+
+  nome varchar(150) [not null]
+  email varchar(150) [not null, unique]
+  senha_hash varchar(255) [not null]
+
+  grupo_usuario grupo_usuario [not null, default: 'administrador']
+  status usuario_status [not null, default: 'ativo']
+
+  ultimo_login timestamp
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    email [unique]
+    grupo_usuario
+    status
+  }
+}
+
+
+// ======================================================
+// CATEGORIA
+// ======================================================
+
+Table categoria {
+  categoria_id bigint [pk, increment]
+
+  nome varchar(100) [not null, unique]
+  descricao varchar(255)
+
+  ativo boolean [not null, default: true]
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    nome [unique]
+    ativo
+  }
+}
+
+
+// ======================================================
+// PRODUTO
+// ======================================================
+
+Table produto {
+  produto_id bigint [pk, increment]
+
+  categoria_id bigint [not null]
+  unidade_medida_id bigint [not null]
+
+  codigo varchar(50) [unique]
+  nome varchar(150) [not null]
+  descricao varchar(255)
+
+  estoque_minimo decimal(14,3) [not null, default: 0]
+  estoque_maximo decimal(14,3)
+
+  custo_medio_estoque decimal(14,4) [not null, default: 0]
+  ultimo_custo decimal(14,4) [not null, default: 0]
+
+  validade_dias int [default: null]
+
+  ativo boolean [not null, default: true]
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    codigo [unique]
+    nome
+    categoria_id
+    unidade_medida_id
+    ativo
+  }
+}
+
+
+// ======================================================
+// UNIDADE DE MEDIDA
+// ======================================================
+
+Table unidade_medida {
+  unidade_medida_id bigint [pk, increment]
+
+  nome varchar(100) [not null]
+  sigla varchar(20) [not null, unique]
+  tipo varchar(50) [not null]
+  ativo boolean [not null, default: true]
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  
+  indexes {
+    sigla [unique]
+    tipo
+    ativo
+  }
+}
+
+
+// ======================================================
+// FORNECEDOR
+// ======================================================
+
+Table fornecedor {
+  fornecedor_id bigint [pk, increment]
+
+  razao_social varchar(200) [not null]
+  nome_fantasia varchar(200)
+
+  documento varchar(30)
+  inscricao_estadual varchar(30)
+
+  email varchar(150)
+  telefone varchar(30)
+  nome_contato varchar(150)
+
+  cep varchar(10)
+  logradouro varchar(200)
+  numero varchar(20)
+  complemento varchar(100)
+  bairro varchar(100)
+  cidade varchar(100)
+  estado varchar(2)
+
+  dias_entrega varchar(50)
+  condicao_pagamento varchar(150)
+
+  ativo boolean [not null, default: true]
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    documento
+    razao_social
+    nome_fantasia
+    ativo
+  }
+}
+
+
+// ======================================================
+// COTAÇÃO
+// ======================================================
+
+Table cotacao {
+  cotacao_id bigint [pk, increment]
+
+  usuario_id bigint [not null]
+
+  data_solicitacao date [not null]
+  data_limite_resposta date
+
+  status status_cotacao [not null, default: 'rascunho']
+
+  observacao text
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    usuario_id
+    status
+    data_solicitacao
+    data_limite_resposta
+  }
+}
+
+
+// ======================================================
+// ITEM DA COTAÇÃO
+// ======================================================
+
+Table cotacao_item {
+  cotacao_item_id bigint [pk, increment]
+
+  cotacao_id bigint [not null]
+  produto_id bigint [not null]
+  unidade_medida_id bigint [not null]
+
+  quantidade decimal(14,3) [not null]
+
+  cotacao_item_fornecedor_escolhido_id bigint
+
+  status status_cotacao_item [not null, default: 'pendente']
+
+  observacao varchar(255)
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    cotacao_id
+    produto_id
+    unidade_medida_id
+    cotacao_item_fornecedor_escolhido_id
+    status
+  }
+}
+
+
+
+// ======================================================
+// FORNECEDOR DO ITEM DA COTAÇÃO
+// ======================================================
+
+Table cotacao_item_fornecedor {
+  cotacao_item_fornecedor_id bigint [pk, increment]
+
+  cotacao_item_id bigint [not null]
+  fornecedor_id bigint [not null]
+
+  valor_unitario decimal(16,4) [not null]
+  prazo_entrega_dias int
+  condicao_pagamento varchar(150)
+  observacao varchar(255)
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (cotacao_item_id, fornecedor_id) [unique]
+  }
+}
+
+
+
+// ======================================================
+// PEDIDO DE COMPRA
+// ======================================================
+
+Table pedido_compra {
+  pedido_compra_id bigint [pk, increment]
+
+  fornecedor_id bigint [not null]
+  usuario_id bigint [not null]
+  cotacao_id bigint
+
+  data_pedido date [not null]
+  data_prevista_entrega date
+  data_recebimento timestamp
+
+  status status_pedido_compra [not null, default: 'rascunho']
+  /*
+  subtotal decimal(16,4) [not null, default: 0]
+  desconto decimal(16,4) [not null, default: 0]
+  frete decimal(16,4) [not null, default: 0]
+  outras_despesas decimal(16,4) [not null, default: 0]
+  */
+  total decimal(16,4) [not null, default: 0]
+
+  observacao text
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    fornecedor_id
+    usuario_id
+    cotacao_id
+    status
+    data_pedido
+  }
+}
+
+
+// ======================================================
+// ITEM DO PEDIDO DE COMPRA
+// ======================================================
+
+Table pedido_compra_item {
+  pedido_compra_item_id bigint [pk, increment]
+
+  pedido_compra_id bigint [not null]
+  produto_id bigint [not null]
+  unidade_medida_id bigint [not null]
+  cotacao_item_id bigint
+
+  quantidade_solicitada decimal(14,3) [not null]
+  quantidade_recebida decimal(14,3) [not null, default: 0]
+
+  valor_unitario decimal(16,4) [not null]
+
+  total decimal(16,4) [not null, default: 0]
+
+  observacao varchar(255)
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    pedido_compra_id
+    produto_id
+    unidade_medida_id
+  }
+}
+
+
+// ======================================================
+// ESTOQUE
+// ======================================================
+
+Table estoque {
+  estoque_id bigint [pk, increment]
+
+  produto_id bigint [not null, unique]
+
+  quantidade_disponivel decimal(14,3) [not null, default: 0]
+  valor_total decimal(16,4) [not null, default: 0]
+
+  ultima_entrada timestamp
+  ultima_saida timestamp
+
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    produto_id [unique]
+    quantidade_disponivel
+  }
+}
+
+
+// ======================================================
+// SAÍDA DE ESTOQUE
+// ======================================================
+
+Table saida_estoque {
+  saida_estoque_id bigint [pk, increment]
+
+  usuario_id bigint [not null]
+
+  data_saida timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  tipo tipo_saida_estoque [not null]
+  status status_saida_estoque [not null, default: 'rascunho']
+
+  motivo varchar(255)
+  observacao text
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    usuario_id
+    data_saida
+    tipo
+    status
+  }
+}
+
+
+// ======================================================
+// ITEM DA SAÍDA DE ESTOQUE
+// ======================================================
+
+Table saida_estoque_item {
+  saida_estoque_item_id bigint [pk, increment]
+
+  saida_estoque_id bigint [not null]
+  produto_id bigint [not null]
+  unidade_medida_id bigint [not null]
+
+  quantidade decimal(14,3) [not null]
+
+  custo_unitario decimal(16,4) [not null, default: 0]
+  custo_total decimal(16,4) [not null, default: 0]
+
+  lote varchar(100)
+  data_validade date
+
+  observacao varchar(255)
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    saida_estoque_id
+    produto_id
+    unidade_medida_id
+    lote
+    data_validade
+  }
+}
+
+
+// ======================================================
+// MOVIMENTAÇÃO DE ESTOQUE
+// ======================================================
+
+Table movimentacao_estoque {
+  movimentacao_estoque_id bigint [pk, increment]
+
+  estoque_id bigint [not null]
+  usuario_id bigint [not null]
+
+  tipo tipo_movimentacao_estoque [not null]
+  origem origem_movimentacao [not null]
+
+  quantidade decimal(14,3) [not null]
+
+  quantidade_anterior decimal(14,3) [not null]
+  quantidade_posterior decimal(14,3) [not null]
+
+  custo_unitario decimal(16,4)
+  valor_total decimal(16,4)
+
+  lote varchar(100)
+  data_validade date
+
+  referencia_id bigint
+  referencia_tipo varchar(50)
+
+  observacao varchar(255)
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    estoque_id
+    usuario_id
+    tipo
+    origem
+    criado_em
+    (referencia_tipo, referencia_id)
+  }
+}
+
+
+// ======================================================
+// AUDITORIA
+// ======================================================
+/*
+É o fluxo responsável por todos os registros de alterações:
+Manuais (Vinculadas a um usuário)
+Automáticas (Algum processamento realizado pelo sistema)
+Serve também como um registro de alterações em LOG
+OBS: Confirmar se será somente via banco ou via interface
+*/
+
+Table auditoria {
+  auditoria_id bigint [pk, increment]
+
+  usuario_id bigint
+
+  tabela varchar(100) [not null]
+  registro_id bigint
+
+  tipo tipo_auditoria [not null]
+
+  dados_anteriores json
+  dados_novos json
+
+  ip varchar(45)
+  user_agent varchar(500)
+
+  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    usuario_id
+    tabela
+    registro_id
+    tipo
+    criado_em
+  }
+}
+
+// ======================================================
+// RELACIONAMENTOS
+// ======================================================
+
+// ======================================================
+// CATEGORIA / PRODUTO / UNIDADE
+// ======================================================
+
+// Categoria -> Produto
+Ref: categoria.categoria_id < produto.categoria_id
+
+// Unidade de medida -> Produto
+Ref: unidade_medida.unidade_medida_id < produto.unidade_medida_id
+
+
+// ======================================================
+// ESTOQUE
+// ======================================================
+
+// Produto -> Estoque
+// 1 produto possui 1 registro de estoque
+Ref: produto.produto_id - estoque.produto_id
+
+
+// ======================================================
+// COTAÇÃO
+// ======================================================
+
+// Usuário -> Cotação
+Ref: usuario.usuario_id < cotacao.usuario_id
+
+// Cotação -> Itens
+Ref: cotacao.cotacao_id < cotacao_item.cotacao_id
+
+// Produto -> Itens da cotação
+Ref: produto.produto_id < cotacao_item.produto_id
+
+// Unidade -> Itens da cotação
+Ref: unidade_medida.unidade_medida_id < cotacao_item.unidade_medida_id
+
+// Fornecedor -> Fornecedor escolhido do item
+Ref: cotacao_item_fornecedor.cotacao_item_fornecedor_id < cotacao_item.cotacao_item_fornecedor_escolhido_id
+
+
+// ======================================================
+// COTAÇÃO / FORNECEDORES
+// ======================================================
+
+// Item da cotação -> Ofertas dos fornecedores
+Ref: cotacao_item.cotacao_item_id < cotacao_item_fornecedor.cotacao_item_id
+
+// Fornecedor -> Ofertas dos fornecedores
+Ref: fornecedor.fornecedor_id < cotacao_item_fornecedor.fornecedor_id
+
+
+// ======================================================
+// PEDIDO DE COMPRA
+// ======================================================
+
+// Cotação -> Pedidos de compra
+// Uma cotação pode gerar vários pedidos,
+// normalmente um por fornecedor escolhido.
+Ref: cotacao.cotacao_id < pedido_compra.cotacao_id
+// Fornecedor -> Pedido de compra
+Ref: fornecedor.fornecedor_id < pedido_compra.fornecedor_id
+
+// Usuário -> Pedido de compra
+Ref: usuario.usuario_id < pedido_compra.usuario_id
+
+// Pedido -> Itens
+Ref: pedido_compra.pedido_compra_id < pedido_compra_item.pedido_compra_id
+
+// Cotação -> Item do pedido
+Ref: cotacao_item.cotacao_item_id < pedido_compra_item.cotacao_item_id
+
+// Produto -> Item do pedido
+Ref: produto.produto_id < pedido_compra_item.produto_id
+
+// Unidade -> Item do pedido
+Ref: unidade_medida.unidade_medida_id < pedido_compra_item.unidade_medida_id
+
+
+// ======================================================
+// SAÍDA DE ESTOQUE
+// ======================================================
+
+// Usuário -> Saída de estoque
+Ref: usuario.usuario_id < saida_estoque.usuario_id
+
+// Saída -> Itens
+Ref: saida_estoque.saida_estoque_id < saida_estoque_item.saida_estoque_id
+
+// Produto -> Itens da saída
+Ref: produto.produto_id < saida_estoque_item.produto_id
+
+// Unidade -> Itens da saída
+Ref: unidade_medida.unidade_medida_id < saida_estoque_item.unidade_medida_id
+
+
+// ======================================================
+// MOVIMENTAÇÃO DE ESTOQUE
+// ======================================================
+
+// Estoque -> Movimentações
+Ref: estoque.estoque_id < movimentacao_estoque.estoque_id
+
+// Usuário -> Movimentações
+Ref: usuario.usuario_id < movimentacao_estoque.usuario_id
+
+
+// ======================================================
+// AUDITORIA
+// ======================================================
+
+// Usuário -> Auditoria
+Ref: usuario.usuario_id < auditoria.usuario_id
+
