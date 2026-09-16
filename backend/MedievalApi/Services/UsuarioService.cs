@@ -1,7 +1,7 @@
 using MedievalApi.Data;
 using MedievalApi.DTOs.Usuario;
+using MedievalApi.Exceptions;
 using MedievalApi.Models;
-using MedievalApi.Models.Enums;
 using MedievalApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,20 +16,28 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
         var emailNormalizado = Usuario.NormalizeEmail(request.Email);
 
         if (await context.Usuarios.AnyAsync(u => u.Email == emailNormalizado))
-            throw new InvalidOperationException("E-mail já cadastrado.");
+            throw new ConflictException("E-mail já cadastrado.");
 
         var usuario = new Usuario(request.Nome, request.Email, request.Senha, request.GrupoUsuario);
 
         context.Usuarios.Add(usuario);
-        await context.SaveChangesAsync();
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+        {
+            throw new ConflictException("E-mail já cadastrado.");
+        }
 
         return ToResponse(usuario);
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
-        if (usuario == null) return false;
+        var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Id == id)
+            ?? throw new NotFoundException("Usuário", id);
 
         context.Usuarios.Remove(usuario);
         await context.SaveChangesAsync();
@@ -48,7 +56,8 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
 
     public async Task<UsuarioResponse?> GetByIdAsync(Guid id)
     {
-        var usuario = await context.Usuarios.AsNoTracking()
+        var usuario = await context.Usuarios
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Id == id);
 
         return usuario == null ? null : ToResponse(usuario);
@@ -60,19 +69,38 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
         if (usuario == null) return null;
 
         var emailNormalizado = Usuario.NormalizeEmail(request.Email);
+
         if (await context.Usuarios.AnyAsync(u => u.Email == emailNormalizado && u.Id != id))
-            throw new InvalidOperationException("E-mail já cadastrado por outro usuário.");
+            throw new ConflictException("E-mail já cadastrado por outro usuário.");
 
         usuario.Nome = request.Nome;
         usuario.Email = request.Email;
         usuario.GrupoUsuario = request.GrupoUsuario;
         usuario.Status = request.Status;
 
-        await context.SaveChangesAsync();
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+        {
+            throw new ConflictException("E-mail já cadastrado por outro usuário.");
+        }
+
         return ToResponse(usuario);
     }
 
-    private static UsuarioResponse ToResponse(Usuario u) => new(
-        u.Id, u.Nome, u.Email, u.GrupoUsuario, u.Status, u.UltimoLogin, u.CriadoEm, u.AtualizadoEm
-    );
+    private static UsuarioResponse ToResponse(Usuario u) =>
+        new(u.Id, u.Nome, u.Email, u.GrupoUsuario, u.Status, u.UltimoLogin, u.CriadoEm,
+            u.AtualizadoEm);
+
+    private static bool IsUniqueViolation(DbUpdateException ex)
+    {
+        // SQLite: "UNIQUE constraint failed"
+        // PostgreSQL: SqlState 23505
+        var inner = ex.InnerException?.Message ?? string.Empty;
+        return inner.Contains("UNIQUE", StringComparison.OrdinalIgnoreCase)
+            || inner.Contains("duplicate key", StringComparison.OrdinalIgnoreCase)
+            || inner.Contains("23505", StringComparison.OrdinalIgnoreCase);
+    }
 }

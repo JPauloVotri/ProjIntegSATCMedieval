@@ -7,7 +7,7 @@ public record UsuarioResponse(
     string Nome,
     string Email,
     GrupoUsuario GrupoUsuario,
-    UsuarioStatus Status,
+    StatusUsuario Status,
     DateTime? UltimoLogin,
     DateTime CriadoEm,
     DateTime AtualizadoEm

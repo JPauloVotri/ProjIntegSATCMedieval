@@ -1,6 +1,6 @@
 namespace MedievalApi.Models.Enums;
 
-public enum UsuarioStatus
+public enum StatusUsuario
 {
     Ativo,
     Inativo,

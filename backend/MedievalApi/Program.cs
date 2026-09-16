@@ -1,4 +1,5 @@
 using MedievalApi.Data;
+using MedievalApi.Middlewares;
 using MedievalApi.Services;
 using MedievalApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ public partial class Program
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+        builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -22,6 +24,8 @@ public partial class Program
         builder.Services.AddOpenApi();
 
         WebApplication app = builder.Build();
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

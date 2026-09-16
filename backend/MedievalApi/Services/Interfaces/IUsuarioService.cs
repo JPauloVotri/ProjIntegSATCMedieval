@@ -9,4 +9,5 @@ public interface IUsuarioService
     Task<UsuarioResponse> CreateAsync(UsuarioCreateRequest request);
     Task<UsuarioResponse?> UpdateAsync(Guid id, UsuarioUpdateRequest request);
     Task<bool> DeleteAsync(Guid id);
+    // Task<LoginResponse?> LoginAsync(LoginRequest request);
 }
