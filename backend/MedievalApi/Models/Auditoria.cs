@@ -5,9 +5,9 @@ namespace MedievalApi.Models
 {
     public class Auditoria
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();   
-        public Guid? UsuarioId { get; set; } = Guid.CreateVersion7();
-        public Guid? RegistroId { get; set; } = Guid.CreateVersion7();
+        public int Id { get; set; }
+        public int? UsuarioId { get; set; }
+        public int? RegistroId { get; set; }
         public string Tabela { get; set; } = string.Empty;
         public TipoAuditoria Tipo { get; set; }
         public JsonDocument? DadosAnteriores { get; set; }

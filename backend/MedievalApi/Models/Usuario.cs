@@ -4,7 +4,7 @@ namespace MedievalApi.Models;
 
 public class Usuario
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public int Id { get; set; }
 
     public string Nome
     {

@@ -2,10 +2,10 @@
 {
     public class CotacaoItemFornecedor
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
+        public int Id { get; set; }
 
-        public Guid CotacaoItemId { get; set; } = Guid.CreateVersion7();
-        public Guid FornecedorId { get; set; } = Guid.CreateVersion7();
+        public int CotacaoItemId { get; set; }
+        public int FornecedorId { get; set; }
 
         public decimal ValorUnitario { get; set; }
 

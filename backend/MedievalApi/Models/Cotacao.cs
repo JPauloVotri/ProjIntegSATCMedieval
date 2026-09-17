@@ -4,8 +4,8 @@ namespace MedievalApi.Models
 {
     public class Cotacao
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
-        public Guid UsuarioId { get; set; } = Guid.CreateVersion7();
+        public int Id { get; set; }
+        public int UsuarioId { get; set; }
         public DateTime DataSolicitacao { get; set; }
         public DateTime? DataLimiteResposta { get; set; }
         public StatusCotacao Status { get; set; } = StatusCotacao.Rascunho;

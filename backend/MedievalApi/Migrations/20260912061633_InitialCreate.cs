@@ -15,7 +15,7 @@ namespace MedievalApi.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "TEXT", nullable: false),
                     Nome = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
                     Email = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
                     SenhaHash = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),

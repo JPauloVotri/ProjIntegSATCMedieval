@@ -19,7 +19,7 @@ namespace MedievalApi.Migrations
 
             modelBuilder.Entity("MedievalApi.Models.Categoria", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -66,7 +66,7 @@ namespace MedievalApi.Migrations
 
             modelBuilder.Entity("MedievalApi.Models.Produto", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -82,7 +82,7 @@ namespace MedievalApi.Migrations
                         .HasColumnName("atualizado_em")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid>("CategoriaId")
+                    b.Property<int>("CategoriaId")
                         .HasColumnType("uuid")
                         .HasColumnName("categoria_id");
 
@@ -134,7 +134,7 @@ namespace MedievalApi.Migrations
                         .HasDefaultValue(0m)
                         .HasColumnName("ultimo_custo");
 
-                    b.Property<Guid>("UnidadeMedidaId")
+                    b.Property<int>("UnidadeMedidaId")
                         .HasColumnType("uuid")
                         .HasColumnName("unidade_medida_id");
 
@@ -169,7 +169,7 @@ namespace MedievalApi.Migrations
 
             modelBuilder.Entity("MedievalApi.Models.UnidadeMedida", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -226,7 +226,7 @@ namespace MedievalApi.Migrations
 
             modelBuilder.Entity("MedievalApi.Models.Usuario", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 

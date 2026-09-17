@@ -2,7 +2,7 @@
 
 public class Fornecedor
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public int Id { get; set; }
     public string RazaoSocial { get; set; } = string.Empty;
     public string? NomeFantasia { get; set; }
     public string? Documento { get; set; }

@@ -22,7 +22,7 @@ namespace MedievalApi.Migrations
 
             modelBuilder.Entity("MedievalApi.Models.Usuario", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 

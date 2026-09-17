@@ -4,10 +4,10 @@ namespace MedievalApi.Models
 {
     public class PedidoCompra
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
-        public Guid FornecedorId { get; set; } = Guid.CreateVersion7();
-        public Guid UsuarioId { get; set; } = Guid.CreateVersion7();
-        public Guid? CotacaoId { get; set; } = Guid.CreateVersion7();
+        public int Id { get; set; }
+        public int FornecedorId { get; set; }
+        public int UsuarioId { get; set; }
+        public int? CotacaoId { get; set; }
         public DateTime DataPedido { get; set; }
         public DateTime? DataPrevistaEntrega { get; set; }
         public DateTime? DataRecebimento { get; set; }

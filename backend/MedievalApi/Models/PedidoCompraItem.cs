@@ -2,11 +2,11 @@
 {
     public class PedidoCompraItem
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
-        public Guid PedidoCompraId { get; set; } = Guid.CreateVersion7();
-        public Guid ProdutoId { get; set; } = Guid.CreateVersion7();
-        public Guid UnidadeMedidaId { get; set; } = Guid.CreateVersion7();
-        public Guid? CotacaoItemId { get; set; } = Guid.CreateVersion7();
+        public int Id { get; set; }
+        public int PedidoCompraId { get; set; }
+        public int ProdutoId { get; set; }
+        public int UnidadeMedidaId { get; set; }
+        public int? CotacaoItemId { get; set; }
         public decimal QuantidadeSolicitada { get; set; }
         public decimal QuantidadeRecebida { get; set; }
         public decimal ValorUnitario { get; set; }

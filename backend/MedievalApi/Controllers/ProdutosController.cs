@@ -21,7 +21,7 @@ public class ProdutosController(IProdutoService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ProdutoResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ProdutoResponse>> GetById(Guid id)
+    public async Task<ActionResult<ProdutoResponse>> GetById(int id)
     {
         var produto = await service.GetByIdAsync(id);
         if (produto is null) return NotFound();
@@ -45,7 +45,7 @@ public class ProdutosController(IProdutoService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<ProdutoResponse>> Update(Guid id, ProdutoUpdateRequest request)
+    public async Task<ActionResult<ProdutoResponse>> Update(int id, ProdutoUpdateRequest request)
     {
         var produto = await service.UpdateAsync(id, request);
         if (produto is null) return NotFound();
@@ -57,7 +57,7 @@ public class ProdutosController(IProdutoService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(int id)
     {
         var deleted = await service.DeleteAsync(id);
         if (!deleted) return NotFound();

@@ -2,10 +2,10 @@ namespace MedievalApi.Models;
 
 public class Produto
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
-    public Guid CategoriaId { get; set; }
+    public int Id { get; set; }
+    public int CategoriaId { get; set; }
     public GrupoProduto Categoria { get; set; } = null!;
-    public Guid UnidadeMedidaId { get; set; }
+    public int UnidadeMedidaId { get; set; }
     public UnidadeMedida UnidadeMedida { get; set; } = null!;
     public string? Codigo { get; set; }
     public string Nome { get; set; } = string.Empty;

@@ -3,7 +3,7 @@ using MedievalApi.Models.Enums;
 namespace MedievalApi.DTOs.Usuario;
 
 public record UsuarioResponse(
-    Guid Id,
+    int Id,
     string Nome,
     string Email,
     GrupoUsuario GrupoUsuario,

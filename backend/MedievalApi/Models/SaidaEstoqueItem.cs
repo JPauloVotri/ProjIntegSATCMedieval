@@ -2,10 +2,10 @@
 {
     public class SaidaEstoqueItem
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
-        public Guid SaidaEstoqueId { get; set; } = Guid.CreateVersion7();
-        public Guid ProdutoId { get; set; } = Guid.CreateVersion7();
-        public Guid UnidadeMedidaId { get; set; } = Guid.CreateVersion7();
+        public int Id { get; set; }
+        public int SaidaEstoqueId { get; set; }
+        public int ProdutoId { get; set; }
+        public int UnidadeMedidaId { get; set; }
         public decimal Quantidade { get; set; }
         public decimal CustoUnitario { get; set; }
         public decimal CustoTotal { get; set; }

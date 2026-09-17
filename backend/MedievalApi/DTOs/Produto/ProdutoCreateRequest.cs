@@ -4,10 +4,10 @@ namespace MedievalApi.DTOs.Produto;
 
 public record ProdutoCreateRequest(
     [Required(ErrorMessage = "Categoria é obrigatória.")]
-    Guid CategoriaId,
+    int CategoriaId,
 
     [Required(ErrorMessage = "Unidade de medida é obrigatória.")]
-    Guid UnidadeMedidaId,
+    int UnidadeMedidaId,
 
     [Required(ErrorMessage = "Nome é obrigatório.")]
     [MaxLength(150, ErrorMessage = "Nome deve ter no máximo 150 caracteres.")]

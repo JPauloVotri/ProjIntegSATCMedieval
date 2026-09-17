@@ -74,12 +74,12 @@ namespace MedievalApi.Migrations
                 oldClrType: typeof(int),
                 oldType: "INTEGER");
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.AlterColumn<int>(
                 name: "id",
                 table: "usuario",
                 type: "uuid",
                 nullable: false,
-                oldClrType: typeof(Guid),
+                oldClrType: typeof(int),
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<string>(
@@ -119,7 +119,7 @@ namespace MedievalApi.Migrations
                 name: "categoria",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<int>(type: "uuid", nullable: false),
                     nome = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     descricao = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
                     ativo = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
@@ -135,7 +135,7 @@ namespace MedievalApi.Migrations
                 name: "unidade_medida",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<int>(type: "uuid", nullable: false),
                     nome = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     sigla = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
                     tipo = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
@@ -152,9 +152,9 @@ namespace MedievalApi.Migrations
                 name: "produto",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    categoria_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    unidade_medida_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<int>(type: "uuid", nullable: false),
+                    categoria_id = table.Column<int>(type: "uuid", nullable: false),
+                    unidade_medida_id = table.Column<int>(type: "uuid", nullable: false),
                     codigo = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     nome = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
                     descricao = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
@@ -347,12 +347,12 @@ namespace MedievalApi.Migrations
                 oldMaxLength: 20,
                 oldDefaultValue: "Ativo");
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.AlterColumn<int>(
                 name: "Id",
                 table: "Usuarios",
                 type: "TEXT",
                 nullable: false,
-                oldClrType: typeof(Guid),
+                oldClrType: typeof(int),
                 oldType: "uuid");
 
             migrationBuilder.AlterColumn<int>(

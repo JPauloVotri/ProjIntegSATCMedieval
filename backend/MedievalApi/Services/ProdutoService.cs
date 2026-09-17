@@ -51,7 +51,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
         return ToResponse(produto);
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<bool> DeleteAsync(int id)
     {
         var produto = await context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
         if (produto == null) return false;
@@ -83,7 +83,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
         return produtos.Select(ToResponse);
     }
 
-    public async Task<ProdutoResponse?> GetByIdAsync(Guid id)
+    public async Task<ProdutoResponse?> GetByIdAsync(int id)
     {
         var produto = await context.Produtos
             .AsNoTracking()
@@ -94,7 +94,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
         return produto == null ? null : ToResponse(produto);
     }
 
-    public async Task<ProdutoResponse?> UpdateAsync(Guid id, ProdutoUpdateRequest request)
+    public async Task<ProdutoResponse?> UpdateAsync(int id, ProdutoUpdateRequest request)
     {
         var produto = await context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
         if (produto == null) return null;
@@ -133,13 +133,13 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
         return ToResponse(produto);
     }
 
-    private async Task ValidarCategoriaAsync(Guid categoriaId)
+    private async Task ValidarCategoriaAsync(int categoriaId)
     {
         if (!await context.Categorias.AnyAsync(c => c.Id == categoriaId))
             throw new NotFoundException("Categoria", categoriaId);
     }
 
-    private async Task ValidarUnidadeMedidaAsync(Guid unidadeMedidaId)
+    private async Task ValidarUnidadeMedidaAsync(int unidadeMedidaId)
     {
         if (!await context.UnidadesMedida.AnyAsync(u => u.Id == unidadeMedidaId))
             throw new NotFoundException("Unidade de medida", unidadeMedidaId);

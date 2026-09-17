@@ -4,10 +4,10 @@ namespace MedievalApi.Models
 {
     public class MovimentacaoEstoque
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
-        public Guid EstoqueId { get; set; } = Guid.CreateVersion7();
-        public Guid UsuarioId { get; set; } = Guid.CreateVersion7();
-        public Guid? ReferenciaId { get; set; } = Guid.CreateVersion7(); //PedidoCompraId, SaidaEstoqueId, etc.
+        public int Id { get; set; }
+        public int EstoqueId { get; set; }
+        public int UsuarioId { get; set; }
+        public int? ReferenciaId { get; set; }//PedidoCompraId, SaidaEstoqueId, etc.
         public string? ReferenciaTipo { get; set; } // PedidoCompra, SaidaEstoque, etc.
         public TipoMovimentacaoEstoque Tipo { get; set; }
         public OrigemMovimentacao Origem { get; set; }

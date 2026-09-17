@@ -5,9 +5,9 @@ namespace MedievalApi.Services.Interfaces;
 public interface IUsuarioService
 {
     Task<IEnumerable<UsuarioResponse>> GetAllAsync();
-    Task<UsuarioResponse?> GetByIdAsync(Guid id);
+    Task<UsuarioResponse?> GetByIdAsync(int id);
     Task<UsuarioResponse> CreateAsync(UsuarioCreateRequest request);
-    Task<UsuarioResponse?> UpdateAsync(Guid id, UsuarioUpdateRequest request);
-    Task<bool> DeleteAsync(Guid id);
+    Task<UsuarioResponse?> UpdateAsync(int id, UsuarioUpdateRequest request);
+    Task<bool> DeleteAsync(int id);
     // Task<LoginResponse?> LoginAsync(LoginRequest request);
 }

@@ -21,7 +21,7 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UsuarioResponse>> GetById(Guid id)
+    public async Task<ActionResult<UsuarioResponse>> GetById(int id)
     {
         var usuario = await service.GetByIdAsync(id);
         if (usuario is null) return NotFound();
@@ -44,7 +44,7 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<UsuarioResponse>> Update(Guid id, UsuarioUpdateRequest request)
+    public async Task<ActionResult<UsuarioResponse>> Update(int id, UsuarioUpdateRequest request)
     {
         var usuario = await service.UpdateAsync(id, request);
         if (usuario is null) return NotFound();
@@ -55,7 +55,7 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(int id)
     {
         var deleted = await service.DeleteAsync(id);
         if (!deleted) return NotFound();

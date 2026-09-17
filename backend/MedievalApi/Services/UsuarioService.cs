@@ -34,7 +34,7 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
         return ToResponse(usuario);
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<bool> DeleteAsync(int id)
     {
         var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Id == id)
             ?? throw new NotFoundException("Usuário", id);
@@ -54,7 +54,7 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
         return usuarios.Select(ToResponse);
     }
 
-    public async Task<UsuarioResponse?> GetByIdAsync(Guid id)
+    public async Task<UsuarioResponse?> GetByIdAsync(int id)
     {
         var usuario = await context.Usuarios
             .AsNoTracking()
@@ -63,7 +63,7 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
         return usuario == null ? null : ToResponse(usuario);
     }
 
-    public async Task<UsuarioResponse?> UpdateAsync(Guid id, UsuarioUpdateRequest request)
+    public async Task<UsuarioResponse?> UpdateAsync(int id, UsuarioUpdateRequest request)
     {
         var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
         if (usuario == null) return null;

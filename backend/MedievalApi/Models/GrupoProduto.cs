@@ -2,7 +2,7 @@ namespace MedievalApi.Models;
 
 public class GrupoProduto
 {
-    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
     public string? Descricao { get; set; }
     public bool Ativo { get; set; } = true;
