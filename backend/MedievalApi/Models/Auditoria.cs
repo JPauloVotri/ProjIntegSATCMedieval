@@ -1,22 +1,20 @@
 ﻿using MedievalApi.Models.Enums;
-using System.Text.Json;
 
-namespace MedievalApi.Models
+namespace MedievalApi.Models;
+
+public class Auditoria
 {
-    public class Auditoria
-    {
-        public Guid Id { get; set; } = Guid.CreateVersion7();   
-        public Guid? UsuarioId { get; set; } = Guid.CreateVersion7();
-        public Guid? RegistroId { get; set; } = Guid.CreateVersion7();
-        public string Tabela { get; set; } = string.Empty;
-        public TipoAuditoria Tipo { get; set; }
-        public JsonDocument? DadosAnteriores { get; set; }
-        public JsonDocument? DadosNovos { get; set; }
-        public string? Ip { get; set; }
-        public string? UserAgent { get; set; }
-        public DateTime CriadoEm { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public Guid? UsuarioId { get; set; }
+    public Guid? RegistroId { get; set; }
+    public string Tabela { get; set; } = string.Empty;
+    public TipoAuditoria Tipo { get; set; }
+    public string DadosAnteriores { get; set; } = string.Empty;
+    public string DadosNovos { get; set; } = string.Empty;
+    public string? Ip { get; set; }
+    public string? UserAgent { get; set; }
+    public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
 
-        // Navegação
-        public Usuario? Usuario { get; set; }
-    }
+    // Navegação
+    public Usuario? Usuario { get; set; }
 }
