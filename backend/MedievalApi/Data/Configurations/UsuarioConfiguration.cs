@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MedievalApi.Models;
 using MedievalApi.Models.Enums;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MedievalApi.Data.Configurations;
 
@@ -14,8 +14,7 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
         builder.HasKey(u => u.Id);
         builder.Property(u => u.Id)
             .HasColumnName("id")
-            .HasColumnType("uuid")
-            .ValueGeneratedNever();
+            .UseIdentityAlwaysColumn();
 
         builder.Property(u => u.Nome)
             .HasColumnName("nome")
@@ -36,7 +35,6 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
             .HasColumnName("grupo_usuario")
             .HasConversion<string>()
             .HasMaxLength(20)
-            .HasDefaultValue(GrupoUsuario.Consulta)
             .IsRequired();
 
         builder.Property(u => u.Status)
@@ -47,15 +45,18 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
             .IsRequired();
 
         builder.Property(u => u.UltimoLogin)
-            .HasColumnName("ultimo_login");
+            .HasColumnName("ultimo_login")
+            .HasColumnType("timestamptz");
 
         builder.Property(u => u.CriadoEm)
             .HasColumnName("criado_em")
+            .HasColumnType("timestamptz")
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
 
         builder.Property(u => u.AtualizadoEm)
             .HasColumnName("atualizado_em")
+            .HasColumnType("timestamptz")
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
 

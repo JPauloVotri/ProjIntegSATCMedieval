@@ -13,7 +13,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
 
     public async Task<ProdutoResponse> CreateAsync(ProdutoCreateRequest request)
     {
-        await ValidarCategoriaAsync(request.CategoriaId);
+        await ValidarGrupoProdutoAsync(request.GrupoProdutoId);
         await ValidarUnidadeMedidaAsync(request.UnidadeMedidaId);
 
         var codigoNormalizado = NormalizeCodigo(request.Codigo);
@@ -26,7 +26,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
 
         var produto = new Produto
         {
-            CategoriaId = request.CategoriaId,
+            GrupoProdutoId = request.GrupoProdutoId,
             UnidadeMedidaId = request.UnidadeMedidaId,
             Nome = request.Nome,
             Codigo = request.Codigo,
@@ -75,7 +75,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
     {
         var produtos = await context.Produtos
             .AsNoTracking()
-            .Include(p => p.Categoria)
+            .Include(p => p.GrupoProduto)
             .Include(p => p.UnidadeMedida)
             .OrderBy(p => p.Nome)
             .ToListAsync();
@@ -87,7 +87,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
     {
         var produto = await context.Produtos
             .AsNoTracking()
-            .Include(p => p.Categoria)
+            .Include(p => p.GrupoProduto)
             .Include(p => p.UnidadeMedida)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -99,7 +99,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
         var produto = await context.Produtos.FirstOrDefaultAsync(p => p.Id == id);
         if (produto == null) return null;
 
-        await ValidarCategoriaAsync(request.CategoriaId);
+        await ValidarGrupoProdutoAsync(request.GrupoProdutoId);
         await ValidarUnidadeMedidaAsync(request.UnidadeMedidaId);
 
         var codigoNormalizado = NormalizeCodigo(request.Codigo);
@@ -110,7 +110,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
             throw new ConflictException($"Já existe outro produto com o código '{codigoNormalizado}'.");
         }
 
-        produto.CategoriaId = request.CategoriaId;
+        produto.GrupoProdutoId = request.GrupoProdutoId;
         produto.UnidadeMedidaId = request.UnidadeMedidaId;
         produto.Nome = request.Nome;
         produto.Codigo = request.Codigo;
@@ -133,10 +133,10 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
         return ToResponse(produto);
     }
 
-    private async Task ValidarCategoriaAsync(int categoriaId)
+    private async Task ValidarGrupoProdutoAsync(int grupoProdutoId)
     {
-        if (!await context.Categorias.AnyAsync(c => c.Id == categoriaId))
-            throw new NotFoundException("Categoria", categoriaId);
+        if (!await context.GruposProduto.AnyAsync(g => g.Id == grupoProdutoId))
+            throw new NotFoundException("Grupo de produto", grupoProdutoId);
     }
 
     private async Task ValidarUnidadeMedidaAsync(int unidadeMedidaId)
@@ -147,7 +147,7 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
 
     private async Task CarregarNavegacoesAsync(Produto produto)
     {
-        await context.Entry(produto).Reference(p => p.Categoria).LoadAsync();
+        await context.Entry(produto).Reference(p => p.GrupoProduto).LoadAsync();
         await context.Entry(produto).Reference(p => p.UnidadeMedida).LoadAsync();
     }
 
@@ -156,8 +156,8 @@ public class ProdutoService(AppDbContext appDbContext) : IProdutoService
 
     private static ProdutoResponse ToResponse(Produto p) => new(
         p.Id,
-        p.CategoriaId,
-        p.Categoria?.Nome ?? string.Empty,
+        p.GrupoProdutoId,
+        p.GrupoProduto?.Nome ?? string.Empty,
         p.UnidadeMedidaId,
         p.UnidadeMedida?.Sigla ?? string.Empty,
         p.Codigo,

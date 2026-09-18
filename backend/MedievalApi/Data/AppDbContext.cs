@@ -1,4 +1,3 @@
-using System.Reflection;
 using MedievalApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +6,20 @@ namespace MedievalApi.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<Usuario> Usuarios => Set<Usuario>();
-    public DbSet<GrupoProduto> Categorias => Set<GrupoProduto>();
+    public DbSet<GrupoProduto> GruposProduto => Set<GrupoProduto>();
     public DbSet<UnidadeMedida> UnidadesMedida => Set<UnidadeMedida>();
     public DbSet<Produto> Produtos => Set<Produto>();
+    public DbSet<Estoque> Estoques => Set<Estoque>();
+    public DbSet<Fornecedor> Fornecedores => Set<Fornecedor>();
+    public DbSet<Cotacao> Cotacoes => Set<Cotacao>();
+    public DbSet<CotacaoItem> CotacaoItens => Set<CotacaoItem>();
+    public DbSet<CotacaoItemFornecedor> CotacaoItensFornecedor => Set<CotacaoItemFornecedor>();
+    public DbSet<PedidoCompra> PedidosCompra => Set<PedidoCompra>();
+    public DbSet<PedidoCompraItem> PedidoCompraItens => Set<PedidoCompraItem>();
+    public DbSet<MovimentacaoEstoque> MovimentacoesEstoque => Set<MovimentacaoEstoque>();
+    public DbSet<SaidaEstoque> SaidasEstoque => Set<SaidaEstoque>();
+    public DbSet<SaidaEstoqueItem> SaidaEstoqueItens => Set<SaidaEstoqueItem>();
+    public DbSet<Auditoria> Auditorias => Set<Auditoria>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,19 +41,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     private void UpdateTimestamps()
     {
-        DateTime now = DateTime.UtcNow;
+        var now = DateTime.UtcNow;
 
         foreach (var entry in ChangeTracker.Entries())
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property("CriadoEm").CurrentValue = now;
-                entry.Property("AtualizadoEm").CurrentValue = now;
+                if (entry.Metadata.FindProperty("CriadoEm") is not null)
+                    entry.Property("CriadoEm").CurrentValue = now;
+
+                if (entry.Metadata.FindProperty("AtualizadoEm") is not null)
+                    entry.Property("AtualizadoEm").CurrentValue = now;
             }
             else if (entry.State == EntityState.Modified)
             {
-                PropertyInfo? prop = entry.Entity.GetType().GetProperty("AtualizadoEm");
-                prop?.SetValue(entry.Entity, now);
+                if (entry.Metadata.FindProperty("AtualizadoEm") is not null)
+                    entry.Property("AtualizadoEm").CurrentValue = now;
             }
         }
     }

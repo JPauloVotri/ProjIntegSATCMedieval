@@ -13,11 +13,9 @@ public record UsuarioUpdateRequest(
     [EmailAddress(ErrorMessage = "E-mail em formato inválido.")]
     string Email,
 
-    [Required(ErrorMessage = "Grupo de usuário é obrigatório.")]
     [EnumDataType(typeof(GrupoUsuario), ErrorMessage = "Grupo de usuário inválido.")]
     GrupoUsuario GrupoUsuario,
 
-    [Required(ErrorMessage = "Status é obrigatório.")]
     [EnumDataType(typeof(StatusUsuario), ErrorMessage = "Status inválido.")]
     StatusUsuario Status
 );

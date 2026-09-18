@@ -1,9 +1,8 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum StatusSaidaEstoque
 {
-    public enum StatusSaidaEstoque
-    {
-        Rascunho,
-        Confirmada,
-        Cancelada
-    }
+    Rascunho,
+    Confirmada,
+    Cancelada
 }

@@ -1,12 +1,11 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum OrigemMovimentacao
 {
-    public enum OrigemMovimentacao
-    {
-        PedidoCompra,
-        SaidaEstoque,
-        AjusteManual,
-        Inventario,
-        Devolucao,
-        Perda
-    }
+    PedidoCompra,
+    SaidaEstoque,
+    AjusteManual,
+    Inventario,
+    Devolucao,
+    Perda
 }

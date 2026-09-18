@@ -1,11 +1,10 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum StatusPedidoCompra
 {
-    public enum StatusPedidoCompra
-    {
-        Rascunho,
-        Enviado,
-        ParcialmenteRecebido,
-        Recebido,
-        Cancelado
-    }
+    Rascunho,
+    Enviado,
+    ParcialmenteRecebido,
+    Recebido,
+    Cancelado
 }

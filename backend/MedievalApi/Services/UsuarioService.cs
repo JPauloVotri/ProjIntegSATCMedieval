@@ -36,8 +36,8 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Id == id)
-            ?? throw new NotFoundException("Usuário", id);
+        var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+        if (usuario == null) return false;
 
         context.Usuarios.Remove(usuario);
         await context.SaveChangesAsync();
@@ -90,14 +90,12 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
         return ToResponse(usuario);
     }
 
-    private static UsuarioResponse ToResponse(Usuario u) =>
-        new(u.Id, u.Nome, u.Email, u.GrupoUsuario, u.Status, u.UltimoLogin, u.CriadoEm,
-            u.AtualizadoEm);
+    private static UsuarioResponse ToResponse(Usuario u) => new(
+        u.Id, u.Nome, u.Email, u.GrupoUsuario, u.Status, u.UltimoLogin, u.CriadoEm, u.AtualizadoEm
+    );
 
     private static bool IsUniqueViolation(DbUpdateException ex)
     {
-        // SQLite: "UNIQUE constraint failed"
-        // PostgreSQL: SqlState 23505
         var inner = ex.InnerException?.Message ?? string.Empty;
         return inner.Contains("UNIQUE", StringComparison.OrdinalIgnoreCase)
             || inner.Contains("duplicate key", StringComparison.OrdinalIgnoreCase)

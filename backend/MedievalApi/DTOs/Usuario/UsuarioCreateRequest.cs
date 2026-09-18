@@ -18,7 +18,6 @@ public record UsuarioCreateRequest(
     [MaxLength(100, ErrorMessage = "Senha deve ter no máximo 100 caracteres.")]
     string Senha,
 
-    [Required(ErrorMessage = "Grupo de usuário é obrigatório.")]
     [EnumDataType(typeof(GrupoUsuario), ErrorMessage = "Grupo de usuário inválido.")]
     GrupoUsuario GrupoUsuario
 );

@@ -2,8 +2,8 @@ namespace MedievalApi.DTOs.Produto;
 
 public record ProdutoResponse(
     int Id,
-    int CategoriaId,
-    string CategoriaNome,
+    int GrupoProdutoId,
+    string GrupoProdutoNome,
     int UnidadeMedidaId,
     string UnidadeMedidaSigla,
     string? Codigo,

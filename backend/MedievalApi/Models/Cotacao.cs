@@ -15,4 +15,5 @@ public class Cotacao
 
     // Navegação
     public Usuario? Usuario { get; set; }
+    public ICollection<CotacaoItem> Itens { get; set; } = [];
 }

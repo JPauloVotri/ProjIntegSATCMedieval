@@ -1,12 +1,11 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum TipoAuditoria
 {
-    public enum TipoAuditoria
-    {
-        INSERT,
-        UPDATE,
-        DELETE,
-        LOGIN,
-        LOGOUT,
-        OUTRO
-    }
+    INSERT,
+    UPDATE,
+    DELETE,
+    LOGIN,
+    LOGOUT,
+    OUTRO
 }
