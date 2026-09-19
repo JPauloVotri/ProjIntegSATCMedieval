@@ -16,12 +16,15 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     {
         await ValidateUsuarioAsync(request.UsuarioId);
 
+        if (!Enum.TryParse<StatusCotacao>(request.Status, true, out var status))
+            throw new BusinessException("Status de cotação inválido.");
+
         var cotacao = new Cotacao
         {
             UsuarioId = request.UsuarioId,
             DataSolicitacao = request.DataSolicitacao,
             DataLimiteResposta = request.DataLimiteResposta,
-            Status = request.Status,
+            Status = status,
             Observacao = request.Observacao
         };
 
@@ -121,7 +124,6 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     private static CotacaoResponse ToResponse(Cotacao c) => new(
         c.Id,
         c.UsuarioId,
-        c.Usuario?.Nome ?? string.Empty,
         c.DataSolicitacao,
         c.DataLimiteResposta,
         c.Status,

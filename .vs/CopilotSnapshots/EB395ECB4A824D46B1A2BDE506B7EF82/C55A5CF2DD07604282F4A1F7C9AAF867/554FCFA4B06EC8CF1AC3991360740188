@@ -16,12 +16,15 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     {
         await ValidateUsuarioAsync(request.UsuarioId);
 
+        if (!Enum.TryParse<StatusCotacao>(request.Status, true, out var status))
+            throw new BusinessException("Status de cotação inválido.");
+
         var cotacao = new Cotacao
         {
             UsuarioId = request.UsuarioId,
             DataSolicitacao = request.DataSolicitacao,
             DataLimiteResposta = request.DataLimiteResposta,
-            Status = request.Status,
+            Status = status,
             Observacao = request.Observacao
         };
 
@@ -36,6 +39,7 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
             throw new BusinessException("Referência inválida ao criar cotação.");
         }
 
+        await context.Entry(cotacao).Reference(c => c.Usuario).LoadAsync();
         return ToResponse(cotacao);
     }
 
@@ -65,6 +69,7 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     {
         var cotacoes = await context.Set<Cotacao>()
             .AsNoTracking()
+            .Include(c => c.Usuario)
             .OrderByDescending(c => c.DataSolicitacao)
             .ToListAsync();
 
@@ -75,6 +80,7 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     {
         var cotacao = await context.Set<Cotacao>()
             .AsNoTracking()
+            .Include(c => c.Usuario)
             .FirstOrDefaultAsync(c => c.Id == id);
 
         return cotacao == null ? null : ToResponse(cotacao);
@@ -109,6 +115,7 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
             throw new BusinessException("Referência inválida ao atualizar cotação.");
         }
 
+        await context.Entry(cotacao).Reference(c => c.Usuario).LoadAsync();
         return ToResponse(cotacao);
     }
 
@@ -121,7 +128,6 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     private static CotacaoResponse ToResponse(Cotacao c) => new(
         c.Id,
         c.UsuarioId,
-        c.Usuario?.Nome ?? string.Empty,
         c.DataSolicitacao,
         c.DataLimiteResposta,
         c.Status,

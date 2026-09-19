@@ -121,7 +121,6 @@ public class CotacaoService(AppDbContext appDbContext) : ICotacaoService
     private static CotacaoResponse ToResponse(Cotacao c) => new(
         c.Id,
         c.UsuarioId,
-        c.Usuario?.Nome ?? string.Empty,
         c.DataSolicitacao,
         c.DataLimiteResposta,
         c.Status,

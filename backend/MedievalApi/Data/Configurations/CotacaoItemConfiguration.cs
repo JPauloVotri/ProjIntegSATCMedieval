@@ -33,9 +33,6 @@ public class CotacaoItemConfiguration : IEntityTypeConfiguration<CotacaoItem>
             .HasPrecision(14, 3)
             .IsRequired();
 
-        builder.Property(ci => ci.CotacaoItemFornecedorEscolhidoId)
-            .HasColumnName("cotacao_item_fornecedor_escolhido_id");
-
         builder.Property(ci => ci.Status)
             .HasColumnName("status")
             .HasConversion<string>()
@@ -78,13 +75,6 @@ public class CotacaoItemConfiguration : IEntityTypeConfiguration<CotacaoItem>
             .OnDelete(DeleteBehavior.Restrict)
             .HasConstraintName("fk_cotacao_item_unidade_medida");
 
-        // TODO: Verificar se vai ficar assim mesmo
-        builder.HasOne(ci => ci.CotacaoItemFornecedorEscolhido)
-            .WithMany()
-            .HasForeignKey(ci => ci.CotacaoItemFornecedorEscolhidoId)
-            .OnDelete(DeleteBehavior.Restrict)
-            .HasConstraintName("fk_cotacao_item_fornecedor_escolhido");
-
         // Índices
         builder.HasIndex(ci => ci.CotacaoId)
             .HasDatabaseName("ix_cotacao_item_cotacao_id");
@@ -94,9 +84,6 @@ public class CotacaoItemConfiguration : IEntityTypeConfiguration<CotacaoItem>
 
         builder.HasIndex(ci => ci.UnidadeMedidaId)
             .HasDatabaseName("ix_cotacao_item_unidade_medida_id");
-
-        builder.HasIndex(ci => ci.CotacaoItemFornecedorEscolhidoId)
-            .HasDatabaseName("ix_cotacao_item_fornecedor_escolhido_id");
 
         builder.HasIndex(ci => ci.Status)
             .HasDatabaseName("ix_cotacao_item_status");

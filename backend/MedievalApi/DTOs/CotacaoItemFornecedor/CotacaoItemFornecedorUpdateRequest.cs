@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MedievalApi.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedievalApi.DTOs.CotacaoItemFornecedor;
 
@@ -17,6 +18,9 @@ public record CotacaoItemFornecedorUpdateRequest(
 
     [MaxLength(100, ErrorMessage = "Condição de pagamento deve ter no máximo 100 caracteres.")]
     string? CondicaoPagamento,
+
+    [EnumDataType(typeof(StatusCotacaoItemFornecedor), ErrorMessage = "Status inválido.")]
+    StatusCotacaoItemFornecedor Status,
 
     [MaxLength(500, ErrorMessage = "Observação deve ter no máximo 500 caracteres.")]
     string? Observacao

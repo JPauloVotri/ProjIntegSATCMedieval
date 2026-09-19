@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MedievalApi.Controllers
+namespace MedievalApi.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class FornecedorController
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class FornecedorController
-    {
 
 
-    }
 }

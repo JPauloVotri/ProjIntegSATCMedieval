@@ -16,8 +16,6 @@ public record CotacaoItemUpdateRequest(
     [Range(0.01, double.MaxValue, ErrorMessage = "Quantidade deve ser maior que zero.")]
     decimal Quantidade,
 
-    int? CotacaoItemFornecedorEscolhidoId,
-
     [EnumDataType(typeof(StatusCotacaoItem), ErrorMessage = "Status inválido.")]
     StatusCotacaoItem Status,
 

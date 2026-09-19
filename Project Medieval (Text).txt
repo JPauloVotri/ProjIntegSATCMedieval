@@ -1,6 +1,6 @@
 Project Medieval {
   database_type: "PostgreSQL"
-  Note: "Sistema de gerenciamento de orçamentos, compras e estoque de restaurante"
+  Note: "Sistema de gerenciamento de orçamentos, compras e estoque"
 }
 
 
@@ -8,63 +8,77 @@ Project Medieval {
 // ENUMS
 // ======================================================
 
-Enum usuario_status {
-  ativo
-  inativo
+Enum StatusUsuario {
+  Ativo
+  Inativo
 }
 
-Enum grupo_usuario {
-  administrador
-  consulta
+Enum GrupoUsuario {
+  Administrador
+  Consulta
 }
 
-Enum status_cotacao_item {
-  pendente
-  selecionado
-  cancelado
+Enum StatusCotacao {
+  Rascunho
+  Enviada
+  EmResposta
+  Encerrada
+  Cancelada
 }
 
-Enum status_pedido_compra {
-  rascunho
-  enviado
-  parcialmente_recebido
-  recebido
-  cancelado
+Enum StatusCotacaoItem {
+  Pendente
+  Selecionado
+  Cancelado
 }
 
-Enum tipo_movimentacao_estoque {
-  entrada
-  saida
-  ajuste
-  perda
-  devolucao
+Enum StatusCotacaoItemFornecedor {
+  Pendente
+  Selecionado
+  Cancelado
 }
 
-Enum origem_movimentacao {
-  pedido_compra
-  saida_estoque
-  ajuste_manual
-  inventario
-  devolucao
-  perda
+Enum StatusPedidoCompra {
+  Rascunho
+  Enviado
+  ParcialmenteRecebido
+  Recebido
+  Cancelado
 }
 
-Enum tipo_saida_estoque {
-  consumo
-  perda
-  vencimento
-  devolucao
-  ajuste
-  outro
+Enum TipoMovimentacaoEstoque {
+  Entrada
+  Saida
+  Ajuste
+  Perda
+  Devolucao
 }
 
-Enum status_saida_estoque {
-  rascunho
-  confirmada
-  cancelada
+Enum OrigemMovimentacao {
+  PedidoCompra
+  SaidaEstoque
+  AjusteManual
+  Inventario
+  Devolucao
+  Perda
 }
 
-Enum tipo_auditoria {
+Enum TipoSaidaEstoque {
+  Consumo
+  Perda
+  Vencimento
+  Devolucao
+  Ajuste
+  Outro
+}
+
+Enum StatusSaidaEstoque {
+  Rascunho
+  Confirmada
+  Cancelada
+}
+
+Enum TipoAuditoria {
   INSERT
   UPDATE
   DELETE
@@ -73,60 +87,54 @@ Enum tipo_auditoria {
   OUTRO
 }
 
-Enum status_cotacao {
-  rascunho
-  enviada
-  em_resposta
-  encerrada
-  cancelada
-}
+
 
 
 // ======================================================
 // USUÁRIO
 // ======================================================
 
-Table usuario {
-  usuario_id bigint [pk, increment]
+Table Usuario {
+  Id int [pk, increment]
 
-  nome varchar(150) [not null]
-  email varchar(150) [not null, unique]
-  senha_hash varchar(255) [not null]
+  Nome varchar(150) [not null]
+  Email varchar(150) [not null, unique]
+  SenhaHash varchar(255) [not null]
 
-  grupo_usuario grupo_usuario [not null, default: 'administrador']
-  status usuario_status [not null, default: 'ativo']
+  GrupoUsuario GrupoUsuario [not null, default: 'administrador']
+  Status UsuarioStatus [not null, default: 'ativo']
 
-  ultimo_login timestamp
+  UltimoLogin timestamp
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    email [unique]
-    grupo_usuario
-    status
+    Email [unique]
+    GrupoUsuario
+    Status
   }
 }
 
 
 // ======================================================
-// CATEGORIA
+// GRUPO PRODUTO
 // ======================================================
 
-Table categoria {
-  categoria_id bigint [pk, increment]
+Table GrupoProduto {
+  Id int [pk, increment]
 
-  nome varchar(100) [not null, unique]
-  descricao varchar(255)
+  Nome varchar(100) [not null, unique]
+  Descricao varchar(255)
 
-  ativo boolean [not null, default: true]
+  Ativo boolean [not null, default: true]
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    nome [unique]
-    ativo
+    Nome [unique]
+    Ativo
   }
 }
 
@@ -135,35 +143,35 @@ Table categoria {
 // PRODUTO
 // ======================================================
 
-Table produto {
-  produto_id bigint [pk, increment]
+Table Produto {
+  Id int [pk, increment]
 
-  categoria_id bigint [not null]
-  unidade_medida_id bigint [not null]
+  GrupoProdutoId int [not null]
+  UnidadeMedidaId int [not null]
 
-  codigo varchar(50) [unique]
-  nome varchar(150) [not null]
-  descricao varchar(255)
+  Codigo varchar(50) [unique]
+  Nome varchar(150) [not null]
+  Descricao varchar(255)
 
-  estoque_minimo decimal(14,3) [not null, default: 0]
-  estoque_maximo decimal(14,3)
+  EstoqueMinimo decimal(14,3) [not null, default: 0]
+  EstoqueMaximo decimal(14,3)
 
-  custo_medio_estoque decimal(14,4) [not null, default: 0]
-  ultimo_custo decimal(14,4) [not null, default: 0]
+  CustoMedioEstoque decimal(14,4) [not null, default: 0]
+  UltimoCusto decimal(14,4) [not null, default: 0]
 
-  validade_dias int [default: null]
+  ValidadeDias int [default: null]
 
-  ativo boolean [not null, default: true]
+  Ativo boolean [not null, default: true]
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    codigo [unique]
-    nome
-    categoria_id
-    unidade_medida_id
-    ativo
+    Codigo [unique]
+    Nome
+    GrupoProdutoId
+    UnidadeMedidaId
+    Ativo
   }
 }
 
@@ -172,20 +180,20 @@ Table produto {
 // UNIDADE DE MEDIDA
 // ======================================================
 
-Table unidade_medida {
-  unidade_medida_id bigint [pk, increment]
+Table UnidadeMedida {
+  UnidadeMedidaId int [pk, increment]
 
-  nome varchar(100) [not null]
-  sigla varchar(20) [not null, unique]
-  tipo varchar(50) [not null]
-  ativo boolean [not null, default: true]
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  
+  Nome varchar(100) [not null]
+  Sigla varchar(20) [not null, unique]
+  Tipo varchar(50) [not null]
+  Ativo boolean [not null, default: true]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
   indexes {
-    sigla [unique]
-    tipo
-    ativo
+    Sigla [unique]
+    Tipo
+    Ativo
   }
 }
 
@@ -194,40 +202,40 @@ Table unidade_medida {
 // FORNECEDOR
 // ======================================================
 
-Table fornecedor {
-  fornecedor_id bigint [pk, increment]
+Table Fornecedor {
+  Id int [pk, increment]
 
-  razao_social varchar(200) [not null]
-  nome_fantasia varchar(200)
+  RazaoSocial varchar(200) [not null]
+  NomeFantasia varchar(200)
 
-  documento varchar(30)
-  inscricao_estadual varchar(30)
+  Documento varchar(30)
+  InscricaoEstadual varchar(30)
 
-  email varchar(150)
-  telefone varchar(30)
-  nome_contato varchar(150)
+  Email varchar(150)
+  Telefone varchar(30)
+  NomeContato varchar(150)
 
-  cep varchar(10)
-  logradouro varchar(200)
-  numero varchar(20)
-  complemento varchar(100)
-  bairro varchar(100)
-  cidade varchar(100)
-  estado varchar(2)
+  Cep varchar(10)
+  Logradouro varchar(200)
+  Numero varchar(20)
+  Complemento varchar(100)
+  Bairro varchar(100)
+  Cidade varchar(100)
+  Estado varchar(2)
 
-  dias_entrega varchar(50)
-  condicao_pagamento varchar(150)
+  DiasEntrega varchar(50)
+  CondicaoPagamento varchar(150)
 
-  ativo boolean [not null, default: true]
+  Ativo boolean [not null, default: true]
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    documento
-    razao_social
-    nome_fantasia
-    ativo
+    Documento
+    RazaoSocial
+    NomeFantasia
+    Ativo
   }
 }
 
@@ -236,26 +244,26 @@ Table fornecedor {
 // COTAÇÃO
 // ======================================================
 
-Table cotacao {
-  cotacao_id bigint [pk, increment]
+Table Cotacao {
+  Id int [pk, increment]
 
-  usuario_id bigint [not null]
+  UsuarioId int [not null]
 
-  data_solicitacao date [not null]
-  data_limite_resposta date
+  DataSolicitacao date [not null]
+  DataLimiteResposta date
 
-  status status_cotacao [not null, default: 'rascunho']
+  Status StatusCotacao [not null, default: 'rascunho']
 
-  observacao text
+  Observacao text
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    usuario_id
-    status
-    data_solicitacao
-    data_limite_resposta
+    UsuarioId
+    Status
+    DataSolicitacao
+    DataLimiteResposta
   }
 }
 
@@ -264,95 +272,87 @@ Table cotacao {
 // ITEM DA COTAÇÃO
 // ======================================================
 
-Table cotacao_item {
-  cotacao_item_id bigint [pk, increment]
+Table CotacaoItem {
+  Id int [pk, increment]
 
-  cotacao_id bigint [not null]
-  produto_id bigint [not null]
-  unidade_medida_id bigint [not null]
+  CotacaoId int [not null]
+  ProdutoId int [not null]
+  UnidadeMedidaId int [not null]
 
-  quantidade decimal(14,3) [not null]
+  Quantidade decimal(14,3) [not null]
 
-  cotacao_item_fornecedor_escolhido_id bigint
+  Status StatusCotacaoItem [not null, default: 'Pendente']
 
-  status status_cotacao_item [not null, default: 'pendente']
+  Observacao varchar(255)
 
-  observacao varchar(255)
-
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    cotacao_id
-    produto_id
-    unidade_medida_id
-    cotacao_item_fornecedor_escolhido_id
-    status
+    CotacaoId
+    ProdutoId
+    UnidadeMedidaId
+    Status
   }
 }
-
 
 
 // ======================================================
 // FORNECEDOR DO ITEM DA COTAÇÃO
 // ======================================================
 
-Table cotacao_item_fornecedor {
-  cotacao_item_fornecedor_id bigint [pk, increment]
+Table CotacaoItemFornecedor {
+  Id int [pk, increment]
 
-  cotacao_item_id bigint [not null]
-  fornecedor_id bigint [not null]
+  CotacaoItemId int [not null]
+  FornecedorId int [not null]
 
-  valor_unitario decimal(16,4) [not null]
-  prazo_entrega_dias int
-  condicao_pagamento varchar(150)
-  observacao varchar(255)
+  ValorUnitario decimal(16,4) [not null]
+  PrazoEntregaDias int
+  CondicaoPagamento varchar(150)
+  Observacao varchar(255)
+  Status StatusCotacaoItemFornecedor [not null, default: 'Pendente']
+ 
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    (cotacao_item_id, fornecedor_id) [unique]
+    (CotacaoItemId, FornecedorId) [unique]
   }
 }
-
 
 
 // ======================================================
 // PEDIDO DE COMPRA
 // ======================================================
 
-Table pedido_compra {
-  pedido_compra_id bigint [pk, increment]
+Table PedidoCompra {
+  Id int [pk, increment]
 
-  fornecedor_id bigint [not null]
-  usuario_id bigint [not null]
-  cotacao_id bigint
+  FornecedorId int [not null]
+  UsuarioId int [not null]
+  CotacaoId int
 
-  data_pedido date [not null]
-  data_prevista_entrega date
-  data_recebimento timestamp
+  DataPedido date [not null]
+  DataPrevistaEntrega date
+  DataRecebimento timestamp
 
-  status status_pedido_compra [not null, default: 'rascunho']
-  /*
-  subtotal decimal(16,4) [not null, default: 0]
-  desconto decimal(16,4) [not null, default: 0]
-  frete decimal(16,4) [not null, default: 0]
-  outras_despesas decimal(16,4) [not null, default: 0]
-  */
-  total decimal(16,4) [not null, default: 0]
+  Status StatusPedidoCompra [not null, default: 'Rascunho']
 
-  observacao text
+  Total decimal(16,4) [not null, default: 0]
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  Observacao text
+
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    fornecedor_id
-    usuario_id
-    cotacao_id
-    status
-    data_pedido
+    FornecedorId
+    UsuarioId
+    CotacaoId
+    Status
+    DataPedido
   }
 }
 
@@ -361,30 +361,30 @@ Table pedido_compra {
 // ITEM DO PEDIDO DE COMPRA
 // ======================================================
 
-Table pedido_compra_item {
-  pedido_compra_item_id bigint [pk, increment]
+Table PedidoCompraItem {
+  Id int [pk, increment]
 
-  pedido_compra_id bigint [not null]
-  produto_id bigint [not null]
-  unidade_medida_id bigint [not null]
-  cotacao_item_id bigint
+  PedidoCompraId int [not null]
+  ProdutoId int [not null]
+  UnidadeMedidaId int [not null]
+  CotacaoItemId int
 
-  quantidade_solicitada decimal(14,3) [not null]
-  quantidade_recebida decimal(14,3) [not null, default: 0]
+  QuantidadeSolicitada decimal(14,3) [not null]
+  QuantidadeRecebida decimal(14,3) [not null, default: 0]
 
-  valor_unitario decimal(16,4) [not null]
+  ValorUnitario decimal(16,4) [not null]
 
-  total decimal(16,4) [not null, default: 0]
+  Total decimal(16,4) [not null, default: 0]
 
-  observacao varchar(255)
+  Observacao varchar(255)
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    pedido_compra_id
-    produto_id
-    unidade_medida_id
+    PedidoCompraId
+    ProdutoId
+    UnidadeMedidaId
   }
 }
 
@@ -393,22 +393,22 @@ Table pedido_compra_item {
 // ESTOQUE
 // ======================================================
 
-Table estoque {
-  estoque_id bigint [pk, increment]
+Table Estoque {
+  Id int [pk, increment]
 
-  produto_id bigint [not null, unique]
+  ProdutoId int [not null, unique]
 
-  quantidade_disponivel decimal(14,3) [not null, default: 0]
-  valor_total decimal(16,4) [not null, default: 0]
+  QuantidadeDisponivel decimal(14,3) [not null, default: 0]
+  ValorTotal decimal(16,4) [not null, default: 0]
 
-  ultima_entrada timestamp
-  ultima_saida timestamp
+  UltimaEntrada timestamp
+  UltimaSaida timestamp
 
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    produto_id [unique]
-    quantidade_disponivel
+    ProdutoId [unique]
+    QuantidadeDisponivel
   }
 }
 
@@ -417,27 +417,27 @@ Table estoque {
 // SAÍDA DE ESTOQUE
 // ======================================================
 
-Table saida_estoque {
-  saida_estoque_id bigint [pk, increment]
+Table SaidaEstoque {
+  Id int [pk, increment]
 
-  usuario_id bigint [not null]
+  UsuarioId int [not null]
 
-  data_saida timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  DataSaida timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
-  tipo tipo_saida_estoque [not null]
-  status status_saida_estoque [not null, default: 'rascunho']
+  Tipo TipoSaidaEstoque [not null]
+  Status StatusSaidaEstoque [not null, default: 'rascunho']
 
-  motivo varchar(255)
-  observacao text
+  Motivo varchar(255)
+  Observacao text
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
-  atualizado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  AtualizadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    usuario_id
-    data_saida
-    tipo
-    status
+    UsuarioId
+    DataSaida
+    Tipo
+    Status
   }
 }
 
@@ -446,31 +446,31 @@ Table saida_estoque {
 // ITEM DA SAÍDA DE ESTOQUE
 // ======================================================
 
-Table saida_estoque_item {
-  saida_estoque_item_id bigint [pk, increment]
+Table SaidaEstoqueItem {
+  Id int [pk, increment]
 
-  saida_estoque_id bigint [not null]
-  produto_id bigint [not null]
-  unidade_medida_id bigint [not null]
+  SaidaEstoqueId int [not null]
+  ProdutoId int [not null]
+  UnidadeMedidaId int [not null]
 
-  quantidade decimal(14,3) [not null]
+  Quantidade decimal(14,3) [not null]
 
-  custo_unitario decimal(16,4) [not null, default: 0]
-  custo_total decimal(16,4) [not null, default: 0]
+  CustoUnitario decimal(16,4) [not null, default: 0]
+  CustoTotal decimal(16,4) [not null, default: 0]
 
-  lote varchar(100)
-  data_validade date
+  Lote varchar(100)
+  DataValidade date
 
-  observacao varchar(255)
+  Observacao varchar(255)
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    saida_estoque_id
-    produto_id
-    unidade_medida_id
-    lote
-    data_validade
+    SaidaEstoqueId
+    ProdutoId
+    UnidadeMedidaId
+    Lote
+    DataValidade
   }
 }
 
@@ -479,40 +479,40 @@ Table saida_estoque_item {
 // MOVIMENTAÇÃO DE ESTOQUE
 // ======================================================
 
-Table movimentacao_estoque {
-  movimentacao_estoque_id bigint [pk, increment]
+Table MovimentacaoEstoque {
+  Id int [pk, increment]
 
-  estoque_id bigint [not null]
-  usuario_id bigint [not null]
+  EstoqueId int [not null]
+  UsuarioId int [not null]
 
-  tipo tipo_movimentacao_estoque [not null]
-  origem origem_movimentacao [not null]
+  Tipo TipoMovimentacaoEstoque [not null]
+  Origem OrigemMovimentacao [not null]
 
-  quantidade decimal(14,3) [not null]
+  Quantidade decimal(14,3) [not null]
 
-  quantidade_anterior decimal(14,3) [not null]
-  quantidade_posterior decimal(14,3) [not null]
+  QuantidadeAnterior decimal(14,3) [not null]
+  QuantidadePosterior decimal(14,3) [not null]
 
-  custo_unitario decimal(16,4)
-  valor_total decimal(16,4)
+  CustoUnitario decimal(16,4)
+  ValorTotal decimal(16,4)
 
-  lote varchar(100)
-  data_validade date
+  Lote varchar(100)
+  DataValidade date
 
-  referencia_id bigint
-  referencia_tipo varchar(50)
+  ReferenciaId int
+  ReferenciaTipo varchar(50)
 
-  observacao varchar(255)
+  Observacao varchar(255)
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    estoque_id
-    usuario_id
-    tipo
-    origem
-    criado_em
-    (referencia_tipo, referencia_id)
+    EstoqueId
+    UsuarioId
+    Tipo
+    Origem
+    CriadoEm
+    (ReferenciaTipo, ReferenciaId)
   }
 }
 
@@ -528,32 +528,33 @@ Serve também como um registro de alterações em LOG
 OBS: Confirmar se será somente via banco ou via interface
 */
 
-Table auditoria {
-  auditoria_id bigint [pk, increment]
+Table Auditoria {
+  Id int [pk, increment]
 
-  usuario_id bigint
+  UsuarioId int
 
-  tabela varchar(100) [not null]
-  registro_id bigint
+  Tabela varchar(100) [not null]
+  RegistroId int
 
-  tipo tipo_auditoria [not null]
+  Tipo TipoAuditoria [not null]
 
-  dados_anteriores json
-  dados_novos json
+  DadosAnteriores json
+  DadosNovos json
 
-  ip varchar(45)
-  user_agent varchar(500)
+  Ip varchar(45)
+  UserAgent varchar(500)
 
-  criado_em timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  CriadoEm timestamp [not null, default: `CURRENT_TIMESTAMP`]
 
   indexes {
-    usuario_id
-    tabela
-    registro_id
-    tipo
-    criado_em
+    UsuarioId
+    Tabela
+    RegistroId
+    Tipo
+    CriadoEm
   }
 }
+
 
 // ======================================================
 // RELACIONAMENTOS
@@ -564,10 +565,10 @@ Table auditoria {
 // ======================================================
 
 // Categoria -> Produto
-Ref: categoria.categoria_id < produto.categoria_id
+Ref: GrupoProduto.Id < Produto.GrupoProdutoId
 
 // Unidade de medida -> Produto
-Ref: unidade_medida.unidade_medida_id < produto.unidade_medida_id
+Ref: UnidadeMedida.UnidadeMedidaId < Produto.UnidadeMedidaId
 
 
 // ======================================================
@@ -576,7 +577,7 @@ Ref: unidade_medida.unidade_medida_id < produto.unidade_medida_id
 
 // Produto -> Estoque
 // 1 produto possui 1 registro de estoque
-Ref: produto.produto_id - estoque.produto_id
+Ref: Produto.Id - Estoque.ProdutoId
 
 
 // ======================================================
@@ -584,19 +585,16 @@ Ref: produto.produto_id - estoque.produto_id
 // ======================================================
 
 // Usuário -> Cotação
-Ref: usuario.usuario_id < cotacao.usuario_id
+Ref: Usuario.Id < Cotacao.UsuarioId
 
 // Cotação -> Itens
-Ref: cotacao.cotacao_id < cotacao_item.cotacao_id
+Ref: Cotacao.Id < CotacaoItem.CotacaoId
 
 // Produto -> Itens da cotação
-Ref: produto.produto_id < cotacao_item.produto_id
+Ref: Produto.Id < CotacaoItem.ProdutoId
 
 // Unidade -> Itens da cotação
-Ref: unidade_medida.unidade_medida_id < cotacao_item.unidade_medida_id
-
-// Fornecedor -> Fornecedor escolhido do item
-Ref: cotacao_item_fornecedor.cotacao_item_fornecedor_id < cotacao_item.cotacao_item_fornecedor_escolhido_id
+Ref: UnidadeMedida.UnidadeMedidaId < CotacaoItem.UnidadeMedidaId
 
 
 // ======================================================
@@ -604,10 +602,10 @@ Ref: cotacao_item_fornecedor.cotacao_item_fornecedor_id < cotacao_item.cotacao_i
 // ======================================================
 
 // Item da cotação -> Ofertas dos fornecedores
-Ref: cotacao_item.cotacao_item_id < cotacao_item_fornecedor.cotacao_item_id
+Ref: CotacaoItem.Id < CotacaoItemFornecedor.CotacaoItemId
 
 // Fornecedor -> Ofertas dos fornecedores
-Ref: fornecedor.fornecedor_id < cotacao_item_fornecedor.fornecedor_id
+Ref: Fornecedor.Id < CotacaoItemFornecedor.FornecedorId
 
 
 // ======================================================
@@ -617,24 +615,25 @@ Ref: fornecedor.fornecedor_id < cotacao_item_fornecedor.fornecedor_id
 // Cotação -> Pedidos de compra
 // Uma cotação pode gerar vários pedidos,
 // normalmente um por fornecedor escolhido.
-Ref: cotacao.cotacao_id < pedido_compra.cotacao_id
+Ref: Cotacao.Id < PedidoCompra.CotacaoId
+
 // Fornecedor -> Pedido de compra
-Ref: fornecedor.fornecedor_id < pedido_compra.fornecedor_id
+Ref: Fornecedor.Id < PedidoCompra.FornecedorId
 
 // Usuário -> Pedido de compra
-Ref: usuario.usuario_id < pedido_compra.usuario_id
+Ref: Usuario.Id < PedidoCompra.UsuarioId
 
 // Pedido -> Itens
-Ref: pedido_compra.pedido_compra_id < pedido_compra_item.pedido_compra_id
+Ref: PedidoCompra.Id < PedidoCompraItem.PedidoCompraId
 
 // Cotação -> Item do pedido
-Ref: cotacao_item.cotacao_item_id < pedido_compra_item.cotacao_item_id
+Ref: CotacaoItem.Id < PedidoCompraItem.CotacaoItemId
 
 // Produto -> Item do pedido
-Ref: produto.produto_id < pedido_compra_item.produto_id
+Ref: Produto.Id < PedidoCompraItem.ProdutoId
 
 // Unidade -> Item do pedido
-Ref: unidade_medida.unidade_medida_id < pedido_compra_item.unidade_medida_id
+Ref: UnidadeMedida.UnidadeMedidaId < PedidoCompraItem.UnidadeMedidaId
 
 
 // ======================================================
@@ -642,16 +641,16 @@ Ref: unidade_medida.unidade_medida_id < pedido_compra_item.unidade_medida_id
 // ======================================================
 
 // Usuário -> Saída de estoque
-Ref: usuario.usuario_id < saida_estoque.usuario_id
+Ref: Usuario.Id < SaidaEstoque.UsuarioId
 
 // Saída -> Itens
-Ref: saida_estoque.saida_estoque_id < saida_estoque_item.saida_estoque_id
+Ref: SaidaEstoque.Id < SaidaEstoqueItem.SaidaEstoqueId
 
 // Produto -> Itens da saída
-Ref: produto.produto_id < saida_estoque_item.produto_id
+Ref: Produto.Id < SaidaEstoqueItem.ProdutoId
 
 // Unidade -> Itens da saída
-Ref: unidade_medida.unidade_medida_id < saida_estoque_item.unidade_medida_id
+Ref: UnidadeMedida.UnidadeMedidaId < SaidaEstoqueItem.UnidadeMedidaId
 
 
 // ======================================================
@@ -659,10 +658,10 @@ Ref: unidade_medida.unidade_medida_id < saida_estoque_item.unidade_medida_id
 // ======================================================
 
 // Estoque -> Movimentações
-Ref: estoque.estoque_id < movimentacao_estoque.estoque_id
+Ref: Estoque.Id < MovimentacaoEstoque.EstoqueId
 
 // Usuário -> Movimentações
-Ref: usuario.usuario_id < movimentacao_estoque.usuario_id
+Ref: Usuario.Id < MovimentacaoEstoque.UsuarioId
 
 
 // ======================================================
@@ -670,5 +669,4 @@ Ref: usuario.usuario_id < movimentacao_estoque.usuario_id
 // ======================================================
 
 // Usuário -> Auditoria
-Ref: usuario.usuario_id < auditoria.usuario_id
-
+Ref: Usuario.Id < Auditoria.UsuarioId

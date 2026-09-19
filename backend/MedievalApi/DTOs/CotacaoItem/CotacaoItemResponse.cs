@@ -10,7 +10,6 @@ public record CotacaoItemResponse(
     int UnidadeMedidaId,
     string UnidadeMedidaSigla,
     decimal Quantidade,
-    int? CotacaoItemFornecedorEscolhidoId,
     StatusCotacaoItem Status,
     string? Observacao,
     DateTime CriadoEm,

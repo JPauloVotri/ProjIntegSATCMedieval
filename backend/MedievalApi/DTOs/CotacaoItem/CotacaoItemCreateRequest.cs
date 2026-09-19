@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MedievalApi.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedievalApi.DTOs.CotacaoItem;
 
@@ -15,7 +16,8 @@ public record CotacaoItemCreateRequest(
     [Range(0.01, double.MaxValue, ErrorMessage = "Quantidade deve ser maior que zero.")]
     decimal Quantidade,
 
-    int? CotacaoItemFornecedorEscolhidoId,
+    [Required(ErrorMessage = "Status é obrigatório.")]
+    StatusCotacaoItem Status,
 
     [MaxLength(255, ErrorMessage = "Observação deve ter no máximo 255 caracteres.")]
     string? Observacao

@@ -172,10 +172,6 @@ namespace MedievalApi.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("cotacao_id");
 
-                    b.Property<int?>("CotacaoItemFornecedorEscolhidoId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("cotacao_item_fornecedor_escolhido_id");
-
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamptz")
@@ -212,9 +208,6 @@ namespace MedievalApi.Migrations
 
                     b.HasIndex("CotacaoId")
                         .HasDatabaseName("ix_cotacao_item_cotacao_id");
-
-                    b.HasIndex("CotacaoItemFornecedorEscolhidoId")
-                        .HasDatabaseName("ix_cotacao_item_fornecedor_escolhido_id");
 
                     b.HasIndex("ProdutoId")
                         .HasDatabaseName("ix_cotacao_item_produto_id");
@@ -1195,12 +1188,6 @@ namespace MedievalApi.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_cotacao_item_cotacao");
 
-                    b.HasOne("MedievalApi.Models.CotacaoItemFornecedor", "CotacaoItemFornecedorEscolhido")
-                        .WithMany()
-                        .HasForeignKey("CotacaoItemFornecedorEscolhidoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("fk_cotacao_item_fornecedor_escolhido");
-
                     b.HasOne("MedievalApi.Models.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
@@ -1216,8 +1203,6 @@ namespace MedievalApi.Migrations
                         .HasConstraintName("fk_cotacao_item_unidade_medida");
 
                     b.Navigation("Cotacao");
-
-                    b.Navigation("CotacaoItemFornecedorEscolhido");
 
                     b.Navigation("Produto");
 
