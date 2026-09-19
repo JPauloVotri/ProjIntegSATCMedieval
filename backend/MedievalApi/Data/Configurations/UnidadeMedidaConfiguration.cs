@@ -1,6 +1,6 @@
+using MedievalApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MedievalApi.Models;
 
 namespace MedievalApi.Data.Configurations;
 
@@ -13,8 +13,7 @@ public class UnidadeMedidaConfiguration : IEntityTypeConfiguration<UnidadeMedida
         builder.HasKey(u => u.Id);
         builder.Property(u => u.Id)
             .HasColumnName("id")
-            .HasColumnType("uuid")
-            .ValueGeneratedNever();
+            .UseIdentityAlwaysColumn();
 
         builder.Property(u => u.Nome)
             .HasColumnName("nome")
@@ -38,11 +37,13 @@ public class UnidadeMedidaConfiguration : IEntityTypeConfiguration<UnidadeMedida
 
         builder.Property(u => u.CriadoEm)
             .HasColumnName("criado_em")
+            .HasColumnType("timestamptz")
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
 
         builder.Property(u => u.AtualizadoEm)
             .HasColumnName("atualizado_em")
+            .HasColumnType("timestamptz")
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
 

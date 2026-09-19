@@ -9,8 +9,8 @@ public class Auditoria
     public int? RegistroId { get; set; }
     public string Tabela { get; set; } = string.Empty;
     public TipoAuditoria Tipo { get; set; }
-    public string DadosAnteriores { get; set; } = string.Empty;
-    public string DadosNovos { get; set; } = string.Empty;
+    public string? DadosAnteriores { get; set; }
+    public string? DadosNovos { get; set; }
     public string? Ip { get; set; }
     public string? UserAgent { get; set; }
     public DateTime CriadoEm { get; set; } = DateTime.UtcNow;

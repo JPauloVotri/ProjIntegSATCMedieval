@@ -4,13 +4,13 @@ using MedievalApi.Models.Enums;
 namespace MedievalApi.DTOs.CotacaoItem;
 
 public record CotacaoItemUpdateRequest(
-    [Required(ErrorMessage = "Cotação é obrigatória.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Cotação é obrigatória.")]
     int CotacaoId,
 
-    [Required(ErrorMessage = "Produto é obrigatório.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Produto é obrigatório.")]
     int ProdutoId,
 
-    [Required(ErrorMessage = "Unidade de medida é obrigatória.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Unidade de medida é obrigatória.")]
     int UnidadeMedidaId,
 
     [Range(0.01, double.MaxValue, ErrorMessage = "Quantidade deve ser maior que zero.")]
@@ -18,9 +18,9 @@ public record CotacaoItemUpdateRequest(
 
     int? CotacaoItemFornecedorEscolhidoId,
 
-    [Required(ErrorMessage = "Status do item da cotação é obrigatório.")]
+    [EnumDataType(typeof(StatusCotacaoItem), ErrorMessage = "Status inválido.")]
     StatusCotacaoItem Status,
 
-    [MaxLength(500, ErrorMessage = "Observação deve ter no máximo 500 caracteres.")]
+    [MaxLength(255, ErrorMessage = "Observação deve ter no máximo 255 caracteres.")]
     string? Observacao
 );

@@ -10,17 +10,17 @@ public record FornecedorUpdateRequest(
     [MaxLength(200, ErrorMessage = "Nome fantasia deve ter no máximo 200 caracteres.")]
     string? NomeFantasia,
 
-    [MaxLength(20, ErrorMessage = "Documento deve ter no máximo 20 caracteres.")]
+    [MaxLength(30, ErrorMessage = "Documento deve ter no máximo 30 caracteres.")]
     string? Documento,
 
-    [MaxLength(20, ErrorMessage = "Inscrição estadual deve ter no máximo 20 caracteres.")]
+    [MaxLength(30, ErrorMessage = "Inscrição estadual deve ter no máximo 30 caracteres.")]
     string? InscricaoEstadual,
 
     [EmailAddress(ErrorMessage = "E-mail inválido.")]
     [MaxLength(150, ErrorMessage = "E-mail deve ter no máximo 150 caracteres.")]
     string? Email,
 
-    [MaxLength(20, ErrorMessage = "Telefone deve ter no máximo 20 caracteres.")]
+    [MaxLength(30, ErrorMessage = "Telefone deve ter no máximo 30 caracteres.")]
     string? Telefone,
 
     [MaxLength(150, ErrorMessage = "Nome do contato deve ter no máximo 150 caracteres.")]
@@ -47,12 +47,11 @@ public record FornecedorUpdateRequest(
     [MaxLength(2, ErrorMessage = "Estado deve ter 2 caracteres.")]
     string? Estado,
 
-    [MaxLength(100, ErrorMessage = "Dias de entrega deve ter no máximo 100 caracteres.")]
+    [MaxLength(50, ErrorMessage = "Dias de entrega deve ter no máximo 50 caracteres.")]
     string? DiasEntrega,
 
-    [MaxLength(100, ErrorMessage = "Condição de pagamento deve ter no máximo 100 caracteres.")]
+    [MaxLength(150, ErrorMessage = "Condição de pagamento deve ter no máximo 150 caracteres.")]
     string? CondicaoPagamento,
 
-    [Required(ErrorMessage = "Situação ativo/inativo é obrigatória.")]
     bool Ativo
 );

@@ -1,6 +1,6 @@
+using MedievalApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MedievalApi.Models;
 
 namespace MedievalApi.Data.Configurations;
 
@@ -13,29 +13,15 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
             .HasColumnName("id")
-            .HasColumnType("uuid")
-            .ValueGeneratedNever();
+            .UseIdentityAlwaysColumn();
 
-        builder.Property(p => p.CategoriaId)
-            .HasColumnName("categoria_id")
-            .HasColumnType("uuid");
-
-        builder.HasOne(p => p.Categoria)
-            .WithMany(c => c.Produtos)
-            .HasForeignKey(p => p.CategoriaId)
-            .OnDelete(DeleteBehavior.Restrict)
-            .HasConstraintName("fk_produto_categoria");
+        builder.Property(p => p.GrupoProdutoId)
+            .HasColumnName("grupo_produto_id")
+            .IsRequired();
 
         builder.Property(p => p.UnidadeMedidaId)
             .HasColumnName("unidade_medida_id")
-            .HasColumnType("uuid")
             .IsRequired();
-
-        builder.HasOne(p => p.UnidadeMedida)
-            .WithMany(u => u.Produtos)
-            .HasForeignKey(p => p.UnidadeMedidaId)
-            .OnDelete(DeleteBehavior.Restrict)
-            .HasConstraintName("fk_produto_unidade_medida");
 
         builder.Property(p => p.Codigo)
             .HasColumnName("codigo")
@@ -82,13 +68,33 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
 
         builder.Property(p => p.CriadoEm)
             .HasColumnName("criado_em")
+            .HasColumnType("timestamptz")
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
 
         builder.Property(p => p.AtualizadoEm)
             .HasColumnName("atualizado_em")
+            .HasColumnType("timestamptz")
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
+
+        builder.HasOne(p => p.GrupoProduto)
+            .WithMany(g => g.Produtos)
+            .HasForeignKey(p => p.GrupoProdutoId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .HasConstraintName("fk_produto_grupo_produto");
+
+        builder.HasOne(p => p.UnidadeMedida)
+            .WithMany(u => u.Produtos)
+            .HasForeignKey(p => p.UnidadeMedidaId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .HasConstraintName("fk_produto_unidade_medida");
+
+        builder.HasOne(p => p.Estoque)
+            .WithOne(e => e.Produto)
+            .HasForeignKey<Estoque>(e => e.ProdutoId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("fk_estoque_produto");
 
         // Índices
         builder.HasIndex(p => p.Codigo)
@@ -99,8 +105,8 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
         builder.HasIndex(p => p.Nome)
             .HasDatabaseName("ix_produto_nome");
 
-        builder.HasIndex(p => p.CategoriaId)
-            .HasDatabaseName("ix_produto_categoria_id");
+        builder.HasIndex(p => p.GrupoProdutoId)
+            .HasDatabaseName("ix_produto_grupo_produto_id");
 
         builder.HasIndex(p => p.UnidadeMedidaId)
             .HasDatabaseName("ix_produto_unidade_medida_id");
@@ -108,7 +114,7 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
         builder.HasIndex(p => p.Ativo)
             .HasDatabaseName("ix_produto_ativo");
 
-        builder.HasIndex(p => new { p.CategoriaId, p.Ativo })
-            .HasDatabaseName("ix_produto_categoria_ativo");
+        builder.HasIndex(p => new { p.GrupoProdutoId, p.Ativo })
+            .HasDatabaseName("ix_produto_grupo_produto_ativo");
     }
 }

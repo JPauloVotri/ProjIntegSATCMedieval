@@ -5,6 +5,7 @@ namespace MedievalApi.DTOs.Cotacao;
 public record CotacaoResponse(
     int Id,
     int UsuarioId,
+    string UsuarioNome,
     DateTime DataSolicitacao,
     DateTime? DataLimiteResposta,
     StatusCotacao Status,

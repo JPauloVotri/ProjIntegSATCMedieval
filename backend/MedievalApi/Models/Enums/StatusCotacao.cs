@@ -1,11 +1,10 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum StatusCotacao
 {
-    public enum StatusCotacao
-    {
-        Rascunho,
-        Enviada,
-        EmResposta,
-        Encerrada,
-        Cancelada
-    }
+    Rascunho,
+    Enviada,
+    EmResposta,
+    Encerrada,
+    Cancelada
 }

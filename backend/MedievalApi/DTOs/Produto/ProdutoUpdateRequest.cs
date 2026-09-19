@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 namespace MedievalApi.DTOs.Produto;
 
 public record ProdutoUpdateRequest(
-    [Required(ErrorMessage = "Categoria é obrigatória.")]
-    int CategoriaId,
+    [Range(1, int.MaxValue, ErrorMessage = "Grupo de produto é obrigatório.")]
+    int GrupoProdutoId,
 
-    [Required(ErrorMessage = "Unidade de medida é obrigatória.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Unidade de medida é obrigatória.")]
     int UnidadeMedidaId,
 
     [Required(ErrorMessage = "Nome é obrigatório.")]
@@ -28,6 +28,5 @@ public record ProdutoUpdateRequest(
     [Range(1, int.MaxValue, ErrorMessage = "Validade em dias deve ser maior que zero.")]
     int? ValidadeDias,
 
-    [Required(ErrorMessage = "Situação ativo/inativo é obrigatória.")]
     bool Ativo
 );

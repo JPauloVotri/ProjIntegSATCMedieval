@@ -1,12 +1,11 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum TipoSaidaEstoque
 {
-    public enum TipoSaidaEstoque
-    {
-        Consumo,
-        Perda,
-        Vencimento,
-        Devolucao,
-        Ajuste,
-        Outro
-    }
+    Consumo,
+    Perda,
+    Vencimento,
+    Devolucao,
+    Ajuste,
+    Outro
 }

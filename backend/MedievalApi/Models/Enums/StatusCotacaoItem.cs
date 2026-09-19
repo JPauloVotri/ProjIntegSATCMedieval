@@ -1,9 +1,8 @@
-﻿namespace MedievalApi.Models.Enums
+﻿namespace MedievalApi.Models.Enums;
+
+public enum StatusCotacaoItem
 {
-    public enum StatusCotacaoItem
-    {
-        Pendente,
-        Selecionado,
-        Cancelado
-    }
+    Pendente,
+    Selecionado,
+    Cancelado
 }
