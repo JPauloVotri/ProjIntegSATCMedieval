@@ -4,7 +4,7 @@ namespace MedievalApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FornecedorController
+public class FornecedoresController
 {
 
 
