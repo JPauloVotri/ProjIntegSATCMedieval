@@ -1,0 +1,124 @@
+.app-layout {
+  position: relative;
+  min-height: 100vh;
+  background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+.app-header {
+  height: 65px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 4px solid #000;
+  background: #fff;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  color: #000;
+}
+
+.menu-button {
+  position: absolute;
+  right: 25px;
+  top: -90px;
+  width: 52px;
+  height: 40px;
+  padding: 3px 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.menu-button span {
+  display: block;
+  height: 6px;
+  width: 100%;
+  background: #000;
+}
+
+.page-content {
+  padding: 20px;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgb(0 0 0 / 45%);
+}
+
+
+.sidebar-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  background: rgb(0 0 0 / 45%);
+}
+
+.sidebar {
+  width: 280px;
+  max-width: 85%;
+  height: 100%;
+  padding: 20px;
+  background: #fff;
+  box-shadow: -4px 0 12px rgb(0 0 0 / 15%);
+  animation: slide-in-right 0.2s ease-out;
+}
+
+.sidebar-header {
+  align-items: right;
+  align-self: right;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #000;
+}
+
+.sidebar-close {
+  border: none;
+  background: transparent;
+  font-size: 34px;
+  cursor: pointer;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.sidebar-link {
+  padding: 13px 12px;
+  border-radius: 5px;
+  color: #111;
+  text-decoration: none;
+  font-size: 17px;
+  transition: background 0.2s;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  background: #ffca05;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

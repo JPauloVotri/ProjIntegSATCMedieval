@@ -1,0 +1,12 @@
+.welcome-text {
+    color:black;
+    font-size: 44px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.name-text {
+    color: #FAC800;
+    font-size: 44px;
+    font-weight: italic;
+}
