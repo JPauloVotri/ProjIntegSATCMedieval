@@ -24,6 +24,12 @@ public record MovimentacaoEstoqueCreateRequest(
     [Range(0.0001, double.MaxValue, ErrorMessage = "Quantidade deve ser maior que zero.")]
     decimal Quantidade,
 
+    [Range(0, double.MaxValue, ErrorMessage = "Quantidade anterior não pode ser negativa.")]
+    decimal QuantidadeAnterior,
+
+    [Range(0, double.MaxValue, ErrorMessage = "Quantidade posterior não pode ser negativa.")]
+    decimal QuantidadePosterior,
+
     [Range(0, double.MaxValue, ErrorMessage = "Custo unitário não pode ser negativo.")]
     decimal? CustoUnitario,
 

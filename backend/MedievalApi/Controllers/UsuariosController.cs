@@ -18,7 +18,7 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
         return Ok(usuarios);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<UsuarioResponse>> GetById(int id)
@@ -39,7 +39,7 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = usuario.Id }, usuario);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -52,7 +52,7 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
         return Ok(usuario);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)

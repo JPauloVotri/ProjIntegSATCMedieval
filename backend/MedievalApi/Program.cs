@@ -16,6 +16,9 @@ public partial class Program
 
         builder.Services.AddScoped<IUsuarioService, UsuarioService>();
         builder.Services.AddScoped<IProdutoService, ProdutoService>();
+        builder.Services.AddScoped<ICotacaoService, CotacaoService>();
+        builder.Services.AddScoped<ICotacaoItemService, CotacaoItemService>();
+        builder.Services.AddScoped<ICotacaoItemFornecedorService, CotacaoItemFornecedorService>();
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

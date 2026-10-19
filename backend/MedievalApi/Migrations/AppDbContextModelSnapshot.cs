@@ -263,6 +263,9 @@ namespace MedievalApi.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("prazo_entrega_dias");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("ValorUnitario")
                         .HasPrecision(16, 4)
                         .HasColumnType("TEXT")
@@ -459,7 +462,8 @@ namespace MedievalApi.Migrations
             modelBuilder.Entity("MedievalApi.Models.GrupoProduto", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("uuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
 
@@ -830,7 +834,7 @@ namespace MedievalApi.Migrations
                         .HasColumnName("estoque_minimo");
 
                     b.Property<int>("GrupoProdutoId")
-                        .HasColumnType("uuid")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("grupo_produto_id");
 
                     b.Property<string>("Nome")

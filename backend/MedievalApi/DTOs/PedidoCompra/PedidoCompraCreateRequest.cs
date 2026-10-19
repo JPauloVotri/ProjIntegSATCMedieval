@@ -17,8 +17,13 @@ public record PedidoCompraCreateRequest(
 
     DateTime? DataPrevistaEntrega,
 
+    DateTime? DataRecebimento,
+
     [EnumDataType(typeof(StatusPedidoCompra), ErrorMessage = "Status inválido.")]
     StatusPedidoCompra Status,
+
+    [Range(0, double.MaxValue, ErrorMessage = "Total não pode ser negativo.")]
+    decimal Total,
 
     [MaxLength(500, ErrorMessage = "Observação deve ter no máximo 500 caracteres.")]
     string? Observacao
