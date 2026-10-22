@@ -1,0 +1,54 @@
+.estoque-moviment-header {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: flex;
+}
+
+.estoque-moviment-grupo {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.estoque-moviment-nome {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 350px;
+    text-align: center;
+}
+
+.estoque-moviment-quantidade {
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.estoque-moviment-list {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: flex;
+}
+
+.estoque-moviment-list-empty {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: none;
+    justify-content: center;
+}
+
+.estoque-moviment-linhaFinal {
+    border: 2px solid black;
+    border-width: 2px 0px 0px 0px;
+    padding: 10px;
+    display: flex;
+}
+
+.estoque-moviment-negativo {
+    background-color: red;
+}

@@ -1,0 +1,69 @@
+.cotacao-header {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: flex;
+}
+
+.cotacao-list {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: flex;
+}
+
+.cotacao-linhaFinal {
+    border: 2px solid black;
+    border-width: 2px 0px 0px 0px;
+    padding: 10px;
+    display: flex;
+}
+
+.cotacao-grupo {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.cotacao-nome {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 200px;
+    text-align: center;
+}
+
+.cotacao-marca {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.cotacao-preco {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.cotacao-observacao {
+    margin: 8px;
+    width: 50px;
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    margin-bottom: -12px;
+}
+
+.cotacao-list-empty {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: none;
+    justify-content: center;
+}

@@ -1,8 +1,11 @@
-function App() {
+import CotacaoList from '../components/cotacaoList';
+import Pesquisa from "../components/pesquisa"
 
+function App() {
     return (
-        <main className="login-page">
-            oi
+        <main>
+            <Pesquisa />
+            <CotacaoList />
         </main>
     )
 }
