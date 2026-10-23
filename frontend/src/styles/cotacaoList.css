@@ -67,3 +67,11 @@
     display: none;
     justify-content: center;
 }
+
+.cotacao-botao {
+    cursor: pointer;
+}
+
+.cotacao-botao:hover {
+    color: black;
+}

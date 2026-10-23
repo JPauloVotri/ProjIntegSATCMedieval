@@ -1,0 +1,76 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-caixa {
+    background: #fff;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: modal-entrada 0.2s ease-out;
+}
+
+
+.modal-close {
+    border: none;
+    background: transparent;
+    color: #6b6678;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    height: 20px;
+    width: 30px;
+}
+
+.modal-close:hover {
+    color: #d32f2f;
+}
+
+.modal-conteudo {
+    padding: 20px 22px;
+    color: #5c5668;
+    font-size: 15px;
+}
+
+.modal-conteudo p {
+    margin: 0 0 14px;
+    line-height: 1.5;
+}
+
+.modal-conteudo strong {
+    color: #484252;
+}
+
+.modal-observacao {
+    background: #f7f7fa;
+    border: 1px solid #e7e5ed;
+    border-radius: 6px;
+    padding: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    min-height: 40px;
+}
+
+@keyframes modal-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
