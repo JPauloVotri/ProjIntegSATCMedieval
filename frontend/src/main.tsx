@@ -16,6 +16,7 @@ import Cotacao from "./pages/cotacao";
 import Administrador from "./pages/administracao";
 import Estoque from "./pages/estoque";
 import Movimento from "./pages/movimentacao";
+import Usuario from "./pages/usuario";
 
 import Layout from "./components/layout";
 
@@ -37,6 +38,7 @@ ReactDOM.createRoot(
           <Route path="/estoque" element={<Estoque />} />
           <Route path="/movimentacao" element={<Movimento />} />
           <Route path="/cotacao" element={<Cotacao />} />
+          <Route path="/Usuario/:id" element={<Usuario />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/home" replace />} />

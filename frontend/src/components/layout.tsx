@@ -18,7 +18,9 @@ export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  const title = pageTitles[location.pathname] ?? "Home";
+  const title = location.pathname.startsWith("/usuario/")
+    ? "Detalhes do Usuário" 
+    : pageTitles[location.pathname] ?? "Home";
 
   return (
     <div className="app-layout">
