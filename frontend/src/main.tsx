@@ -20,6 +20,9 @@ import Usuario from "./pages/usuario";
 
 import Layout from "./components/layout";
 
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
+
 import "./styles/index.css";
 
 ReactDOM.createRoot(
@@ -28,17 +31,21 @@ ReactDOM.createRoot(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+        </Route>
 
-        <Route element={<Layout />}>
-          <Route path="/app" element={<AppPage />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/administracao" element={<Administrador />} />
-          <Route path="/estoque" element={<Estoque />} />
-          <Route path="/movimentacao" element={<Movimento />} />
-          <Route path="/cotacao" element={<Cotacao />} />
-          <Route path="/Usuario/:id" element={<Usuario />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/app" element={<AppPage />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/administracao" element={<Administrador />} />
+            <Route path="/estoque" element={<Estoque />} />
+            <Route path="/movimentacao" element={<Movimento />} />
+            <Route path="/cotacao" element={<Cotacao />} />
+            <Route path="/Usuario/:id" element={<Usuario />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/home" replace />} />

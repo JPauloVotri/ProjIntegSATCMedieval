@@ -1,6 +1,15 @@
+import { useNavigate } from "react-router-dom";
+import { fazerLogout } from "../auth";
+
 import "../styles/home.css";
 
 function App() {
+    const navigate = useNavigate();
+
+    function sair() {
+        fazerLogout();
+        navigate("/login", { replace: true });
+    }
 
     return (
         <main>
@@ -21,6 +30,9 @@ function App() {
                     </button>
                     <button onClick={() => window.location.href = "/movimentacao"}>
                         Movimentação
+                    </button>
+                    <button onClick={sair}>
+                        Sair da conta
                     </button>
                 </section>
             </section>
