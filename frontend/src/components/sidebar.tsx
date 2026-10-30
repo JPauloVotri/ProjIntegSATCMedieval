@@ -34,14 +34,6 @@ export default function Sidebar({
             alt="Logo"
             className="logo-sidebar"
           />
-
-{/*          <button
-            className="sidebar-close"
-            onClick={onClose}
-            aria-label="Fechar menu"
-          >
-            ×
-          </button> */}
         </div>
 
         <nav>

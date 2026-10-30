@@ -35,8 +35,23 @@ public partial class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApi();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("ReactPolicy", policy =>
+            {
+                policy
+                    .WithOrigins(
+                        "http://localhost:5173",
+                        "http://127.0.0.1:5173"
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
         WebApplication app = builder.Build();
 
+        app.UseCors("ReactPolicy");
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         // Configure the HTTP request pipeline.

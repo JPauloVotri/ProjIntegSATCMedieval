@@ -1,7 +1,34 @@
 import { Link, useParams } from "react-router-dom";
-import { usuarios } from "../data/usuarios";
+import { apiFetch } from "../../services/api";
+import { useEffect, useState } from "react";
+
+interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  grupoUsuario: string;
+  status: string;
+  ultimoLogin: string | null;
+}
 
 export default function UsuarioDetalhes() {
+    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+    const [erro, setErro] = useState("");
+  
+    useEffect(() => {
+        async function carregarUsuarios() {
+            try {
+                const dados = await apiFetch<Usuario[]>("/api/Usuarios");
+                setUsuarios(dados);
+            } catch (error) {
+                setErro("Não foi possível carregar os usuários.");
+                console.error(error);
+            }
+          }
+  
+    carregarUsuarios();
+  }, []);
+
   const { id } = useParams<{ id: string }>();
 
   const usuario = usuarios.find(
@@ -29,7 +56,15 @@ export default function UsuarioDetalhes() {
       <p>
         <strong>E-mail:</strong> {usuario.email}
       </p>
-      altero aqui dps
+      <p>
+        <strong>Grupo do Usuário:</strong> {usuario.grupoUsuario}
+      </p>
+      <p>
+        <strong>Status:</strong> {usuario.status}
+      </p>
+      <p>
+        <strong>Último Login:</strong> {usuario.ultimoLogin}
+      </p>
     </div>
   );
 }

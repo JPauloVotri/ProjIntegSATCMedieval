@@ -75,14 +75,17 @@
   background: #fff;
   box-shadow: -4px 0 12px rgb(0 0 0 / 15%);
   animation: slide-in-right 0.2s ease-out;
+  background-image: linear-gradient(to bottom, #363634, black);
 }
 
 .sidebar-header {
-  align-items: right;
-  align-self: right;
+  width: 280px;
+  height: 140px;
+  margin-top: -20px;
+  margin-left: -20px;
   justify-content: space-between;
   padding-bottom: 15px;
-  border-bottom: 2px solid #000;
+  background-color: #1F200B;
 }
 
 .sidebar-close {
@@ -106,6 +109,10 @@
   text-decoration: none;
   font-size: 17px;
   transition: background 0.2s;
+  color: #E5E7EB;
+  font-family: 'Inter';
+  font-weight: bold;
+  border: 2px solid;
 }
 
 .sidebar-link:hover,

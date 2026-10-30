@@ -62,4 +62,27 @@ public class UsuariosController(IUsuarioService service) : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<UsuarioResponse>> Login([FromBody] UsuarioLoginRequest request)
+    {
+        var usuario = await service.LoginAsync(
+            request.Email,
+            request.Senha
+        );
+
+        if (usuario is null)
+        {
+            return Unauthorized(new
+            {
+                message = "E-mail ou senha incorretos."
+            });
+        }
+
+        return Ok(usuario);
+    }
+
 }

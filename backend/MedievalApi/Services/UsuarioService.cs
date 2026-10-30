@@ -101,4 +101,30 @@ public class UsuarioService(AppDbContext appDbContext) : IUsuarioService
             || inner.Contains("duplicate key", StringComparison.OrdinalIgnoreCase)
             || inner.Contains("23505", StringComparison.OrdinalIgnoreCase);
     }
+
+    
+public async Task<UsuarioResponse?> LoginAsync(string email, string senha)
+{
+    var emailNormalizado = Usuario.NormalizeEmail(email);
+
+    var usuario = await context.Usuarios
+        .FirstOrDefaultAsync(u => u.Email == emailNormalizado);
+
+    if (usuario is null)
+        return null;
+
+    if (usuario.Status != Models.Enums.StatusUsuario.Ativo)
+        return null;
+
+    if (!BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash))
+        return null;
+
+    usuario.UltimoLogin = DateTime.UtcNow;
+    usuario.AtualizadoEm = DateTime.UtcNow;
+
+    await context.SaveChangesAsync();
+
+    return ToResponse(usuario);
+}
+
 }

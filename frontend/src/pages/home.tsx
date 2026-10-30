@@ -5,6 +5,8 @@ import "../styles/home.css";
 
 function App() {
     const navigate = useNavigate();
+    let nomeUsuario = localStorage.getItem("usuario_nome") ?? "Usuário";
+    nomeUsuario = nomeUsuario.replaceAll('"','');
 
     function sair() {
         fazerLogout();
@@ -14,7 +16,7 @@ function App() {
     return (
         <main>
             <section className="principal-section">
-                <p className="welcome-text">Bem-Vindo de volta <a className="name-text">Jucemar</a>!</p>
+                <p className="welcome-text">Bem-Vindo de volta <a className="name-text" id="nomeUsuario">{nomeUsuario}</a>!</p>
                 <section className="button-section">
                     <button onClick={() => window.location.href = "/administracao"}>
                         Administração

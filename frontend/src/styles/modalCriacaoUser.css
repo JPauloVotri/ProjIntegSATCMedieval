@@ -1,0 +1,17 @@
+.mensagens-erro {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: 1px solid #f1b5b5;
+  border-radius: 8px;
+  background-color: #fff0f0;
+  color: #b42318;
+}
+
+.mensagens-erro p {
+  margin: 4px 0;
+}
+
+.mensagem-sucesso {
+  margin-top: 12px;
+  color: #16803c;
+}

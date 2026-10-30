@@ -1,3 +1,4 @@
+
 using MedievalApi.DTOs.Usuario;
 
 namespace MedievalApi.Services.Interfaces;
@@ -9,4 +10,6 @@ public interface IUsuarioService
     Task<UsuarioResponse> CreateAsync(UsuarioCreateRequest request);
     Task<UsuarioResponse?> UpdateAsync(int id, UsuarioUpdateRequest request);
     Task<bool> DeleteAsync(int id);
+
+    Task<UsuarioResponse?> LoginAsync(string email, string senha);
 }
