@@ -1,7 +1,7 @@
 import { FaUser } from "react-icons/fa";
 import "../styles/userCard.css";
 import "../styles/modalObs.css"
-import "../styles/modalCriacaoUser.css"
+import "../styles/modalCriacaoMensagem.css"
 
 import { apiFetch } from "../../services/api";
 import { useState, type FormEvent } from "react";
