@@ -52,8 +52,13 @@ export default function ModalCadastro({
     }
   }
 
+  function fecharModal() {
+    setErros([]);
+    setSucesso("");
+  }
+
   return (
-    <div className="modal-overlay" onClick={onFechar}>
+    <div className="modal-overlay" onClick={() => { fecharModal(); onFechar();}}>
       <div
         className="modal-cadastro"
         onClick={(e) => e.stopPropagation()}

@@ -41,22 +41,32 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    
     private void UpdateTimestamps()
     {
-        DateTime now = DateTime.UtcNow;
+    DateTime now = DateTime.UtcNow;
 
         foreach (var entry in ChangeTracker.Entries())
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property("CriadoEm").CurrentValue = now;
-                entry.Property("AtualizadoEm").CurrentValue = now;
+                var criadoEm = entry.Metadata.FindProperty("CriadoEm");
+                var atualizadoEm = entry.Metadata.FindProperty("AtualizadoEm");
+
+                if (criadoEm != null)
+                    entry.Property("CriadoEm").CurrentValue = now;
+
+                if (atualizadoEm != null)
+                    entry.Property("AtualizadoEm").CurrentValue = now;
             }
             else if (entry.State == EntityState.Modified)
             {
-                PropertyInfo? prop = entry.Entity.GetType().GetProperty("AtualizadoEm");
-                prop?.SetValue(entry.Entity, now);
+                var atualizadoEm = entry.Metadata.FindProperty("AtualizadoEm");
+
+                if (atualizadoEm != null)
+                    entry.Property("AtualizadoEm").CurrentValue = now;
             }
         }
     }
+
 }
