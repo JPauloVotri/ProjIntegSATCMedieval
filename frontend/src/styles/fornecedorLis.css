@@ -1,0 +1,68 @@
+.fornecedor-header {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: flex;
+}
+
+.fornecedor-grupo {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.fornecedor-razao {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 350px;
+    text-align: center;
+}
+
+.fornecedor-observacao {
+    border: 2px solid black;
+    border-width: 0px 2px 0px 0px;
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+.fornecedor-whatsapp {
+    margin: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.fornecedor-list {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    display: flex;
+}
+
+.fornecedor-list-empty {
+    border: 2px solid black;
+    border-width: 2px 2px 0px 2px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.fornecedor-linhaFinal {
+    border: 2px solid black;
+    border-width: 2px 0px 0px 0px;
+    padding: 10px;
+    display: flex;
+}
+
+.fornecedor-negativo {
+    background-color: red;
+}
+
+.fornecedor-botao {
+    cursor: pointer;
+}
+
+.fornecedor-botao:hover {
+    color: black;
+}

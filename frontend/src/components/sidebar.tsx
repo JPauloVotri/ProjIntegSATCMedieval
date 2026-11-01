@@ -14,6 +14,7 @@ const pages = [
   { name: "Cotação", path: "/cotacao" },
   { name: "Estoque", path: "/estoque" },
   { name: "Movimentação", path: "/movimentacao" },
+  { name: "Fornecedores", path: "/fornecedores" },
 ];
 
 export default function Sidebar({
