@@ -39,6 +39,7 @@ export async function fazerLogin(
     localStorage.setItem(CHAVE_SESSAO, "true");
     localStorage.setItem("medieval_usuario", JSON.stringify(usuario));
     localStorage.setItem("usuario_nome", JSON.stringify(usuario.nome));
+    localStorage.setItem("usuario_id", JSON.stringify(usuario.id));
 
     return true;
   } catch (erro) {
@@ -51,4 +52,5 @@ export function fazerLogout(): void {
   localStorage.removeItem(CHAVE_SESSAO);
   localStorage.removeItem("medieval_usuario");
   localStorage.removeItem("usuario_nome");
+  localStorage.removeItem("usuario_id");
 }

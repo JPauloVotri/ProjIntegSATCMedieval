@@ -18,6 +18,7 @@ import Estoque from "./pages/estoque";
 import Movimento from "./pages/movimentacao";
 import Usuario from "./pages/usuario";
 import Fornecedores from "./pages/fornecedores";
+import CotacaoFornecedores from "./pages/cotacaoFornecedores";
 
 import Layout from "./components/layout";
 
@@ -47,6 +48,7 @@ ReactDOM.createRoot(
             <Route path="/cotacao" element={<Cotacao />} />
             <Route path="/Usuario/:id" element={<Usuario />} />
             <Route path="/fornecedores" element={<Fornecedores />} />
+            <Route path="/cotacaoFornecedores/:id" element={<CotacaoFornecedores />} />
           </Route>
         </Route>
 

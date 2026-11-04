@@ -21,6 +21,8 @@ export default function Layout() {
 
   const title = location.pathname.startsWith("/usuario/")
     ? "Detalhes do Usuário" 
+    : location.pathname.startsWith("/cotacaoFornecedores/")
+    ? "Fornecedores da Cotação" 
     : pageTitles[location.pathname] ?? "Home";
 
   return (
