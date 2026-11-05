@@ -36,6 +36,9 @@ function App() {
                     <button onClick={() => window.location.href = "/fornecedores"}>
                         Fornecedores
                     </button>
+                    <button onClick={() => window.location.href = "/pedidos"}>
+                        Pedidos
+                    </button>
                     <button onClick={sair}>
                         Sair da conta
                     </button>

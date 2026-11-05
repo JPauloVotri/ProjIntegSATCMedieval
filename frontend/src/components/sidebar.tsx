@@ -15,6 +15,7 @@ const pages = [
   { name: "Estoque", path: "/estoque" },
   { name: "Movimentação", path: "/movimentacao" },
   { name: "Fornecedores", path: "/fornecedores" },
+  { name: "Pedidos", path: "/pedidos" },
 ];
 
 export default function Sidebar({
