@@ -1,4 +1,4 @@
-import FornecedorList from '../components/fornecedorList';
+import FornecedorList from '../components/listas/fornecedorList';
 
 function App() {
     return (

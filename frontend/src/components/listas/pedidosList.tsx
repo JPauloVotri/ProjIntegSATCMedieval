@@ -1,11 +1,11 @@
 
-import "../styles/estoqueMovimentList.css";
+import "../../styles/estoqueMovimentList.css";
 import { GiConfirmed } from "react-icons/gi";
 
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
-import PesquisaEstMov from "./pesquisaEstMov";
-import ModalConfirmarPedido from "./modalConfirmaPedido";
+import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
+import ModalConfirmarPedido from "../modals/modalConfirmaPedido";
 
 interface PedidoItem {
   id: number;

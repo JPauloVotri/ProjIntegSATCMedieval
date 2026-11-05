@@ -1,4 +1,4 @@
-import "../styles/estoqueMovimentList.css"
+import "../../styles/estoqueMovimentList.css"
 
 export default function movimentacaoList() {
 const movimentacaoLista = [

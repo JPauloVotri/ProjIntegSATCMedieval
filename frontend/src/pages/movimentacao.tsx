@@ -1,4 +1,4 @@
-import MovimentacaoLista from "../components/movimentacaoList";
+import MovimentacaoLista from "../components/listas/movimentacaoList";
 
 function App() {
 

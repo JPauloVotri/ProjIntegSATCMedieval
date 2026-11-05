@@ -2,11 +2,11 @@
 // Vou deixar ele aqui para caso precise no futuro
 // ass: kaio
 
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
 
-import "../styles/modalCriacaoMensagem.css";
-import "../styles/ModalCadastro.css";
+import "../../styles/modalCriacaoMensagem.css";
+import "../../styles/ModalCadastro.css";
 
 interface ModalCadastroProps {
   aberta: boolean;

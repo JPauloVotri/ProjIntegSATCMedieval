@@ -1,5 +1,5 @@
-import CotacaoFornecedoresAdicionar from "../components/modalCotacaoFornecedorAdicionar";
-import CotacaoFornecedorLista from "../components/cotacaoFornecedorList";
+import CotacaoFornecedoresAdicionar from "../components/modals/modalCotacaoFornecedorAdicionar";
+import CotacaoFornecedorLista from "../components/listas/cotacaoFornecedorList";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 

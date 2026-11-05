@@ -1,9 +1,9 @@
 import { useState } from "react"
 
-import ModalCadastroProduto from "../components/modalCadastroProduto"
-import ModalCadastroGrupoProduto from "../components/modalCadastroGrupoProduto"
-import ModalCadastroUnidadeMedida from "../components/modalCadastroUnidadeMedida"
-import ModalCadastroFornecedor from "../components/modalCadastroFornecedor"
+import ModalCadastroProduto from "../components/modals/modalCadastroProduto"
+import ModalCadastroGrupoProduto from "../components/modals/modalCadastroGrupoProduto"
+import ModalCadastroUnidadeMedida from "../components/modals/modalCadastroUnidadeMedida"
+import ModalCadastroFornecedor from "../components/modals/modalCadastroFornecedor"
 
 type TipoModal = "produto" | "grupoproduto" | "unidademedida" | "fornecedor" | null;
 

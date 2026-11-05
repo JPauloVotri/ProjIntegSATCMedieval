@@ -1,4 +1,4 @@
-import EstoqueLista from "../components/estoqueList";
+import EstoqueLista from "../components/listas/estoqueList";
 
 function App() {
 

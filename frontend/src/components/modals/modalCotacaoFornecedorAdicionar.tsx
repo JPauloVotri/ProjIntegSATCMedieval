@@ -1,8 +1,11 @@
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
+import { useParams } from "react-router-dom";
 
-import "../styles/modalCriacaoMensagem.css";
-import "../styles/ModalCadastro.css";
+import SelectFornecedor from "../selects/selectFornecedor";
+
+import "../../styles/modalCriacaoMensagem.css";
+import "../../styles/ModalCadastro.css";
 
 interface ModalCadastroProps {
   aberta: boolean;
@@ -13,9 +16,13 @@ export default function ModalCadastro({
   aberta,
   onFechar,
 }: ModalCadastroProps) {
-  const [nome, setNome] = useState("");
-  const [sigla, setSigla] = useState("");
-  const [tipo, setTipo] = useState("");
+  const { id } = useParams<{ id: string }>();
+
+  const [fornecedorId, setFornecedorId] = useState<number | "">("");
+  const [valorUnitario, setValorUnitario] = useState("");
+  const [prazoEntregaDias, setPrazoEntregaDias] = useState("");
+  const [condicaoPagamento, setCondicaoPagamento] = useState("");
+  const [observacao, setObservacao] = useState("");
 
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
@@ -28,20 +35,22 @@ export default function ModalCadastro({
     setErros([]);
     setSucesso("");
 
+    console.log("ID da cotação:", id);
+
     try {
-      await apiFetch("/api/UnidadesMedida", {
+      await apiFetch("/api/CotacaoItemFornecedores", {
         method: "POST",
         body: JSON.stringify({
-          nome,
-          sigla,
-          tipo,
+          cotacaoItemId: Number(id),
+          fornecedorId,
+          valorUnitario,
+          prazoEntregaDias,
+          condicaoPagamento,
+          observacao,
         }),
       });
 
       setSucesso("Unidade de medida cadastrada com sucesso!");
-      setNome("");
-      setSigla("");
-      setTipo("");
     } catch (error) {
       const mensagem =
         error instanceof Error
@@ -64,28 +73,42 @@ export default function ModalCadastro({
         onClick={(e) => e.stopPropagation()}
       >
         <form onSubmit={cadastrarUnidadeMedida}>
-          <label htmlFor="nome">Nome:</label>
+          <label htmlFor="fornecedorId">Fornecedor:</label>
+            <SelectFornecedor
+              fornecedorId={fornecedorId}
+              setFornecedorId={setFornecedorId}
+            />
+
+          <label htmlFor="valorUnitario">Valor Unitário:</label>
           <input
-            id="nome"
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
+            type="number"
+            id="valorUnitario"
+            value={valorUnitario}
+            onChange={(e) => setValorUnitario(e.target.value)}
           />
 
-          <label htmlFor="sigla">Sigla:</label>
+          <label htmlFor="prazoEntregaDias">Prazo de Entrega (dias):</label>
           <input
-            id="sigla"
-            type="text"
-            value={sigla}
-            onChange={(e) => setSigla(e.target.value)}
+            type="number"
+            id="prazoEntregaDias"
+            value={prazoEntregaDias}
+            onChange={(e) => setPrazoEntregaDias(e.target.value)}
           />
 
-          <label htmlFor="tipo">Tipo:</label>
+          <label htmlFor="condicaoPagamento">Condição de Pagamento:</label>
           <input
-            id="tipo"
             type="text"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
+            id="condicaoPagamento"
+            value={condicaoPagamento}
+            onChange={(e) => setCondicaoPagamento(e.target.value)}
+          />
+
+          <label htmlFor="observacao">Observação:</label>
+          <input
+            type="text"
+            id="observacao"
+            value={observacao}
+            onChange={(e) => setObservacao(e.target.value)}
           />
 
           <div className="modal-botoes">

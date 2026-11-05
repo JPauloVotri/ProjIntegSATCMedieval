@@ -1,9 +1,9 @@
 
-import "../styles/estoqueMovimentList.css";
+import "../../styles/estoqueMovimentList.css";
 
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
-import PesquisaEstMov from "./pesquisaEstMov";
+import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 
 interface Estoque {
   id: number;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 
-import ModalRealizarPedido from "./modalRealizarPedido";
+import ModalRealizarPedido from "../modals/modalRealizarPedido";
 
 type TipoModal = "pedido" | null;
 

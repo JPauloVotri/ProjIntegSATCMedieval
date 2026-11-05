@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { apiFetch } from "../../services/api";
-import "../styles/ModalCadastro.css";
+import { apiFetch } from "../../../services/api";
+import "../../styles/ModalCadastro.css";
 
 interface ModalProps {
   aberta: boolean;

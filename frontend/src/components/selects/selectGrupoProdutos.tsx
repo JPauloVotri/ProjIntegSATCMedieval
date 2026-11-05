@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 
 interface GrupoProduto {
   id: number;

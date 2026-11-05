@@ -1,12 +1,12 @@
-import "../styles/fornecedorLis.css"
+import "../../styles/fornecedorLis.css"
 
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { FaWhatsapp } from "react-icons/fa";
 
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
-import PesquisaEstMov from "./pesquisaEstMov";
+import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 
 interface Fornecedor {
   id: number;

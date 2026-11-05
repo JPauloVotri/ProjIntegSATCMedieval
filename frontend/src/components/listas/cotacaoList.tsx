@@ -1,14 +1,14 @@
 
-import "../styles/cotacaoList.css";
-import "../styles/modalObs.css";
+import "../../styles/cotacaoList.css";
+import "../../styles/modalObs.css";
 
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import ModalCadastroCotacao from "./modalCotacaoAdicionar";
-import { apiFetch } from "../../services/api";
+import ModalCadastroCotacao from "../modals/modalCotacaoAdicionar";
+import { apiFetch } from "../../../services/api";
 
 type TipoModal = "cotacao" | "cotacaoItem" | null;
 

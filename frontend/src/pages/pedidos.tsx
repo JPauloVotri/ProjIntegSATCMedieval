@@ -1,4 +1,4 @@
-import PedidoLista from "../components/pedidosList";
+import PedidoLista from "../components/listas/pedidosList";
 
 function App() {
 

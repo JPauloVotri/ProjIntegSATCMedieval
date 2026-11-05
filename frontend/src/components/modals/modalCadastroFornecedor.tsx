@@ -1,9 +1,9 @@
-import { apiFetch } from "../../services/api";
+import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
-import SelectEstados from "./selectEstados";
+import SelectEstados from "../selects/selectEstados";
 
-import "../styles/modalCriacaoMensagem.css";
-import "../styles/ModalCadastro.css";
+import "../../styles/modalCriacaoMensagem.css";
+import "../../styles/ModalCadastro.css";
 
 interface ModalCadastroProps {
   aberta: boolean;

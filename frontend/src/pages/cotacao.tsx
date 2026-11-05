@@ -1,4 +1,4 @@
-import CotacaoList from '../components/cotacaoList';
+import CotacaoList from '../components/listas/cotacaoList';
 
 function App() {
     return (
