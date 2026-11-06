@@ -1,5 +1,0 @@
-﻿namespace MedievalApi.Services;
-
-public class CotacaoService
-{
-}

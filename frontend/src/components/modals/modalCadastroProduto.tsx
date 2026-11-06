@@ -65,9 +65,6 @@ export default function ModalCadastro({
     } else if (estoqueMaximo == "") {
       setErros(["Estoque máximo é obrigatório."]);
       return;
-    } else if (estoqueMinimo > estoqueMaximo) {
-      setErros(["O estoque minimo não pode ser maior que o estoque maximo."]);
-      return;
     } else if (grupoProdutoId == "") {
       setErros(["Grupo do Produto é Obrigatório"]);
       return;

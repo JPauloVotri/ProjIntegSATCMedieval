@@ -1,11 +1,83 @@
-# Como iniciar o Front-End
+# Como inicializar o projeto
 
-1- Clone o projeto
+Siga os passos abaixo para rodar o projeto completo em sua máquina.
 
-2- Abra o terminal é vá até a ".../ProjIntegSATCMedieval/frontend
+## 1) Pré-requisitos
 
-3- Se necessário, baixe o "node.js" a partir desde link: https://nodejs.org/pt-br/download
+Antes de iniciar, certifique-se de ter instalado:
 
-4- coloque o seguinte comando no terminal: npm run dev
+- Git
+- Node.js LTS: https://nodejs.org/pt-br/download
+- .NET SDK 10: https://dotnet.microsoft.com/pt-br/download
 
-5- por fim, abra a url no seu navegador: http://localhost:5173/
+Verifique se tudo foi instalado corretamente:
+
+```bash
+git --version
+node --version
+npm --version
+dotnet --version
+```
+
+## 2) Clone o projeto
+
+```bash
+git clone https://github.com/JPauloVotri/ProjIntegSATCMedieval.git
+cd ProjIntegSATCMedieval
+```
+
+## 3) Inicialize o backend
+
+Abra um terminal na pasta do backend:
+
+```bash
+cd backend/MedievalApi
+
+dotnet restore
+dotnet run
+```
+
+O backend será executado em uma das portas abaixo:
+
+- http://localhost:5283
+- https://localhost:7196
+
+## 4) Inicialize o frontend
+
+Abra outro terminal e execute:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 5) Acesse the aplicação
+
+Depois que o frontend iniciar, abra no navegador:
+
+```text
+http://localhost:5173/
+```
+
+## 6) Caso necessário, ajuste a URL da API
+
+No arquivo `frontend/.env`, confirme se a variável está correta:
+
+```env
+VITE_API_URL=http://localhost:5283
+```
+
+Se o backend estiver rodando em HTTPS, ajuste para:
+
+```env
+VITE_API_URL=https://localhost:7196
+```
+
+## 7) Dicas
+
+- Se a porta 5173 estiver ocupada, o Vite pode abrir outra porta; confira o terminal.
+- Se o frontend não iniciar, execute novamente `npm install` na pasta `frontend`.
+- Se o backend falhar, confirme se o .NET SDK foi instalado corretamente e que a pasta `backend/MedievalApi` exista.
+
+Atenção: o frontend e o backend devem ser iniciados em terminais diferentes.
