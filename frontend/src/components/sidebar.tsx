@@ -10,12 +10,13 @@ type SidebarProps = {
 const pages = [
   { name: "Home", path: "/home" },
   { name: "Administração", path: "/administracao" },
-  { name: "Cadastro", path: "/cadastro" },
   { name: "Cotação", path: "/cotacao" },
   { name: "Estoque", path: "/estoque" },
-  { name: "Movimentação", path: "/movimentacao" },
+  { name: "Saída", path: "/saida" },
   { name: "Fornecedores", path: "/fornecedores" },
   { name: "Pedidos", path: "/pedidos" },
+  { name: "Unidades de Medida", path: "/unidadeMedida" },
+  { name: "Grupo de Produtos", path: "/grupoProduto" },
 ];
 
 export default function Sidebar({

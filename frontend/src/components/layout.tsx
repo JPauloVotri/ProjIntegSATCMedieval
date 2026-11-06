@@ -8,12 +8,13 @@ import "../styles/layout.css";
 const pageTitles: Record<string, string> = {
   "/app": "Home",
   "/administracao": "Administração",
-  "/cadastro": "Cadastro",
+  "/unidadeMedida": "Unidades de Medida",
   "/cotacao": "Cotação",
   "/estoque": "Estoque",
-  "/movimentacao": "Movimentação",
+  "/saida": "Saída",
   "/fornecedores": "Fornecedores",
   "/pedidos": "Pedidos",
+  "/grupoProduto": "Grupo de Produtos",
 };
 
 export default function Layout() {

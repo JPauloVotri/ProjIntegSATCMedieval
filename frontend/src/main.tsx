@@ -11,15 +11,16 @@ import {
 import Login from "./pages/login";
 import AppPage from "./App";
 import Home from "./pages/home";
-import Cadastro from "./pages/cadastro";
+import UnidadeMedida from "./pages/unidadesMedidas";
 import Cotacao from "./pages/cotacao";
 import Administrador from "./pages/administracao";
 import Estoque from "./pages/estoque";
-import Movimento from "./pages/movimentacao";
+import Saida from "./pages/saida";
 import Usuario from "./pages/usuario";
 import Fornecedores from "./pages/fornecedores";
 import CotacaoFornecedores from "./pages/cotacaoFornecedores";
 import Pedidos from "./pages/pedidos";
+import GrupoProduto from "./pages/grupoProduto";
 
 import Layout from "./components/layout";
 
@@ -42,15 +43,16 @@ ReactDOM.createRoot(
           <Route element={<Layout />}>
             <Route path="/app" element={<AppPage />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/unidadeMedida" element={<UnidadeMedida />} />
             <Route path="/administracao" element={<Administrador />} />
             <Route path="/estoque" element={<Estoque />} />
-            <Route path="/movimentacao" element={<Movimento />} />
+            <Route path="/saida" element={<Saida />} />
             <Route path="/cotacao" element={<Cotacao />} />
             <Route path="/Usuario/:id" element={<Usuario />} />
             <Route path="/fornecedores" element={<Fornecedores />} />
             <Route path="/cotacaoFornecedores/:id/:produtoId" element={<CotacaoFornecedores />} />
             <Route path="/pedidos" element={<Pedidos />} />
+            <Route path="/grupoProduto" element={<GrupoProduto />} />
           </Route>
         </Route>
 

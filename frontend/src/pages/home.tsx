@@ -21,8 +21,8 @@ function App() {
                     <button onClick={() => window.location.href = "/administracao"}>
                         Administração
                     </button>
-                    <button onClick={() => window.location.href = "/cadastro"}>
-                        Cadastro
+                    <button onClick={() => window.location.href = "/unidadeMedida"}>
+                        Unidades de Medida
                     </button>
                     <button onClick={() => window.location.href = "/cotacao"}>
                         Cotação
@@ -30,14 +30,17 @@ function App() {
                     <button onClick={() => window.location.href = "/estoque"}>
                         Estoque
                     </button>
-                    <button onClick={() => window.location.href = "/movimentacao"}>
-                        Movimentação
+                    <button onClick={() => window.location.href = "/saida"}>
+                        Saída
                     </button>
                     <button onClick={() => window.location.href = "/fornecedores"}>
                         Fornecedores
                     </button>
                     <button onClick={() => window.location.href = "/pedidos"}>
                         Pedidos
+                    </button>
+                    <button onClick={() => window.location.href = "/grupoProduto"}>
+                        Grupo de Produtos
                     </button>
                     <button onClick={sair}>
                         Sair da conta

@@ -1,0 +1,114 @@
+
+.modalSaida-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalSaida-container {
+    background: white;
+    width: 90%;
+    max-width: 450px;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.modalSaida-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modalSaida-header h2 {
+    margin: 0;
+}
+
+.modalSaida-header button {
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modalSaida-info {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.modalSaida-info p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.modalSaida-info h3 {
+    margin: 5px 0 15px;
+}
+
+.modalSaida-info strong {
+    font-size: 18px;
+}
+
+.modalSaida-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modalSaida-campo label {
+    font-weight: 600;
+}
+
+.modalSaida-campo input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+
+.modalSaida-campo input:focus {
+    border-color: #8b2525;
+}
+
+.modalSaida-erro {
+    color: #c62828;
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.modalSaida-botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.modalSaida-botoes button {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modalSaida-botoes button:first-child {
+    background: #e5e5e5;
+}
+
+.modalSaida-botoes button:last-child {
+    background: #8b2525;
+    color: white;
+}
+
+.modalSaida-botoes button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
