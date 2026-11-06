@@ -16,15 +16,20 @@ namespace MedievalApi.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.12");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("MedievalApi.Models.Auditoria", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
@@ -42,32 +47,32 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Ip")
                         .HasMaxLength(45)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(45)")
                         .HasColumnName("ip");
 
                     b.Property<int?>("RegistroId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("registro_id");
 
                     b.Property<string>("Tabela")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("tabela");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("tipo");
 
                     b.Property<string>("UserAgent")
                         .HasMaxLength(500)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("user_agent");
 
                     b.Property<int?>("UsuarioId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id");
@@ -97,9 +102,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -122,19 +128,19 @@ namespace MedievalApi.Migrations
                         .HasColumnName("data_solicitacao");
 
                     b.Property<string>("Observacao")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("observacao");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasDefaultValue("Rascunho")
                         .HasColumnName("status");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id");
@@ -158,9 +164,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -169,7 +176,7 @@ namespace MedievalApi.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("CotacaoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("cotacao_id");
 
                     b.Property<DateTime>("CriadoEm")
@@ -180,28 +187,28 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("observacao");
 
                     b.Property<int>("ProdutoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("produto_id");
 
                     b.Property<decimal>("Quantidade")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("quantidade");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasDefaultValue("Pendente")
                         .HasColumnName("status");
 
                     b.Property<int>("UnidadeMedidaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("unidade_medida_id");
 
                     b.HasKey("Id");
@@ -225,9 +232,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -237,11 +245,11 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("CondicaoPagamento")
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("condicao_pagamento");
 
                     b.Property<int>("CotacaoItemId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("cotacao_item_id");
 
                     b.Property<DateTime>("CriadoEm")
@@ -251,24 +259,29 @@ namespace MedievalApi.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("FornecedorId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("fornecedor_id");
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("observacao");
 
                     b.Property<int?>("PrazoEntregaDias")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("prazo_entrega_dias");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("Pendente")
+                        .HasColumnName("status");
 
                     b.Property<decimal>("ValorUnitario")
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasColumnName("valor_unitario");
 
                     b.HasKey("Id");
@@ -287,9 +300,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -298,13 +312,13 @@ namespace MedievalApi.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("ProdutoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("produto_id");
 
                     b.Property<decimal>("QuantidadeDisponivel")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasDefaultValue(0m)
                         .HasColumnName("quantidade_disponivel");
 
@@ -319,7 +333,7 @@ namespace MedievalApi.Migrations
                     b.Property<decimal>("ValorTotal")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("valor_total");
 
@@ -339,13 +353,14 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(true)
                         .HasColumnName("ativo");
 
@@ -357,27 +372,27 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Bairro")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("bairro");
 
                     b.Property<string>("Cep")
                         .HasMaxLength(10)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(10)")
                         .HasColumnName("cep");
 
                     b.Property<string>("Cidade")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("cidade");
 
                     b.Property<string>("Complemento")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("complemento");
 
                     b.Property<string>("CondicaoPagamento")
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("condicao_pagamento");
 
                     b.Property<DateTime>("CriadoEm")
@@ -388,58 +403,58 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("DiasEntrega")
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("dias_entrega");
 
                     b.Property<string>("Documento")
                         .HasMaxLength(30)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(30)")
                         .HasColumnName("documento");
 
                     b.Property<string>("Email")
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("email");
 
                     b.Property<string>("Estado")
                         .HasMaxLength(2)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("estado");
 
                     b.Property<string>("InscricaoEstadual")
                         .HasMaxLength(30)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(30)")
                         .HasColumnName("inscricao_estadual");
 
                     b.Property<string>("Logradouro")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("logradouro");
 
                     b.Property<string>("NomeContato")
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nome_contato");
 
                     b.Property<string>("NomeFantasia")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("nome_fantasia");
 
                     b.Property<string>("Numero")
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("numero");
 
                     b.Property<string>("RazaoSocial")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("razao_social");
 
                     b.Property<string>("Telefone")
                         .HasMaxLength(30)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(30)")
                         .HasColumnName("telefone");
 
                     b.HasKey("Id");
@@ -463,13 +478,14 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(true)
                         .HasColumnName("ativo");
 
@@ -487,13 +503,13 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("descricao");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("nome");
 
                     b.HasKey("Id");
@@ -512,9 +528,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
@@ -524,7 +541,7 @@ namespace MedievalApi.Migrations
 
                     b.Property<decimal?>("CustoUnitario")
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasColumnName("custo_unitario");
 
                     b.Property<DateTime?>("DataValidade")
@@ -532,62 +549,62 @@ namespace MedievalApi.Migrations
                         .HasColumnName("data_validade");
 
                     b.Property<int>("EstoqueId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("estoque_id");
 
                     b.Property<string>("Lote")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("lote");
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("observacao");
 
                     b.Property<string>("Origem")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(30)")
                         .HasColumnName("origem");
 
                     b.Property<decimal>("Quantidade")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("quantidade");
 
                     b.Property<decimal>("QuantidadeAnterior")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("quantidade_anterior");
 
                     b.Property<decimal>("QuantidadePosterior")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("quantidade_posterior");
 
                     b.Property<int?>("ReferenciaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("referencia_id");
 
                     b.Property<string>("ReferenciaTipo")
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("referencia_tipo");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("tipo");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("usuario_id");
 
                     b.Property<decimal?>("ValorTotal")
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasColumnName("valor_total");
 
                     b.HasKey("Id");
@@ -617,9 +634,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -628,7 +646,7 @@ namespace MedievalApi.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int?>("CotacaoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("cotacao_id");
 
                     b.Property<DateTime>("CriadoEm")
@@ -650,30 +668,30 @@ namespace MedievalApi.Migrations
                         .HasColumnName("data_recebimento");
 
                     b.Property<int>("FornecedorId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("fornecedor_id");
 
                     b.Property<string>("Observacao")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("observacao");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(30)")
                         .HasDefaultValue("Rascunho")
                         .HasColumnName("status");
 
                     b.Property<decimal>("Total")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("total");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id");
@@ -700,9 +718,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -711,7 +730,7 @@ namespace MedievalApi.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int?>("CotacaoItemId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("cotacao_item_id");
 
                     b.Property<DateTime>("CriadoEm")
@@ -722,43 +741,43 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("observacao");
 
                     b.Property<int>("PedidoCompraId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("pedido_compra_id");
 
                     b.Property<int>("ProdutoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("produto_id");
 
                     b.Property<decimal>("QuantidadeRecebida")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasDefaultValue(0m)
                         .HasColumnName("quantidade_recebida");
 
                     b.Property<decimal>("QuantidadeSolicitada")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("quantidade_solicitada");
 
                     b.Property<decimal>("Total")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("total");
 
                     b.Property<int>("UnidadeMedidaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("unidade_medida_id");
 
                     b.Property<decimal>("ValorUnitario")
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasColumnName("valor_unitario");
 
                     b.HasKey("Id");
@@ -782,13 +801,14 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(true)
                         .HasColumnName("ativo");
 
@@ -800,7 +820,7 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Codigo")
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
                     b.Property<DateTime>("CriadoEm")
@@ -812,50 +832,50 @@ namespace MedievalApi.Migrations
                     b.Property<decimal>("CustoMedioEstoque")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(14, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("custo_medio_estoque");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("descricao");
 
                     b.Property<decimal?>("EstoqueMaximo")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("estoque_maximo");
 
                     b.Property<decimal>("EstoqueMinimo")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasDefaultValue(0m)
                         .HasColumnName("estoque_minimo");
 
                     b.Property<int>("GrupoProdutoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("grupo_produto_id");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nome");
 
                     b.Property<decimal>("UltimoCusto")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(14, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("ultimo_custo");
 
                     b.Property<int>("UnidadeMedidaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("unidade_medida_id");
 
                     b.Property<int?>("ValidadeDias")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("validade_dias");
 
                     b.HasKey("Id");
@@ -887,9 +907,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -909,29 +930,29 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Motivo")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("motivo");
 
                     b.Property<string>("Observacao")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("text")
                         .HasColumnName("observacao");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasDefaultValue("Rascunho")
                         .HasColumnName("status");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("tipo");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id");
@@ -955,9 +976,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
@@ -968,14 +990,14 @@ namespace MedievalApi.Migrations
                     b.Property<decimal>("CustoTotal")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("custo_total");
 
                     b.Property<decimal>("CustoUnitario")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(16, 4)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(16,4)")
                         .HasDefaultValue(0m)
                         .HasColumnName("custo_unitario");
 
@@ -985,29 +1007,29 @@ namespace MedievalApi.Migrations
 
                     b.Property<string>("Lote")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("lote");
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("observacao");
 
                     b.Property<int>("ProdutoId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("produto_id");
 
                     b.Property<decimal>("Quantidade")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("numeric(14,3)")
                         .HasColumnName("quantidade");
 
                     b.Property<int>("SaidaEstoqueId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("saida_estoque_id");
 
                     b.Property<int>("UnidadeMedidaId")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("integer")
                         .HasColumnName("unidade_medida_id");
 
                     b.HasKey("Id");
@@ -1034,13 +1056,14 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(true)
                         .HasColumnName("ativo");
 
@@ -1059,19 +1082,19 @@ namespace MedievalApi.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("nome");
 
                     b.Property<string>("Sigla")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("sigla");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo");
 
                     b.HasKey("Id");
@@ -1093,9 +1116,10 @@ namespace MedievalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn);
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
@@ -1112,32 +1136,32 @@ namespace MedievalApi.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("email");
 
                     b.Property<string>("GrupoUsuario")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("grupo_usuario");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nome");
 
                     b.Property<string>("SenhaHash")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("senha_hash");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT")
+                        .HasColumnType("character varying(20)")
                         .HasDefaultValue("Ativo")
                         .HasColumnName("status");
 
