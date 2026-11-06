@@ -1,12 +1,32 @@
 .welcome-text {
-    color:black;
+    color: #E5E5E5;
     font-size: 44px;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 
 .name-text {
     color: #FAC800;
     font-size: 44px;
     font-weight: italic;
+}
+
+button {
+    background-color: #FAC800;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.logout-button {
+    border: 1px solid #a70000;
+    background-color: #b93131;
+}
+
+.logout-button:hover {
+    background-color: #8b2525;
 }

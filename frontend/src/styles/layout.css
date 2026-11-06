@@ -1,7 +1,6 @@
 .app-layout {
   position: relative;
-  min-height: 100vh;
-  background: #fff;
+  background: #121212;
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
 }
@@ -13,21 +12,25 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  border-bottom: 4px solid #000;
-  background: #fff;
+  background: #121212;
+  border-bottom: 2px solid white;
+  border-top: 5px solid #e5e4e7;
+  border-left: 5px solid #e5e4e7;
+  border-right: 5px solid #e5e4e7;
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 36px;
   font-weight: 700;
-  color: #000;
+  color: #E5E5E5;
 }
+
 
 .menu-button {
   position: absolute;
   right: 25px;
-  top: -90px;
+  top: -40px;
   width: 52px;
   height: 40px;
   padding: 3px 0;
@@ -43,11 +46,7 @@
   display: block;
   height: 6px;
   width: 100%;
-  background: #000;
-}
-
-.page-content {
-  padding: 20px;
+  background: #E5E5E5;
 }
 
 .sidebar-overlay {
@@ -76,16 +75,7 @@
   box-shadow: -4px 0 12px rgb(0 0 0 / 15%);
   animation: slide-in-right 0.2s ease-out;
   background-image: linear-gradient(to bottom, #363634, black);
-}
-
-.sidebar-header {
-  width: 280px;
-  height: 140px;
-  margin-top: -20px;
-  margin-left: -20px;
-  justify-content: space-between;
-  padding-bottom: 15px;
-  background-color: #1F200B;
+  border-left: 2px solid #808080;
 }
 
 .sidebar-close {
@@ -118,6 +108,7 @@
 .sidebar-link:hover,
 .sidebar-link.active {
   background: #ffca05;
+  color: black;
 }
 
 @keyframes slide-in-right {

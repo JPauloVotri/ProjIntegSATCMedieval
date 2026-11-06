@@ -26,6 +26,7 @@
 
 .modalSaida-header h2 {
     margin: 0;
+    width: 500px;
 }
 
 .modalSaida-header button {
@@ -33,6 +34,8 @@
     background: none;
     font-size: 28px;
     cursor: pointer;
+    margin-top: -20px;
+    width: 40px;
 }
 
 .modalSaida-info {
@@ -50,10 +53,12 @@
 
 .modalSaida-info h3 {
     margin: 5px 0 15px;
+    color: black;
 }
 
 .modalSaida-info strong {
     font-size: 18px;
+    color: black;
 }
 
 .modalSaida-campo {
@@ -64,6 +69,7 @@
 
 .modalSaida-campo label {
     font-weight: 600;
+    color: black;
 }
 
 .modalSaida-campo input {

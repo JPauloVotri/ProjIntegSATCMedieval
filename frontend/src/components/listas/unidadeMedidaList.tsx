@@ -38,43 +38,48 @@ export default function UnidadeMedidaList() {
   );
 
   return (
-    <div>
-      <PesquisaEstMov onPesquisar={setPesquisa} />
+    <div className="estoque-moviment-container">
 
-      {erro && <p>{erro}</p>}
-
-      <div className="estoque-moviment-header">
-        <div className="estoque-moviment-nome">Nome</div>
-        <div className="estoque-moviment-quantidade">Sigla</div>
-        <div className="estoque-moviment-quantidade">Tipo</div>
+      <div className="estoque-moviment-pesquisa">
+        <PesquisaEstMov onPesquisar={setPesquisa} />
       </div>
 
-      {unidadesFiltradas.map((unidade) => (
-        <div
-          key={unidade.id}
-          className="estoque-moviment-list"
-        >
-          <div className="estoque-moviment-nome">
-            {unidade.nome}
-          </div>
+      {erro && <p className="estoque-moviment-erro">{erro}</p>}
 
-          <div className="estoque-moviment-quantidade">
-            {unidade.sigla}
-          </div>
+      <div className="estoque-moviment-tabela">
 
-          <div className="estoque-moviment-quantidade">
-            {unidade.tipo}
-          </div>
+        <div className="estoque-moviment-header">
+          <div className="estoque-moviment-nome">Nome</div>
+          <div className="unidade-medida-sigla">Sigla</div>
+          <div className="unidade-medida-tipo">Tipo</div>
         </div>
-      ))}
 
-      {unidadesFiltradas.length === 0 && (
-        <div className="estoque-moviment-list estoque-moviment-list-empty">
-          Nenhum item encontrado
-        </div>
-      )}
+        {unidadesFiltradas.map((unidade) => (
+          <div
+            key={unidade.id}
+            className="estoque-moviment-list"
+          >
+            <div className="estoque-moviment-nome">
+              {unidade.nome}
+            </div>
 
-      <div className="estoque-moviment-linhaFinal" />
+            <div className="unidade-medida-sigla">
+              {unidade.sigla}
+            </div>
+
+            <div className="unidade-medida-tipo">
+              {unidade.tipo}
+            </div>
+          </div>
+        ))}
+
+        {unidadesFiltradas.length === 0 && (
+          <div className="estoque-moviment-list-empty">
+            Nenhuma unidade de medida encontrada.
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

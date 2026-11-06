@@ -8,14 +8,8 @@ type TipoModal = "fornecedor" | null;
 function App() {
     const [modalAberta, setModalAberta] = useState<TipoModal>(null);
 
-    const { cotacaoId, produtoId } = useParams<{
-        cotacaoId: string;
-        produtoId: string;
-    }>();
-
     return (
         <main className="login-page">
-            <p>Produto ID: {produtoId}</p>
             <button onClick={() => setModalAberta("fornecedor")}>
                 Cadastrar Fornecedor
             </button>

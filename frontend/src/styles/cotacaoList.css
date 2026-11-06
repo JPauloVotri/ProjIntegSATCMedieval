@@ -1,77 +1,149 @@
+.cotacao-container {
+    width: 100%;
+    padding: 20px;
+    color: #e5e5e5;
+}
+
+.cotacao-acoes {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.cotacao-pesquisa {
+    margin-bottom: 25px;
+}
+
+.cotacao-tabela {
+    width: 100%;
+    background-color: #171717;
+
+    border: 1px solid #303030;
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
 .cotacao-header {
-    border: 2px solid black;
-    border-width: 2px 2px 0px 2px;
-    padding: 10px;
     display: flex;
-}
+    align-items: center;
 
-.cotacao-list {
-    border: 2px solid black;
-    border-width: 2px 2px 0px 2px;
-    padding: 10px;
-    display: flex;
-}
+    padding: 18px 20px;
 
-.cotacao-linhaFinal {
-    border: 2px solid black;
-    border-width: 2px 0px 0px 0px;
-    padding: 10px;
-    display: flex;
-}
+    background-color: #222222;
+    border-bottom: 1px solid #383838;
 
-.cotacao-grupo {
-    border: 2px solid black;
-    border-width: 0px 2px 0px 0px;
-    margin: 8px;
-    width: 150px;
-    text-align: center;
+    color: #bdbdbd;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .cotacao-nome {
-    border: 2px solid black;
-    border-width: 0px 2px 0px 0px;
-    margin: 8px;
-    width: 200px;
-    text-align: center;
+    flex: 2;
+    text-align: left;
 }
 
-.cotacao-marca {
-    border: 2px solid black;
-    border-width: 0px 2px 0px 0px;
-    margin: 8px;
-    width: 150px;
-    text-align: center;
-}
-
-.cotacao-preco {
-    border: 2px solid black;
-    border-width: 0px 2px 0px 0px;
-    margin: 8px;
-    width: 150px;
+.cotacao-quantidade {
+    flex: 1;
     text-align: center;
 }
 
 .cotacao-observacao {
-    margin: 8px;
-    width: 50px;
+    flex: 1;
     text-align: center;
-    height: 30px;
-    width: 30px;
-    margin-bottom: -12px;
 }
 
-.cotacao-list-empty {
-    border: 2px solid black;
-    border-width: 2px 2px 0px 2px;
-    padding: 10px;
-    display: none;
-    justify-content: center;
+.cotacao-fornecedores {
+    flex: 1;
+    text-align: center;
+}
+
+.cotacao-list {
+    display: flex;
+    align-items: center;
+
+    padding: 19px 20px;
+
+    background-color: #171717;
+    border-bottom: 1px solid #303030;
+
+    color: #e5e5e5;
+    font-size: 16px;
+
+    transition: background-color 0.2s ease;
+}
+
+.cotacao-list:hover {
+    background-color: #252525;
+}
+
+.cotacao-list:last-child {
+    border-bottom: none;
 }
 
 .cotacao-botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 12px;
+    background-color: #292929;
+    color: #bdbdbd;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    font-size: 15px;
     cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: -40px;
 }
 
 .cotacao-botao:hover {
-    color: black;
+    background-color: #383838;
+    color: white;
+}
+
+.cotacao-list-empty {
+    padding: 35px 20px;
+    text-align: center;
+
+    color: #888888;
+    font-size: 16px;
+}
+
+.cotacao-erro {
+    color: #ff7777;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+    .cotacao-container {
+        padding: 10px;
+    }
+
+    .cotacao-header,
+    .cotacao-list {
+        padding: 15px 10px;
+        font-size: 12px;
+    }
+
+    .cotacao-nome {
+        flex: 1.5;
+    }
+
+    .cotacao-quantidade {
+        flex: 0.8;
+    }
+
+    .cotacao-observacao,
+    .cotacao-fornecedores {
+        flex: 0.7;
+    }
+}
+
+.cotacao-cadastrar {
+    margin-right: 100px
 }

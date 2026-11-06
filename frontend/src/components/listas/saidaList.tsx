@@ -1,11 +1,11 @@
 
 import "../../styles/estoqueMovimentList.css";
-import { IoMdExit } from "react-icons/io";
+import "../../styles/saidaEstoqueList.css";
 
+import { IoMdExit } from "react-icons/io";
 import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
-import modalRemoverQuantidade from "../modals/modalRemoverQuantidade";
 import ModalSaidaEstoque from "../modals/modalRemoverQuantidade";
 
 interface Estoque {
@@ -19,79 +19,93 @@ interface Estoque {
 }
 
 export default function EstoqueList() {
-  const [estoques, setEstoques] = useState<Estoque[]>([]);
-  const [erro, setErro] = useState("");
-  const [pesquisa, setPesquisa] = useState("");
-  const [modalAberta, setModalAberta] = useState(false);
-  const [estoqueSelecionado, setEstoqueSelecionado] = useState<Estoque | null>(null);
+    const [estoques, setEstoques] = useState<Estoque[]>([]);
+    const [erro, setErro] = useState("");
+    const [pesquisa, setPesquisa] = useState("");
+    const [modalAberta, setModalAberta] = useState(false);
+    const [estoqueSelecionado, setEstoqueSelecionado] = useState<Estoque | null>(null);
 
-  useEffect(() => {
-    async function carregarEstoques() {
-      try {
-        const dados = await apiFetch<Estoque[]>("/api/Estoques");
-        setEstoques(dados);
-      } catch (error) {
-        setErro("Não foi possível carregar os estoques.");
-        console.error(error);
-      }
-    }
+    useEffect(() => {
+        async function carregarEstoques() {
+            try {
+                const dados = await apiFetch<Estoque[]>("/api/Estoques");
+                setEstoques(dados);
+            } catch (error) {
+                setErro("Não foi possível carregar os estoques.");
+                console.error(error);
+            }
+        }
 
-    carregarEstoques();
-  }, []);
+        carregarEstoques();
+    }, []);
 
-  const estoquesFiltrados = estoques.filter((estoque) =>
-    estoque.produtoNome
-      .toLowerCase()
-      .startsWith(pesquisa.trim().toLowerCase())
-  );
+    const estoquesFiltrados = estoques.filter((estoque) =>
+        estoque.produtoNome
+            .toLowerCase()
+            .startsWith(pesquisa.trim().toLowerCase())
+    );
 
-  return (
-    <div>
-      <PesquisaEstMov onPesquisar={setPesquisa} />
+    return (
+        <div className="saida-container">
 
-      {erro && <p>{erro}</p>}
+            <div className="saida-pesquisa">
+                <PesquisaEstMov onPesquisar={setPesquisa} />
+            </div>
 
-      <div className="estoque-moviment-header">
-        <div className="estoque-moviment-nome">Nome</div>
-        <div className="estoque-moviment-quantidade">Saída</div>
-      </div>
+            {erro && <p className="saida-erro">{erro}</p>}
 
-      {estoquesFiltrados.map((estoque) => (
-        <div
-          key={estoque.id}
-          className="estoque-moviment-list"
-        >
-          <div className="estoque-moviment-nome">
-            {estoque.produtoNome}
-          </div>
+            <div className="saida-tabela">
 
-          <div className="estoque-moviment-quantidade">
-            <IoMdExit onClick={() => {
-                setEstoqueSelecionado(estoque);
-                setModalAberta(true);
-            }} />
-          </div>
+                <div className="estoque-moviment-header saida-header">
+                    <div className="saida-nome">Produto</div>
+                    <div className="saida-acao">Saída</div>
+                </div>
+
+                {estoquesFiltrados.length === 0 ? (
+                    <div className="saida-vazio">
+                        Nenhum item encontrado.
+                    </div>
+                ) : (
+                    estoquesFiltrados.map((estoque) => (
+                        <div
+                            key={estoque.id}
+                            className="estoque-moviment-list saida-list"
+                        >
+                            <div className="saida-nome">
+                                {estoque.produtoNome}
+                            </div>
+
+                            <div className="saida-acao">
+                                <button
+                                    className="saida-botao"
+                                    title="Retirar quantidade do estoque"
+                                    onClick={() => {
+                                        setEstoqueSelecionado(estoque);
+                                        setModalAberta(true);
+                                    }}
+                                >
+                                    <IoMdExit />
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                )}
+
+            </div>
+
+            {estoqueSelecionado && (
+                <ModalSaidaEstoque
+                    aberta={modalAberta}
+                    onFechar={() => {
+                        setModalAberta(false);
+                        setEstoqueSelecionado(null);
+                    }}
+                    estoque={estoqueSelecionado}
+                    onConfirmar={async (estoqueId, quantidade) => {
+                    }}
+                />
+            )}
 
         </div>
-      ))}
-
-      {estoquesFiltrados.length === 0 && (
-        <div className="estoque-moviment-list estoque-moviment-list-empty">
-          Nenhum item encontrado
-        </div>
-      )}
-
-      <div className="estoque-moviment-linhaFinal" />
-
-    {estoqueSelecionado && (
-      <ModalSaidaEstoque
-        aberta={modalAberta}
-        onFechar={() => setModalAberta(false)}
-        estoque={estoqueSelecionado}
-        onConfirmar={async (estoqueId, quantidade) => {
-        }}
-      />
-)}
-    </div>
-  );
+    );
 }

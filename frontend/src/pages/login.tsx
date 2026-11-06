@@ -47,7 +47,7 @@ function App() {
   }
 
   return (
-    <main>
+    <main className="main-login">
       <section className="principal-section">
         <img
           src={Logo}
@@ -55,19 +55,30 @@ function App() {
           className="login-logo"
         />
 
+        <div className="login-header">
+          <h1>CHURRASCARIA MEDIEVAL</h1>
+          <p>Acesse sua conta</p>
+        </div>
+
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-field">
             <label htmlFor="login" className="form-label">
-              <span className="form-text">E-mail</span>
+              <label className="form-text">E-mail</label>
             </label>
             <input id="login" type="email" value={login} onChange={(event) => setLogin(event.target.value)} autoComplete="username" required />
           </div>
           <div className="form-field">
             <label htmlFor="senha" className="form-label">
-              <span className="form-text">Senha</span>
+              <label className="form-text">Senha</label>
             </label>
-              <button type="button" className="olho-button" onClick={() => setVerSenha((visivel) => !visivel)} aria-label={verSenha ? "Esconder senha" : "Mostrar senha"} aria-pressed={verSenha} >
-                {verSenha ? <FaRegEyeSlash /> : <FaRegEye />}
+              <button
+                  type="button"
+                  className="olho-button"
+                  onClick={() => setVerSenha((visivel) => !visivel)}
+                  aria-label={verSenha ? "Esconder senha" : "Mostrar senha"}
+                  aria-pressed={verSenha}
+              >
+                {verSenha ? <FaRegEye size={24} /> : <FaRegEyeSlash size={24} />}
               </button>
             <input id="senha" type={verSenha ? "text" : "password"} value={senha} onChange={(event) => setSenha(event.target.value)} autoComplete="current-password" className="senha-input" required />
           </div>
@@ -78,7 +89,9 @@ function App() {
             </p>
           )}
 
-          <button type="submit">Entrar</button>
+          <button type="submit" className="login-button">
+            Entrar
+          </button>
         </form>
       </section>
     </main>

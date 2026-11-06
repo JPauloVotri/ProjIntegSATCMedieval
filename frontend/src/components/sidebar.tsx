@@ -10,13 +10,13 @@ type SidebarProps = {
 const pages = [
   { name: "Home", path: "/home" },
   { name: "Administração", path: "/administracao" },
-  { name: "Cotação", path: "/cotacao" },
-  { name: "Estoque", path: "/estoque" },
-  { name: "Saída", path: "/saida" },
   { name: "Fornecedores", path: "/fornecedores" },
-  { name: "Pedidos", path: "/pedidos" },
-  { name: "Unidades de Medida", path: "/unidadeMedida" },
   { name: "Grupo de Produtos", path: "/grupoProduto" },
+  { name: "Unidades de Medida", path: "/unidadeMedida" },
+  { name: "Estoque", path: "/estoque" },
+  { name: "Cotação", path: "/cotacao" },
+  { name: "Pedidos", path: "/pedidos" },
+  { name: "Saída", path: "/saida" },
 ];
 
 export default function Sidebar({
@@ -31,7 +31,7 @@ export default function Sidebar({
         className="sidebar"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="sidebar-header">
+        <div>
           <img
             src={Logo}
             alt="Logo"

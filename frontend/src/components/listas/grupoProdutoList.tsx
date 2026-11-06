@@ -37,39 +37,43 @@ export default function GrupoProdutoList() {
   );
 
   return (
-    <div>
-      <PesquisaEstMov onPesquisar={setPesquisa} />
+    <div className="estoque-moviment-container">
 
-      {erro && <p>{erro}</p>}
-
-      <div className="estoque-moviment-header">
-        <div className="estoque-moviment-nome">Nome</div>
-        <div className="estoque-moviment-quantidade">Descrição</div>
+      <div className="estoque-moviment-pesquisa">
+        <PesquisaEstMov onPesquisar={setPesquisa} />
       </div>
 
-      {gruposFiltrados.map((grupo) => (
-        <div
-          key={grupo.id}
-          className="estoque-moviment-list"
-        >
-          <div className="estoque-moviment-nome">
-            {grupo.nome}
-          </div>
+      {erro && <p className="estoque-moviment-erro">{erro}</p>}
 
-          <div className="estoque-moviment-quantidade">
-            {grupo.descricao}
-          </div>
+      <div className="estoque-moviment-tabela">
 
+        <div className="estoque-moviment-header">
+          <div className="grupo-produto-nome">Nome</div>
+          <div className="grupo-produto-descricao">Descrição</div>
         </div>
-      ))}
 
-      {gruposFiltrados.length === 0 && (
-        <div className="estoque-moviment-list estoque-moviment-list-empty">
-          Nenhum item encontrado
-        </div>
-      )}
+        {gruposFiltrados.map((grupo) => (
+          <div
+            key={grupo.id}
+            className="estoque-moviment-list"
+          >
+            <div className="grupo-produto-nome">
+              {grupo.nome}
+            </div>
 
-      <div className="estoque-moviment-linhaFinal" />
+            <div className="grupo-produto-descricao">
+              {grupo.descricao}
+            </div>
+          </div>
+        ))}
+
+        {gruposFiltrados.length === 0 && (
+          <div className="estoque-moviment-list-empty">
+            Nenhum grupo encontrado.
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

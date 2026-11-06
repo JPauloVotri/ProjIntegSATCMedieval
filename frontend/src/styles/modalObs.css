@@ -1,7 +1,8 @@
+
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.75);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,57 +11,120 @@
 }
 
 .modal-caixa {
-    background: #fff;
+    background: #171717;
+    border: 1px solid #333;
     width: 100%;
     max-width: 450px;
     border-radius: 10px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     animation: modal-entrada 0.2s ease-out;
 }
 
+.modal-usuario-cabecalho {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    padding: 22px;
+    border-bottom: 1px solid #333;
+}
+
+.modal-usuario-titulo {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 13px;
+}
+
+.modal-usuario-titulo h2 {
+    margin: 0 0 5px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.modal-titulos {
+    margin-left: 100px
+}
 
 .modal-close {
     border: none;
     background: transparent;
-    color: #6b6678;
+    color: #aaa;
     font-size: 24px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2px;
-    height: 20px;
+    height: 30px;
     width: 30px;
+    margin-top: -20px;
 }
 
 .modal-close:hover {
     color: #d32f2f;
 }
 
-.modal-conteudo {
-    padding: 20px 22px;
-    color: #5c5668;
-    font-size: 15px;
+.modal-usuario-form {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.modal-conteudo p {
-    margin: 0 0 14px;
-    line-height: 1.5;
+.modal-usuario-form label {
+    color: #ddd;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 5px;
 }
 
-.modal-conteudo strong {
-    color: #484252;
-}
-
-.modal-observacao {
-    background: #f7f7fa;
-    border: 1px solid #e7e5ed;
+.modal-usuario-form input,
+.modal-usuario-form select {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
     border-radius: 6px;
-    padding: 12px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-    min-height: 40px;
+    font-size: 13px;
+    outline: none;
+    transition: 0.2s;
+    background: #252525;
+    border: 1px solid #444;
+    color: white;
+}
+
+.modal-usuario-form input:focus,
+.modal-usuario-form select:focus {
+    border-color: #888;
+    background: #303030;
+}
+
+.modal-usuario-form input::placeholder {
+    color: #888;
+}
+
+
+.modal-usuario-submit {
+    margin-top: 15px;
+    height: 43px;
+    border: none;
+    border-radius: 6px;
+    background: #eee;
+    color: #171717;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-usuario-submit:hover {
+    background: #ccc;
+}
+
+.modal-usuario-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 @keyframes modal-entrada {

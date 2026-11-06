@@ -38,49 +38,59 @@ export default function EstoqueList() {
   );
 
   return (
-    <div>
-      <PesquisaEstMov onPesquisar={setPesquisa} />
+    <div className="estoque-moviment-container">
 
-      {erro && <p>{erro}</p>}
-
-      <div className="estoque-moviment-header">
-        <div className="estoque-moviment-nome">Nome</div>
-        <div className="estoque-moviment-quantidade">Valor Total</div>
-        <div className="estoque-moviment-quantidade">Quantidade</div>
+      <div className="estoque-moviment-pesquisa">
+        <PesquisaEstMov onPesquisar={setPesquisa} />
       </div>
 
-      {estoquesFiltrados.map((estoque) => (
-        <div
-          key={estoque.id}
-          className="estoque-moviment-list"
-        >
-          <div className="estoque-moviment-nome">
-            {estoque.produtoNome}
-          </div>
+      {erro && <p className="estoque-moviment-erro">{erro}</p>}
 
-          <div className="estoque-moviment-quantidade">
-            {estoque.valorTotal}
-          </div>
+      <div className="estoque-moviment-tabela">
 
+        <div className="estoque-moviment-header">
+          <div className="estoque-moviment-nome">Produto</div>
+          <div className="estoque-moviment-valor-total">Valor Total</div>
+          <div className="estoque-moviment-quantidade">Quantidade</div>
+        </div>
+
+        {estoquesFiltrados.map((estoque) => (
           <div
-            className={`estoque-moviment-quantidade ${
-              estoque.quantidadeDisponivel < 1
-                ? "estoque-moviment-negativo"
-                : ""
-            }`}
+            key={estoque.id}
+            className="estoque-moviment-list"
           >
-            {estoque.quantidadeDisponivel}
+            <div className="estoque-moviment-nome">
+              {estoque.produtoNome}
+            </div>
+
+            <div className="estoque-moviment-valor-total">
+              {estoque.valorTotal.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </div>
+
+            <div className="estoque-moviment-quantidade">
+              <span
+                className={`estoque-moviment-status ${
+                  estoque.quantidadeDisponivel < 1
+                    ? "estoque-moviment-negativo"
+                    : ""
+                }`}
+              >
+                {estoque.quantidadeDisponivel}
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
 
-      {estoquesFiltrados.length === 0 && (
-        <div className="estoque-moviment-list estoque-moviment-list-empty">
-          Nenhum item encontrado
-        </div>
-      )}
+        {estoquesFiltrados.length === 0 && (
+          <div className="estoque-moviment-list-empty">
+            Nenhum produto encontrado.
+          </div>
+        )}
 
-      <div className="estoque-moviment-linhaFinal" />
+      </div>
     </div>
   );
 }

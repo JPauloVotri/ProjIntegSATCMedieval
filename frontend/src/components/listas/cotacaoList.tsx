@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 import ModalCadastroCotacao from "../modals/modalCotacaoAdicionar";
 import { apiFetch } from "../../../services/api";
+import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 
 type TipoModal = "cotacao" | "cotacaoItem" | null;
 
@@ -21,7 +22,7 @@ type Cotacao = {
     fornecedores: string;
 };
 
-export default function cotacaoList() {
+export default function CotacaoList() {
     const [cotacaoSelecionada, setCotacaoSelecionada] = useState<Cotacao[]>([]);
     const [cotacaoObservacao, setCotacaoObservacao] = useState<Cotacao | null>(null);
     const [modalAberta, setModalAberta] = useState<TipoModal>(null);
@@ -51,55 +52,78 @@ export default function cotacaoList() {
     );
 
     return (
-        <div>
-            <button onClick={() => setModalAberta("cotacao")}>
-                Cadastrar Cotação
-            </button>
+        <div className="cotacao-container">
 
-            <div className="cotacao-header">
-                <div className="cotacao-grupo">Nome</div>
-                <div className="cotacao-nome">quantidade</div>
-                <div className="cotacao-marca">observacao</div>
-                <div className="cotacao-preco">Fornecedores</div>
+            <div className="cotacao-acoes">
+                <button
+                    className="cotacao-cadastrar"
+                    onClick={() => setModalAberta("cotacao")}
+                >
+                    Cadastrar Cotação
+                </button>
             </div>
 
-            {cotacoesFiltrados.map((cotacao) => (
-                <div
-                    key={cotacao.id}
-                    id={`cotacao-${cotacao.produtoNome.toLowerCase()}`}
-                    className={`cotacao-list cotacao-${cotacao.produtoNome.toLowerCase()} cotacao-${cotacao.quantidade}`}
-                >
-                    <div className="cotacao-grupo">
-                        {cotacao.produtoNome}
-                    </div>
+            <div className="cotacao-pesquisa">
+                <PesquisaEstMov onPesquisar={setPesquisa} />
+            </div>
 
-                    <div className="cotacao-nome">
-                        {cotacao.quantidade}
-                    </div>
+            {erro && <p className="cotacao-erro">{erro}</p>}
 
-                    <div className="cotacao-marca cotacao-botao">
-                        <FaSearch onClick={() => setCotacaoObservacao(cotacao)} />
-                    </div>
+            <div className="cotacao-tabela">
 
-                    <div className="cotacao-observacao cotacao-botao">
-                        <FaSearch
-                            onClick={() =>
-                                navigate(
-                                    `/cotacaoFornecedores/${cotacao.id}/${cotacao.produtoId}`
-                                )
-                            }
-                        />
-                    </div>
+                <div className="cotacao-header">
+                    <div className="cotacao-nome">Produto</div>
+                    <div className="cotacao-quantidade">Quantidade</div>
+                    <div className="cotacao-observacao">Observação</div>
+                    <div className="cotacao-fornecedores">Fornecedores</div>
                 </div>
-            ))}
 
-            {cotacoesFiltrados.length === 0 && (
-                <div className="cotacao-list cotacao-list-empty">
-                    Nenhum item encontrado
-                </div>
-            )}
+                {cotacoesFiltrados.map((cotacao) => (
+                    <div
+                        key={cotacao.id}
+                        className="cotacao-list"
+                    >
+                        <div className="cotacao-nome">
+                            {cotacao.produtoNome}
+                        </div>
 
-            <div className="cotacao-linhaFinal"></div>
+                        <div className="cotacao-quantidade">
+                            {cotacao.quantidade}
+                        </div>
+
+                        <div className="cotacao-observacao">
+                            <button
+                                className="cotacao-botao"
+                                onClick={() => setCotacaoObservacao(cotacao)}
+                                aria-label="Ver observação"
+                            >
+                                <FaSearch />
+                            </button>
+                        </div>
+
+                        <div className="cotacao-fornecedores">
+                            <button
+                                className="cotacao-botao"
+                                onClick={() =>
+                                    navigate(
+                                        `/cotacaoFornecedores/${cotacao.id}/${cotacao.produtoId}`
+                                    )
+                                }
+                                aria-label="Ver fornecedores"
+                            >
+                                <FaSearch />
+                            </button>
+                        </div>
+                    </div>
+                ))}
+
+                {cotacoesFiltrados.length === 0 && (
+                    <div className="cotacao-list-empty">
+                        Nenhuma cotação encontrada.
+                    </div>
+                )}
+
+            </div>
 
             {cotacaoObservacao && (
                 <div
@@ -111,13 +135,17 @@ export default function cotacaoList() {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="modal-header">
+
                             <div className="modal-close">
-                                <IoClose onClick={() => setCotacaoObservacao(null)} />
+                                <IoClose
+                                    onClick={() => setCotacaoObservacao(null)}
+                                />
                             </div>
 
                             <h2 id="modal-titulo">
                                 Observações do produto
                             </h2>
+
                         </div>
 
                         <div className="modal-conteudo">
@@ -134,6 +162,7 @@ export default function cotacaoList() {
                 aberta={modalAberta === "cotacao"}
                 onFechar={() => setModalAberta(null)}
             />
+
         </div>
     );
 }

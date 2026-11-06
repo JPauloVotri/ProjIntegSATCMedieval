@@ -1,0 +1,99 @@
+
+.saida-container {
+    width: 100%;
+    padding: 20px;
+    color: #e5e5e5;
+}
+
+.saida-pesquisa {
+    margin-bottom: 25px;
+}
+
+.saida-erro {
+    color: #ff7777;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.saida-tabela {
+    width: 100%;
+    background-color: #171717;
+    border: 1px solid #303030;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.saida-header {
+    background-color: #222222;
+    border-bottom: 1px solid #383838;
+}
+
+.saida-nome {
+    flex: 2;
+    text-align: left;
+}
+
+.saida-acao {
+    flex: 1;
+    text-align: center;
+}
+
+.saida-list {
+    font-size: 16px;
+}
+
+.saida-list:last-child {
+    border-bottom: none;
+}
+
+.saida-botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    background-color: #482626;
+    color: #ff7777;
+    border: 1px solid #713838;
+    border-radius: 6px;
+    font-size: 21px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: -1px;
+}
+
+.saida-botao:hover {
+    background-color: #633333;
+    color: #ffaaaa;
+}
+
+.saida-vazio {
+    padding: 35px 20px;
+    text-align: center;
+    color: #888888;
+    font-size: 16px;
+}
+
+@media (max-width: 600px) {
+    .saida-container {
+        padding: 10px;
+    }
+
+    .saida-header,
+    .saida-list {
+        padding: 15px 10px;
+        font-size: 12px;
+    }
+
+    .saida-nome {
+        flex: 1.5;
+    }
+
+    .saida-acao {
+        flex: 0.7;
+    }
+
+    .saida-botao {
+        padding: 6px 8px;
+        font-size: 17px;
+    }
+}

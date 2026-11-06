@@ -21,28 +21,28 @@ function App() {
                     <button onClick={() => window.location.href = "/administracao"}>
                         Administração
                     </button>
-                    <button onClick={() => window.location.href = "/unidadeMedida"}>
-                        Unidades de Medida
-                    </button>
-                    <button onClick={() => window.location.href = "/cotacao"}>
-                        Cotação
-                    </button>
-                    <button onClick={() => window.location.href = "/estoque"}>
-                        Estoque
-                    </button>
-                    <button onClick={() => window.location.href = "/saida"}>
-                        Saída
-                    </button>
                     <button onClick={() => window.location.href = "/fornecedores"}>
                         Fornecedores
-                    </button>
-                    <button onClick={() => window.location.href = "/pedidos"}>
-                        Pedidos
                     </button>
                     <button onClick={() => window.location.href = "/grupoProduto"}>
                         Grupo de Produtos
                     </button>
-                    <button onClick={sair}>
+                    <button onClick={() => window.location.href = "/unidadeMedida"}>
+                        Unidades de Medida
+                    </button>
+                    <button onClick={() => window.location.href = "/estoque"}>
+                        Estoque
+                    </button>
+                    <button onClick={() => window.location.href = "/cotacao"}>
+                        Cotação
+                    </button>
+                    <button onClick={() => window.location.href = "/pedidos"}>
+                        Pedidos
+                    </button>
+                    <button onClick={() => window.location.href = "/saida"}>
+                        Saída
+                    </button>
+                    <button onClick={sair} className="logout-button">
                         Sair da conta
                     </button>
                 </section>

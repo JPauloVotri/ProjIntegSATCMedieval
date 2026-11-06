@@ -39,9 +39,7 @@ export default function Layout() {
         onClose={() => setMenuOpen(false)}
       />
 
-      <main className="page-content">
         <Outlet />
-      </main>
     </div>
   );
 }

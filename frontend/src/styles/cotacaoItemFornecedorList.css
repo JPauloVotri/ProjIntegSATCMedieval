@@ -1,0 +1,123 @@
+
+.cotacao-fornecedor-container {
+    width: 100%;
+    padding: 20px;
+    color: #e5e5e5;
+}
+
+.cotacao-fornecedor-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cotacao-fornecedor-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 25px;
+    background-color: #171717;
+    border: 1px solid #303030;
+    border-radius: 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cotacao-fornecedor-card:hover {
+    background-color: #202020;
+    border-color: #484848;
+}
+
+.cotacao-fornecedor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 1;
+}
+
+.cotacao-fornecedor-info h3 {
+    margin: 0;
+    color: #eeeeee;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.cotacao-fornecedor-detalhes {
+    display: flex;
+    align-items: center;
+    gap: 55px;
+}
+
+.cotacao-fornecedor-detalhes div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.cotacao-fornecedor-detalhes span {
+    color: #999999;
+    font-size: 14px;
+}
+
+.cotacao-fornecedor-detalhes strong {
+    color: #e5e5e5;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.cotacao-fornecedor-botao {
+    padding: 11px 18px;
+    background-color: #ffca05;
+    color: #222222;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.cotacao-fornecedor-botao:hover {
+    background-color: #f0bd00;
+}
+
+.cotacao-fornecedor-vazio {
+    padding: 35px 20px;
+    background-color: #171717;
+    border: 1px solid #303030;
+    border-radius: 10px;
+    color: #888888;
+    font-size: 16px;
+    text-align: center;
+}
+
+.cotacao-fornecedor-erro {
+    margin-bottom: 15px;
+    color: #ff7777;
+    font-size: 15px;
+}
+
+@media (max-width: 600px) {
+    .cotacao-fornecedor-container {
+        padding: 10px;
+    }
+
+    .cotacao-fornecedor-card {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .cotacao-fornecedor-detalhes {
+        gap: 25px;
+    }
+
+    .cotacao-fornecedor-info h3 {
+        font-size: 17px;
+    }
+
+    .cotacao-fornecedor-botao {
+        width: 100%;
+    }
+}

@@ -1,5 +1,7 @@
-
 import { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+
+import "../../styles/pesquisaEstMov.css";
 
 interface PesquisaEstMovProps {
   onPesquisar: (nome: string) => void;
@@ -14,16 +16,18 @@ export default function PesquisaEstMov({ onPesquisar }: PesquisaEstMovProps) {
   }
 
   return (
-    <>
-      <label htmlFor="nome">Nome: </label>
+    <div className="pesquisa-estmov">
+      <FaSearch className="pesquisa-estmov-icon" />
+
       <input
         type="text"
         name="nome"
         id="nome"
         value={nome}
         onChange={(e) => handleInputChange(e.target.value)}
-        placeholder="Pesquisar produto..."
+        placeholder="Pesquisar..."
       />
-    </>
+
+    </div>
   );
 }
