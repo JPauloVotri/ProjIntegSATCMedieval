@@ -1,4 +1,5 @@
 using MedievalApi.Models;
+using MedievalApi.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -38,6 +39,13 @@ public class CotacaoItemFornecedorConfiguration : IEntityTypeConfiguration<Cotac
         builder.Property(cif => cif.Observacao)
             .HasColumnName("observacao")
             .HasMaxLength(255);
+
+        builder.Property(cif => cif.Status)
+            .HasColumnName("status")
+            .HasConversion<string>()
+            .HasMaxLength(20)
+            .HasDefaultValue(StatusCotacaoItemFornecedor.Pendente)
+            .IsRequired();
 
         builder.Property(cif => cif.CriadoEm)
             .HasColumnName("criado_em")
