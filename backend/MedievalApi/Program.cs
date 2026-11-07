@@ -11,8 +11,19 @@ public partial class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+        string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException(
+                "Connection string 'DefaultConnection' nao configurada. " +
+                "Em desenvolvimento execute, na pasta do projeto: " +
+                "dotnet user-secrets set \"ConnectionStrings:DefaultConnection\" \"<connection string>\". " +
+                "Em producao defina a variavel de ambiente ConnectionStrings__DefaultConnection.");
+        }
+
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(connectionString));
 
         builder.Services.AddScoped<IUsuarioService, UsuarioService>();
         builder.Services.AddScoped<IProdutoService, ProdutoService>();

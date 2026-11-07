@@ -6,6 +6,10 @@
 # dotenv files
 .env
 
+# Segredos locais (a connection string fica em user-secrets, nao no repositorio)
+appsettings.*.local.json
+*.secrets.json
+
 # User-specific files
 *.rsuser
 *.suo
