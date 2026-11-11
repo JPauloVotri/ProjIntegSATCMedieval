@@ -4,6 +4,7 @@
     margin: 8px;
     border-radius: 8px;
     display: flex;
+    cursor: pointer;
 }
 
 .user-icon {
@@ -26,5 +27,4 @@
     font-weight: bold;
     margin-top: 5%;
     margin-left: 2%;
-    cursor: pointer;
 }

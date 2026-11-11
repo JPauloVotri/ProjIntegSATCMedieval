@@ -7,6 +7,7 @@ import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 import ModalConfirmarPedido from "../modals/modalConfirmaPedido";
+import Loading from "../loading";
 
 interface PedidoItem {
     id: number;
@@ -24,6 +25,7 @@ interface PedidoCompra {
 }
 
 export default function PedidoList() {
+    const [loading, setLoading] = useState(true);
     const [pedidos, setPedidos] = useState<PedidoItem[]>([]);
     const [pedidosCompra, setPedidosCompra] = useState<PedidoCompra[]>([]);
     const [erro, setErro] = useState("");
@@ -36,6 +38,7 @@ export default function PedidoList() {
     useEffect(() => {
         async function carregarPedidos() {
             try {
+                setLoading(true);
                 const [itens, pedidos] = await Promise.all([
                     apiFetch<PedidoItem[]>("/api/PedidosCompraItens"),
                     apiFetch<PedidoCompra[]>("/api/PedidosCompra")
@@ -46,6 +49,8 @@ export default function PedidoList() {
             } catch (error) {
                 setErro("Não foi possível carregar os pedidos.");
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -79,6 +84,10 @@ export default function PedidoList() {
 
     return (
         <div className="pedido-container">
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
 
             <div className="pedido-pesquisa">
                 <PesquisaEstMov onPesquisar={setPesquisa} />
@@ -157,7 +166,9 @@ export default function PedidoList() {
                     produtoId={produtoId}
                 />
             )}
+                </>
 
+            )}
         </div>
     );
 }

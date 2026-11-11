@@ -4,6 +4,7 @@ import "../../styles/estoqueMovimentList.css";
 import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
+import Loading from "../loading";
 
 interface GrupoProduto {
   id: number;
@@ -12,6 +13,7 @@ interface GrupoProduto {
 }
 
 export default function GrupoProdutoList() {
+  const [loading, setLoading] = useState(true);
   const [gruposProdutos, setGruposProdutos] = useState<GrupoProduto[]>([]);
   const [erro, setErro] = useState("");
   const [pesquisa, setPesquisa] = useState("");
@@ -24,6 +26,8 @@ export default function GrupoProdutoList() {
       } catch (error) {
         setErro("Não foi possível carregar os grupos de produtos.");
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -38,42 +42,37 @@ export default function GrupoProdutoList() {
 
   return (
     <div className="estoque-moviment-container">
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="estoque-moviment-pesquisa">
+            <PesquisaEstMov onPesquisar={setPesquisa} />
+          </div>
 
-      <div className="estoque-moviment-pesquisa">
-        <PesquisaEstMov onPesquisar={setPesquisa} />
-      </div>
+          {erro && <p className="estoque-moviment-erro">{erro}</p>}
 
-      {erro && <p className="estoque-moviment-erro">{erro}</p>}
-
-      <div className="estoque-moviment-tabela">
-
-        <div className="estoque-moviment-header">
-          <div className="grupo-produto-nome">Nome</div>
-          <div className="grupo-produto-descricao">Descrição</div>
-        </div>
-
-        {gruposFiltrados.map((grupo) => (
-          <div
-            key={grupo.id}
-            className="estoque-moviment-list"
-          >
-            <div className="grupo-produto-nome">
-              {grupo.nome}
+          <div className="estoque-moviment-tabela">
+            <div className="estoque-moviment-header">
+              <div className="grupo-produto-nome">Nome</div>
+              <div className="grupo-produto-descricao">Descrição</div>
             </div>
 
-            <div className="grupo-produto-descricao">
-              {grupo.descricao}
-            </div>
-          </div>
-        ))}
+            {gruposFiltrados.map((grupo) => (
+              <div key={grupo.id} className="estoque-moviment-list">
+                <div className="grupo-produto-nome">{grupo.nome}</div>
+                <div className="grupo-produto-descricao">{grupo.descricao}</div>
+              </div>
+            ))}
 
-        {gruposFiltrados.length === 0 && (
-          <div className="estoque-moviment-list-empty">
-            Nenhum grupo encontrado.
+            {gruposFiltrados.length === 0 && (
+              <div className="estoque-moviment-list-empty">
+                Nenhum grupo encontrado.
+              </div>
+            )}
           </div>
-        )}
-
-      </div>
+        </>
+      )}
     </div>
   );
 }

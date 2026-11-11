@@ -7,6 +7,7 @@ import { IoClose } from "react-icons/io5";
 import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
+import Loading from "../loading";
 
 interface Fornecedor {
   id: number;
@@ -18,7 +19,7 @@ interface Fornecedor {
 export default function FornecedorList() {
   const [fornecedorSelecionada, setFornecedorSelecionada] =
     useState<Fornecedor | null>(null);
-
+  const [loading, setLoading] = useState(true);
   const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
   const [erro, setErro] = useState("");
   const [pesquisa, setPesquisa] = useState("");
@@ -26,11 +27,14 @@ export default function FornecedorList() {
   useEffect(() => {
     async function carregarFornecedores() {
       try {
+        setLoading(true);
         const dados = await apiFetch<Fornecedor[]>("/api/Fornecedores");
         setFornecedores(dados);
       } catch (error) {
         setErro("Não foi possível carregar os fornecedores.");
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -45,6 +49,10 @@ export default function FornecedorList() {
 
   return (
     <div className="fornecedor-container">
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
 
       <div className="fornecedor-pesquisa">
         <PesquisaEstMov onPesquisar={setPesquisa} />
@@ -133,6 +141,8 @@ export default function FornecedorList() {
         </div>
       )}
 
+      </>
+      )}
     </div>
   );
 }

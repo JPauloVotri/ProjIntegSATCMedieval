@@ -41,7 +41,7 @@ export default function UserCardAdicionar() {
                     nome,
                     email,
                     senha,
-                    grupoUsuario,
+                    grupoUsuario: 1,
                 }),
             });
 
@@ -130,15 +130,6 @@ export default function UserCardAdicionar() {
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
                             />
-
-                            <label>Grupo do usuário</label>
-                            <select
-                                value={grupoUsuario}
-                                onChange={(e) => setGrupoUsuario(Number(e.target.value))}
-                            >
-                                <option value={1}>Grupo 1</option>
-                                <option value={2}>Grupo 2</option>
-                            </select>
 
                             <button
                                 type="submit"

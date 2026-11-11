@@ -5,6 +5,7 @@ import { apiFetch } from "../../../services/api";
 
 import "../../styles/cotacaoItemFornecedorList.css";
 import ModalRealizarPedido from "../modals/modalRealizarPedido";
+import Loading from "../loading";
 
 type TipoModal = "pedido" | null;
 
@@ -22,6 +23,7 @@ type Fornecedor = {
 };
 
 export default function CotacaoItemFornecedorList() {
+    const [loading, setLoading] = useState(true);
     const [cotacoes, setCotacoes] = useState<CotacaoItemFornecedores[]>([]);
     const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState(0);
@@ -39,6 +41,7 @@ export default function CotacaoItemFornecedorList() {
     useEffect(() => {
         async function carregarDados() {
             try {
+                setLoading(true);
                 const dadosCotacoes = await apiFetch<CotacaoItemFornecedores[]>(
                     "/api/CotacaoItemFornecedores"
                 );
@@ -52,6 +55,8 @@ export default function CotacaoItemFornecedorList() {
             } catch (error) {
                 setErro("Não foi possível carregar os dados.");
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -68,70 +73,77 @@ export default function CotacaoItemFornecedorList() {
 
     return (
         <div className="cotacao-fornecedor-container">
-            {erro && <p className="cotacao-fornecedor-erro">{erro}</p>}
-
-            {cotacoesFiltradas.length === 0 ? (
-                <div className="cotacao-fornecedor-vazio">
-                    Nenhum fornecedor encontrado para este item.
-                </div>
+            {loading ? (
+                <Loading />
             ) : (
-                <div className="cotacao-fornecedor-lista">
-                    {fornecedoresOrdenados.map((cotacao) => {
-                        const fornecedor = fornecedores.find(
-                            (f) => f.id === cotacao.fornecedorId
-                        );
+                <>
+                    {erro && <p className="cotacao-fornecedor-erro">{erro}</p>}
 
-                        return (
-                            <div className="cotacao-fornecedor-card" key={cotacao.id}>
-                                <div className="cotacao-fornecedor-info">
-                                    <h3>
-                                        {fornecedor?.razaoSocial ??
-                                            "Fornecedor não encontrado"}
-                                    </h3>
+                    {cotacoesFiltradas.length === 0 ? (
+                        <div className="cotacao-fornecedor-vazio">
+                            Nenhum fornecedor encontrado para este item.
+                        </div>
+                    ) : (
+                        <div className="cotacao-fornecedor-lista">
+                            {fornecedoresOrdenados.map((cotacao) => {
+                                const fornecedor = fornecedores.find(
+                                    (f) => f.id === cotacao.fornecedorId
+                                );
 
-                                    <div className="cotacao-fornecedor-detalhes">
-                                        <div>
-                                            <span>Valor Unitário</span>
-                                            <strong>
-                                                R$ {cotacao.valorUnitario.toFixed(2)}
-                                            </strong>
+                                return (
+                                    <div className="cotacao-fornecedor-card" key={cotacao.id}>
+                                        <div className="cotacao-fornecedor-info">
+                                            <h3>
+                                                {fornecedor?.razaoSocial ??
+                                                    "Fornecedor não encontrado"}
+                                            </h3>
+
+                                            <div className="cotacao-fornecedor-detalhes">
+                                                <div>
+                                                    <span>Valor Unitário</span>
+                                                    <strong>
+                                                        R$ {cotacao.valorUnitario.toFixed(2)}
+                                                    </strong>
+                                                </div>
+
+                                                <div>
+                                                    <span>Prazo de Entrega</span>
+                                                    <strong>
+                                                        {cotacao.prazoEntregaDias} dias
+                                                    </strong>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <div>
-                                            <span>Prazo de Entrega</span>
-                                            <strong>
-                                                {cotacao.prazoEntregaDias} dias
-                                            </strong>
-                                        </div>
+                                        <button
+                                            className="cotacao-fornecedor-botao"
+                                            onClick={() => {
+                                                setFornecedorSelecionado(cotacao.fornecedorId);
+                                                setCotacaoSelecionada(cotacao);
+                                                setModalAberta("pedido");
+                                            }}
+                                        >
+                                            Realizar Pedido
+                                        </button>
                                     </div>
-                                </div>
+                                );
+                            })}
+                        </div>
+                    )}
 
-                                <button
-                                    className="cotacao-fornecedor-botao"
-                                    onClick={() => {
-                                        setFornecedorSelecionado(cotacao.fornecedorId);
-                                        setCotacaoSelecionada(cotacao);
-                                        setModalAberta("pedido");
-                                    }}
-                                >
-                                    Realizar Pedido
-                                </button>
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
-
-            {cotacaoSelecionada && (
-                <ModalRealizarPedido
-                    aberta={modalAberta === "pedido"}
-                    onFechar={() => setModalAberta(null)}
-                    fornecedorId={fornecedorSelecionado}
-                    cotacaoId={id}
-                    produtoId={produtoId}
-                    valorUnitario={cotacaoSelecionada.valorUnitario}
-                />
+                    {cotacaoSelecionada && (
+                        <ModalRealizarPedido
+                            aberta={modalAberta === "pedido"}
+                            onFechar={() => setModalAberta(null)}
+                            fornecedorId={fornecedorSelecionado}
+                            cotacaoId={id}
+                            produtoId={produtoId}
+                            valorUnitario={cotacaoSelecionada.valorUnitario}
+                        />
+                    )}
+                </>
             )}
         </div>
     );
 }
+

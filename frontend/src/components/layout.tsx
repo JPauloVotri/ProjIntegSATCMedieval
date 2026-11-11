@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header";
 import Sidebar from "./sidebar";
+import Loading from "./loading";
 import "../styles/layout.css";
 
 const pageTitles: Record<string, string> = {
