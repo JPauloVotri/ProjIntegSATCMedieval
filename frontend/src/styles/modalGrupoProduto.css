@@ -62,6 +62,32 @@
   font-weight: bold;
 }
 
+.modal-grupo-campo {
+  width: 100%;
+  min-height: 30px;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #292929;
+  color: white;
+  font-size: 15px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.modal-grupo-campo-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #292929;
+  color: white;
+  font-size: 15px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
 .modal-grupo-botoes button:first-child {
   background: #b52d2d;
   color: white;
@@ -100,4 +126,53 @@
 .button-adicionar-grupo-produto {
   margin-top: -60px;
   width: 225px;
+}
+
+.button-adicionar-grupo-produto-2 {
+  margin-right: 250px;
+  width: 225px !important;
+  background: #e0ae35 !important;
+  color: black !important;
+}
+
+.button-excluir-grupo-produto-2 {
+  margin-top: -60px;
+  width: 225px !important;
+  background: #b52d2d !important;
+  color: white !important;
+}
+
+.modal-grupo-data {
+  width: 100%;
+  min-height: 30px;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #292929;
+  color: white;
+  font-size: 15px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.modal-grupo-conteudo input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #262626;
+    color: #E5E5E5;
+    border: 1px solid #444;
+    border-radius: 5px;
+    color-scheme: dark;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.modal-grupo-conteudo input[type="date"]:focus {
+    border-color: #FAC800;
+}
+
+/* Ícone do calendário */
+.modal-grupo-conteudo input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
 }

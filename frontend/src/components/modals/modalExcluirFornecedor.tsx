@@ -93,7 +93,7 @@ export default function ModalConfirmarExclusaoFornecedor({
               onClick={confirmarExclusao}
               disabled={carregando}
             >
-              {carregando ? "Excluindo..." : "Confirmar exclusão"}
+              {carregando ? "Excluindo..." : "Excluir"}
             </button>
           </div>
         </div>

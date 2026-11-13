@@ -146,8 +146,7 @@ export default function ModalCadastroProduto({
     }
   }
 
-  async function cadastrarProduto(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function cadastrarProduto() {
 
     if (etapa !== 3) {
       avancarEtapa();
@@ -280,7 +279,7 @@ export default function ModalCadastroProduto({
 
         <form
           className="modal-usuario-form"
-          onSubmit={cadastrarProduto}
+          onSubmit={(e) => e.preventDefault()}
         >
           {etapa === 1 && (
             <>
@@ -414,9 +413,10 @@ export default function ModalCadastroProduto({
               </button>
             ) : (
               <button
-                type="submit"
+                type="button"
                 className="modal-usuario-submit"
                 disabled={carregando}
+                onClick={cadastrarProduto}
               >
                 {carregando ? "Cadastrando..." : "Cadastrar"}
               </button>

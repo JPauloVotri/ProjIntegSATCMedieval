@@ -3,119 +3,161 @@ import "../../styles/cotacaoList.css";
 import "../../styles/modalObs.css";
 
 import { FaSearch } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ModalCadastroCotacao from "../modals/modalCotacaoAdicionar";
+import ModalCotacao from "../modals/modalObservacaoCotacao";
+
 import { apiFetch } from "../../../services/api";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 import Loading from "../loading";
 
-type TipoModal = "cotacao" | "cotacaoItem" | null;
+type TipoModal = "cotacao" | null;
 
-type Cotacao = {
+interface Cotacao {
     id: number;
-    produtoNome: string;
-    produtoId: number;
-    quantidade: number;
-    observacao: string;
-    fornecedores: string;
-};
+    usuarioId: number;
+    produtoId?: number;
+    dataSolicitacao: string;
+    dataLimiteResposta: string | null;
+    status: number;
+    observacao: string | null;
+}
 
 export default function CotacaoList() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [cotacaoSelecionada, setCotacaoSelecionada] = useState<Cotacao[]>([]);
-    const [cotacaoObservacao, setCotacaoObservacao] = useState<Cotacao | null>(null);
+
+    const [cotacoes, setCotacoes] = useState<Cotacao[]>([]);
+    const [cotacaoSelecionada, setCotacaoSelecionada] = useState<Cotacao | null>(null);
+
     const [modalAberta, setModalAberta] = useState<TipoModal>(null);
     const [erro, setErro] = useState("");
     const [pesquisa, setPesquisa] = useState("");
 
-    const navigate = useNavigate();
-
     useEffect(() => {
-        async function carregarCotacoes() {
-            try {
-                setLoading(true);
-                const dados = await apiFetch<Cotacao[]>("/api/CotacaoItens");
-                setCotacaoSelecionada(dados);
-            } catch (error) {
-                setErro("Não foi possível carregar as cotações.");
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
         carregarCotacoes();
     }, []);
 
-    const cotacoesFiltrados = cotacaoSelecionada.filter((cotacao) =>
-        cotacao.produtoNome
-            .toLowerCase()
-            .startsWith(pesquisa.trim().toLowerCase())
+    async function carregarCotacoes() {
+        try {
+            setLoading(true);
+
+            const dados = await apiFetch<Cotacao[]>("/api/Cotacoes");
+
+            setCotacoes(dados);
+        } catch (error) {
+            setErro("Não foi possível carregar as cotações.");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    function formatarData(data: string | null) {
+        if (!data) return "Não informada";
+
+        return new Date(data.split("T")[0] + "T12:00:00")
+            .toLocaleDateString("pt-BR");
+    }
+
+    const cotacoesFiltradas = cotacoes.filter((cotacao) =>
+        (
+            cotacao.observacao || ""
+        ).toLowerCase().includes(pesquisa.trim().toLowerCase())
+        ||
+        String(cotacao.id).includes(pesquisa.trim())
     );
 
+    function atualizarCotacao(cotacaoAtualizada: Cotacao) {
+        setCotacoes((anteriores) =>
+            anteriores.map((cotacao) =>
+                cotacao.id === cotacaoAtualizada.id
+                    ? cotacaoAtualizada
+                    : cotacao
+            )
+        );
 
-return (
-    <div className="cotacao-container">
+        setCotacaoSelecionada(cotacaoAtualizada);
+    }
 
-        {loading ? (
-            <Loading />
-        ) : (
-            <>
-                <div className="cotacao-acoes">
-                    <button
-                        className="cotacao-cadastrar"
-                        onClick={() => setModalAberta("cotacao")}
-                    >
-                        Cadastrar Cotação
-                    </button>
-                </div>
+    function excluirCotacao(id: number) {
+        setCotacoes((anteriores) =>
+            anteriores.filter((cotacao) => cotacao.id !== id)
+        );
 
-                <div className="cotacao-pesquisa">
-                    <PesquisaEstMov onPesquisar={setPesquisa} />
-                </div>
+        setCotacaoSelecionada(null);
+    }
 
-                {erro && <p className="cotacao-erro">{erro}</p>}
+    return (
+        <div className="cotacao-container">
 
-                <div className="cotacao-tabela">
-
-                    <div className="cotacao-header">
-                        <div className="cotacao-nome">Produto</div>
-                        <div className="cotacao-quantidade">Quantidade</div>
-                        <div className="cotacao-observacao">Observação</div>
-                        <div className="cotacao-fornecedores">Fornecedores</div>
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
+                    <div className="cotacao-acoes">
+                        <button
+                            className="cotacao-cadastrar"
+                            onClick={() => setModalAberta("cotacao")}
+                        >
+                            Cadastrar Cotação
+                        </button>
                     </div>
 
-                    {cotacoesFiltrados.map((cotacao) => (
-                        <div key={cotacao.id} className="cotacao-list">
+                    <div className="cotacao-pesquisa">
+                        <PesquisaEstMov onPesquisar={setPesquisa} />
+                    </div>
 
+                    {erro && <p className="cotacao-erro">{erro}</p>}
+
+                    <div className="cotacao-tabela">
+
+                        <div className="cotacao-header">
                             <div className="cotacao-nome">
-                                {cotacao.produtoNome}
-                            </div>
-
-                            <div className="cotacao-quantidade">
-                                {cotacao.quantidade}
+                                Data de Solicitação
                             </div>
 
                             <div className="cotacao-observacao">
-                                <button
-                                    className="cotacao-botao"
-                                    onClick={() => setCotacaoObservacao(cotacao)}
-                                    aria-label="Ver observação"
-                                >
-                                    <FaSearch />
-                                </button>
+                                Data Limite
                             </div>
 
                             <div className="cotacao-fornecedores">
+                                Observação
+                            </div>
+
+                            <div className="cotacao-fornecedores">
+                                Fornecedores
+                            </div>
+                        </div>
+
+                        {cotacoesFiltradas.map((cotacao) => (
+                            <div key={cotacao.id} className="cotacao-list">
+
+                                <div className="cotacao-nome">
+                                    {formatarData(cotacao.dataSolicitacao)}
+                                </div>
+
+                                <div className="cotacao-observacao">
+                                    {formatarData(cotacao.dataLimiteResposta)}
+                                </div>
+
+                                <div className="cotacao-fornecedores">
+                                    <button
+                                        className="cotacao-botao"
+                                        onClick={() => setCotacaoSelecionada(cotacao)}
+                                        aria-label="Ver observação e detalhes"
+                                    >
+                                        <FaSearch />
+                                    </button>
+                                </div>
+
+                                <div className="cotacao-fornecedores">
                                 <button
                                     className="cotacao-botao"
                                     onClick={() =>
-                                        navigate(
-                                            `/cotacaoFornecedores/${cotacao.id}/${cotacao.produtoId}`
-                                        )
+                                        navigate(`/cotacaoFornecedores/${cotacao.id}/${cotacao.produtoId}`)
                                     }
                                     aria-label="Ver fornecedores"
                                 >
@@ -123,56 +165,32 @@ return (
                                 </button>
                             </div>
 
-                        </div>
-                    ))}
-
-                    {cotacoesFiltrados.length === 0 && (
-                        <div className="cotacao-list-empty">
-                            Nenhuma cotação encontrada.
-                        </div>
-                    )}
-
-                </div>
-
-                {cotacaoObservacao && (
-                    <div
-                        className="modal-overlay"
-                        onClick={() => setCotacaoObservacao(null)}
-                    >
-                        <div
-                            className="modal-caixa"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <div className="modal-header">
-
-                                <div className="modal-close">
-                                    <IoClose
-                                        onClick={() => setCotacaoObservacao(null)}
-                                    />
-                                </div>
-
-                                <h2 id="modal-titulo">
-                                    Observações do produto
-                                </h2>
-
                             </div>
+                        ))}
 
-                            <div className="modal-conteudo">
-                                <div className="modal-observacao">
-                                    {cotacaoObservacao.observacao ||
-                                        "Nenhuma observação cadastrada."}
-                                </div>
+                        {cotacoesFiltradas.length === 0 && (
+                            <div className="cotacao-list-empty">
+                                Nenhuma cotação encontrada.
                             </div>
-                        </div>
+                        )}
+
                     </div>
-                )}
 
-                <ModalCadastroCotacao
-                    aberta={modalAberta === "cotacao"}
-                    onFechar={() => setModalAberta(null)}
-                />
-            </>
-        )}
+                    <ModalCadastroCotacao
+                        aberta={modalAberta === "cotacao"}
+                        onFechar={() => setModalAberta(null)}
+                    />
 
-    </div>
-)};
+                    <ModalCotacao
+                        aberta={cotacaoSelecionada !== null}
+                        cotacao={cotacaoSelecionada}
+                        onFechar={() => setCotacaoSelecionada(null)}
+                        onAtualizar={atualizarCotacao}
+                        onExcluir={excluirCotacao}
+                    />
+                </>
+            )}
+
+        </div>
+    );
+}
