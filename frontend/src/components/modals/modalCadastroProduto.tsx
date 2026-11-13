@@ -87,39 +87,39 @@ export default function ModalCadastroProduto({
       }
 
       if (!nome.trim()) {
-        novosErros.push("Informe o nome do produto.");
+        novosErros.push("Nome do produto é obrigatório.");
       }
     }
 
     if (etapa === 2) {
       if (!estoqueMinimo.trim()) {
-        novosErros.push("Informe o estoque mínimo.");
+        novosErros.push("Estoque mínimo é obrigatório.");
       }
 
       if (!estoqueMaximo.trim()) {
-        novosErros.push("Informe o estoque máximo.");
+        novosErros.push("Estoque máximo é obrigatório.");
       }
 
       if (!validadeDias.trim()) {
-        novosErros.push("Informe a validade em dias.");
+        novosErros.push("Validade em dias é obrigatório.");
       }
     }
 
     if (etapa === 3) {
       if (!quantidadeDisponivel.trim()) {
-        novosErros.push("Informe a quantidade disponível.");
+        novosErros.push("Quantidade disponível é obrigatório.");
       }
 
       if (!valorTotal.trim()) {
-        novosErros.push("Informe o valor total.");
+        novosErros.push("Valor total é obrigatório.");
       }
 
       if (!ultimaEntrada.trim()) {
-        novosErros.push("Informe a última entrada.");
+        novosErros.push("Última entrada é obrigatório.");
       }
 
       if (!ultimaSaida.trim()) {
-        novosErros.push("Informe a última saída.");
+        novosErros.push("Última saída é obrigatório.");
       }
     }
 
@@ -228,7 +228,7 @@ export default function ModalCadastroProduto({
       >
         <div className="modal-usuario-cabecalho">
           <div className="modal-usuario-titulo">
-            <div className="modal-titulos-2">
+            <div className="modal-titulos-9">
               <h2>Adicionar Produto</h2>
             </div>
           </div>
@@ -243,7 +243,6 @@ export default function ModalCadastroProduto({
           </button>
         </div>
 
-        {/* PROGRESSO DAS ETAPAS */}
         <div className="fornecedor-progresso">
           <div className="fornecedor-progresso-info">
             <span>Etapa {etapa} de 3</span>
@@ -283,7 +282,6 @@ export default function ModalCadastroProduto({
           className="modal-usuario-form"
           onSubmit={cadastrarProduto}
         >
-          {/* ETAPA 1 */}
           {etapa === 1 && (
             <>
               <h3>Informações do produto</h3>
@@ -325,7 +323,6 @@ export default function ModalCadastroProduto({
             </>
           )}
 
-          {/* ETAPA 2 */}
           {etapa === 2 && (
             <>
               <h3>Controle de estoque</h3>
@@ -356,7 +353,6 @@ export default function ModalCadastroProduto({
             </>
           )}
 
-          {/* ETAPA 3 */}
           {etapa === 3 && (
             <>
               <h3>Estoque inicial</h3>
@@ -396,7 +392,6 @@ export default function ModalCadastroProduto({
             </>
           )}
 
-          {/* BOTÕES DAS ETAPAS */}
           <div className="fornecedor-botoes-etapas">
             {etapa > 1 && (
               <button
@@ -428,7 +423,6 @@ export default function ModalCadastroProduto({
             )}
           </div>
 
-          {/* MENSAGENS */}
           {erros.length > 0 && (
             <div className="mensagens-erro" role="alert">
               {erros.map((mensagem, index) => (

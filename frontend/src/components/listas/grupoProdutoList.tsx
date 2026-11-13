@@ -5,6 +5,8 @@ import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 import Loading from "../loading";
+import { FaSearch } from "react-icons/fa";
+import ModalGrupoProduto from "../modals/modalGrupoProduto";
 
 interface GrupoProduto {
   id: number;
@@ -17,6 +19,8 @@ export default function GrupoProdutoList() {
   const [gruposProdutos, setGruposProdutos] = useState<GrupoProduto[]>([]);
   const [erro, setErro] = useState("");
   const [pesquisa, setPesquisa] = useState("");
+  const [grupoSelecionado, setGrupoSelecionado] = useState<GrupoProduto | null>(null);
+  const [modalAberta, setModalAberta] = useState(false);
 
   useEffect(() => {
     async function carregarGruposProdutos() {
@@ -40,6 +44,25 @@ export default function GrupoProdutoList() {
       .startsWith(pesquisa.trim().toLowerCase())
   );
 
+  function abrirModal(grupo: GrupoProduto) {
+  setGrupoSelecionado(grupo);
+  setModalAberta(true);
+}
+
+function atualizarGrupo(grupoAtualizado: GrupoProduto) {
+  setGruposProdutos((grupos) =>
+    grupos.map((grupo) =>
+      grupo.id === grupoAtualizado.id ? grupoAtualizado : grupo
+    )
+  );
+}
+
+function excluirGrupo(id: number) {
+  setGruposProdutos((grupos) =>
+    grupos.filter((grupo) => grupo.id !== id)
+  );
+}
+
   return (
     <div className="estoque-moviment-container">
       {loading ? (
@@ -60,8 +83,20 @@ export default function GrupoProdutoList() {
 
             {gruposFiltrados.map((grupo) => (
               <div key={grupo.id} className="estoque-moviment-list">
-                <div className="grupo-produto-nome">{grupo.nome}</div>
-                <div className="grupo-produto-descricao">{grupo.descricao}</div>
+                <div className="grupo-produto-nome">
+                  {grupo.nome}
+                </div>
+
+                <div className="grupo-produto-observacao">
+                  <button
+                    type="button"
+                    className="grupo-produto-botao-observacao"
+                    onClick={() => abrirModal(grupo)}
+                    aria-label={`Ver descrição de ${grupo.nome}`}
+                  >
+                  <FaSearch />
+                  </button>
+                </div>
               </div>
             ))}
 
@@ -73,6 +108,13 @@ export default function GrupoProdutoList() {
           </div>
         </>
       )}
+      <ModalGrupoProduto
+        aberta={modalAberta}
+        grupo={grupoSelecionado}
+        onFechar={() => setModalAberta(false)}
+        onAtualizar={atualizarGrupo}
+        onExcluir={excluirGrupo}
+      />
     </div>
   );
 }

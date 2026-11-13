@@ -103,9 +103,9 @@ export default function UsuarioDetalhes() {
           </div>
         </div>
 
-      <div>
-        <ModalEditarUsuario />
+      <div className="usuario-acoes">
         <ModalExcluirUsuario />
+        <ModalEditarUsuario />
       </div>
 
       </section>

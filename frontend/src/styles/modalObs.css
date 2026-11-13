@@ -71,13 +71,28 @@
     margin-left: 55px;
 }
 
+.modal-titulos-8 {
+    margin-left: 225px;
+}
+
+.modal-titulos-9 {
+    margin-left: 100px;
+}
+
+.modal-titulos-10 {
+    margin-left: 175px;
+}
+
 .modal-titulos h2,
 .modal-titulos-2 h2,
 .modal-titulos-3 h2,
 .modal-titulos-4 h2,
 .modal-titulos-5 h2,
 .modal-titulos-6 h2,
-.modal-titulos-7 h2
+.modal-titulos-7 h2,
+.modal-titulos-8 h2,
+.modal-titulos-9 h2,
+.modal-titulos-10 h2
 {
     color: #fff;
     font-weight: bold;
@@ -96,6 +111,10 @@
     height: 30px;
     width: 30px;
     margin-top: -20px;
+}
+
+.modal-close-2 {
+    width: 30px !important;
 }
 
 .modal-close:hover {
@@ -155,6 +174,13 @@
     cursor: pointer;
     transition: 0.2s;
     font-style: bold;
+    width: 250px !important;
+    margin-left: 10px !important;
+}
+
+.modal-usuario-submit-2 {
+    width: 250px !important;
+    margin-left: 5px !important;
 }
 
 .modal-usuario-submit:hover {

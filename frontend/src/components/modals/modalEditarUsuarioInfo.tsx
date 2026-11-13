@@ -4,6 +4,7 @@ import { IoClose } from "react-icons/io5";
 import "../../styles/userCard.css";
 import "../../styles/modalObs.css";
 import "../../styles/modalCriacaoMensagem.css";
+import "../../styles/usuarioDetalhes.css"
 
 import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent, useEffect } from "react";
@@ -97,7 +98,7 @@ export default function ModalEditarUsuario() {
     return (
         <>
             <div>
-                <button className="adicionar-button" onClick={() => setAlterarUsuario(true)}>
+                <button className="adicionar-button button-editar" onClick={() => setAlterarUsuario(true)}>
                     Editar
                 </button>
             </div>
@@ -113,14 +114,14 @@ export default function ModalEditarUsuario() {
                     >
                         <div className="modal-usuario-cabecalho">
                             <div className="modal-usuario-titulo">
-                                <div className="modal-titulos">
+                                <div className="modal-titulos-9">
                                     <h2>Editar Usuário</h2>
                                 </div>
                             </div>
 
                             <button
                                 type="button"
-                                className="modal-close"
+                                className="modal-close modal-close-2"
                                 onClick={fecharModal}
                             >
                                 <IoClose />
@@ -149,7 +150,7 @@ export default function ModalEditarUsuario() {
 
                             <button
                                 type="submit"
-                                className="modal-usuario-submit"
+                                className="modal-usuario-submit modal-usuario-submit-2"
                                 disabled={carregando}
                             >
                                 {carregando ? "Alterando..." : "Alterar usuário"}

@@ -64,16 +64,16 @@ export default function ModalCadastro({
     }
   }
 
-  async function cadastrarFornecedor(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (etapa !== 3) {
-      avancarEtapa();
-      return;
-    }
+  async function cadastrarFornecedor() {
 
     setErros([]);
     setSucesso("");
+
+    if (!telefone) {
+      setErros(["Telefone é obrigatório."]);
+      return;
+    }
+
     setCarregando(true);
 
     try {
@@ -140,7 +140,7 @@ export default function ModalCadastro({
       >
         <div className="modal-usuario-cabecalho">
           <div className="modal-usuario-titulo">
-            <div className="modal-titulos">
+            <div className="modal-titulos-2">
               <h2>Adicionar Fornecedor</h2>
             </div>
           </div>
@@ -154,7 +154,6 @@ export default function ModalCadastro({
           </button>
         </div>
 
-        {/* Progresso das etapas */}
         <div className="fornecedor-progresso">
           <div className="fornecedor-progresso-info">
             <span>Etapa {etapa} de 3</span>
@@ -182,10 +181,10 @@ export default function ModalCadastro({
         </div>
 
         <form
-          className="modal-usuario-form"
-          onSubmit={cadastrarFornecedor}
+            className="modal-usuario-form"
+            onSubmit={(e) => e.preventDefault()}
         >
-          {/* ETAPA 1 */}
+
           {etapa === 1 && (
             <>
               <h3>Dados do fornecedor</h3>
@@ -241,7 +240,6 @@ export default function ModalCadastro({
             </>
           )}
 
-          {/* ETAPA 2 */}
           {etapa === 2 && (
             <>
               <h3>Endereço do fornecedor</h3>
@@ -302,7 +300,6 @@ export default function ModalCadastro({
             </>
           )}
 
-          {/* ETAPA 3 */}
           {etapa === 3 && (
             <>
               <h3>Outras informações</h3>
@@ -325,7 +322,6 @@ export default function ModalCadastro({
             </>
           )}
 
-          {/* NAVEGAÇÃO */}
           <div className="fornecedor-botoes-etapas">
             {etapa > 1 && (
               <button
@@ -337,7 +333,7 @@ export default function ModalCadastro({
               </button>
             )}
 
-            {etapa < 3 ? (
+            {etapa <= 2  ? (
               <button
                 type="button"
                 className="modal-usuario-submit"
@@ -347,9 +343,10 @@ export default function ModalCadastro({
               </button>
             ) : (
               <button
-                type="submit"
+                type="button"
                 className="modal-usuario-submit"
                 disabled={carregando}
+                onClick={cadastrarFornecedor}
               >
                 {carregando ? "Cadastrando..." : "Cadastrar"}
               </button>

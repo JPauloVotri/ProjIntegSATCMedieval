@@ -75,9 +75,12 @@ export default function ModalExcluirUsuario() {
     return (
         <>
             <div>
-                <button className="adicionar-button" onClick={() => setExcluirUsuario(true)}>
-                    Excluir
-                </button>
+<button
+    className="usuario-excluir-button"
+    onClick={() => setExcluirUsuario(true)}
+>
+    Excluir
+</button>
             </div>
 
             {excluirUsuario && (
@@ -91,14 +94,14 @@ export default function ModalExcluirUsuario() {
                     >
                         <div className="modal-usuario-cabecalho">
                             <div className="modal-usuario-titulo">
-                                <div className="modal-titulos">
+                                <div className="modal-titulos-9">
                                     <h2>Excluir Usuário</h2>
                                 </div>
                             </div>
 
                             <button
                                 type="button"
-                                className="modal-close"
+                                className="modal-close modal-close-2"
                                 onClick={fecharModal}
                             >
                                 <IoClose />
@@ -115,7 +118,7 @@ export default function ModalExcluirUsuario() {
 
                             <button
                                 type="submit"
-                                className="modal-usuario-submit"
+                                className="modal-usuario-submit modal-usuario-submit-2"
                                 disabled={carregando}
                             >
                                 {carregando ? "Excluindo..." : "Excluir usuário"}

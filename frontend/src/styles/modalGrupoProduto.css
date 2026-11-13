@@ -1,0 +1,103 @@
+
+.modal-grupo-produto {
+  width: 500px;
+  max-width: 95%;
+}
+
+.modal-grupo-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  color: white;
+}
+
+.modal-grupo-conteudo h3 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.modal-grupo-conteudo label {
+  font-weight: bold;
+}
+
+.modal-grupo-descricao,
+.modal-grupo-conteudo textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #292929;
+  color: white;
+  font-size: 15px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.modal-grupo-descricao {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.modal-grupo-botoes,
+.modal-grupo-confirmacao {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-grupo-botoes button,
+.modal-grupo-confirmacao button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modal-grupo-botoes button:first-child {
+  background: #b52d2d;
+  color: white;
+}
+
+.modal-grupo-botoes button:last-child {
+  background: #e0ae35;
+  color: black;
+}
+
+.modal-grupo-confirmacao p {
+  width: 100%;
+}
+
+.modal-grupo-confirmacao button:first-of-type {
+  background: #555;
+  color: white;
+}
+
+.modal-grupo-confirmacao .modal-grupo-excluir {
+  background: #b52d2d;
+  color: white;
+}
+
+.modal-grupo-botoes button:disabled,
+.modal-grupo-confirmacao button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-excluir-grupo-produto {
+  margin-right: 250px;
+  width: 225px;
+}
+
+.button-adicionar-grupo-produto {
+  margin-top: -60px;
+  width: 225px;
+}

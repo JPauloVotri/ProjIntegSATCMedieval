@@ -28,3 +28,19 @@
     margin-top: 5%;
     margin-left: 2%;
 }
+
+.usuario-excluir-button {
+    background-color: #a52a2a;
+    color: white;
+    border: 1px solid #c0392b;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 1000px;
+    display: absolute;
+}
+
+.usuario-excluir-button:hover {
+    background-color: #c0392b;
+}

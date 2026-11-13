@@ -76,7 +76,7 @@ export default function ModalCadastro({
       >
         <div className="modal-usuario-cabecalho">
           <div className="modal-usuario-titulo">
-            <div className="modal-titulos">
+            <div className="modal-titulos-3">
               <h2>Adicionar Unidade de Medida</h2>
             </div>
           </div>

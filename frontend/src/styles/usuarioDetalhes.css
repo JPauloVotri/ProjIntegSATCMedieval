@@ -174,3 +174,23 @@
     grid-template-columns: 1fr;
   }
 }
+
+.usuario-acoes {
+    align-items: center;
+    gap: 10px;
+    width: 250px
+}
+
+.usuario-acoes button {
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-left: 30px
+}
+
+.button-editar {
+  position: absolute;
+  margin-left: 230px !important;
+  margin-top: -40px;
+  width: 250px !important;
+}

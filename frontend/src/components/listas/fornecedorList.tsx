@@ -8,6 +8,7 @@ import { apiFetch } from "../../../services/api";
 import { useEffect, useState } from "react";
 import PesquisaEstMov from "../pesquisas/pesquisaEstMov";
 import Loading from "../loading";
+import ObservacoesFornecedor from "../observacoes/observacaoFornecedor"
 
 interface Fornecedor {
   id: number;
@@ -17,8 +18,8 @@ interface Fornecedor {
 }
 
 export default function FornecedorList() {
-  const [fornecedorSelecionada, setFornecedorSelecionada] =
-    useState<Fornecedor | null>(null);
+  const [modalObservacaoAberta, setModalObservacaoAberta] = useState(false);
+  const [fornecedorSelecionado, setFornecedorSelecionado] = useState<Fornecedor | null>(null);
   const [loading, setLoading] = useState(true);
   const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
   const [erro, setErro] = useState("");
@@ -28,7 +29,7 @@ export default function FornecedorList() {
     async function carregarFornecedores() {
       try {
         setLoading(true);
-        const dados = await apiFetch<Fornecedor[]>("/api/Fornecedores");
+        const dados = await apiFetch<Fornecedor[]>("/api/Fornecedores/");
         setFornecedores(dados);
       } catch (error) {
         setErro("Não foi possível carregar os fornecedores.");
@@ -78,7 +79,10 @@ export default function FornecedorList() {
             <div className="fornecedor-observacao">
               <button
                 className="fornecedor-botao-observacao"
-                onClick={() => setFornecedorSelecionada(fornecedor)}
+                onClick={() => {
+                  setFornecedorSelecionado(fornecedor);
+                  setModalObservacaoAberta(true);
+                }}
                 aria-label={`Ver observações de ${fornecedor.razaoSocial}`}
               >
                 <FaSearch />
@@ -108,37 +112,13 @@ export default function FornecedorList() {
 
       </div>
 
-      {fornecedorSelecionada && (
-        <div
-          className="modal-overlay"
-          onClick={() => setFornecedorSelecionada(null)}
-        >
-          <div
-            className="modal-caixa"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-
-              <div className="modal-close">
-                <IoClose
-                  onClick={() => setFornecedorSelecionada(null)}
-                />
-              </div>
-
-              <h2 id="modal-titulo">
-                Observações do Fornecedor
-              </h2>
-
-            </div>
-
-            <div className="modal-conteudo">
-              <div className="modal-observacao">
-                {fornecedorSelecionada.observacao}
-              </div>
-            </div>
-
-          </div>
-        </div>
+      {fornecedorSelecionado && (
+          <ObservacoesFornecedor
+            aberta={modalObservacaoAberta}
+            onFechar={() => setModalObservacaoAberta(false)}
+            fornecedorId={fornecedorSelecionado.id}
+            observacao={fornecedorSelecionado.observacao}
+          />
       )}
 
       </>
