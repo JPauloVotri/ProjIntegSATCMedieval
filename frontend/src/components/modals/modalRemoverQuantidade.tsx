@@ -1,7 +1,9 @@
 
 import { useEffect, useState, type FormEvent } from "react";
+import { IoClose } from "react-icons/io5";
 
-import "../../styles/modalSaidaEstoque.css";
+import "../../styles/modalObs.css";
+import "../../styles/modalCriacaoMensagem.css";
 import { apiFetch } from "../../../services/api";
 
 interface Estoque {
@@ -25,9 +27,8 @@ export default function ModalSaidaEstoque({
   aberta,
   onFechar,
   estoque,
-  onConfirmar
+  onConfirmar,
 }: ModalSaidaEstoqueProps) {
-
   const [quantidade, setQuantidade] = useState("");
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
@@ -43,8 +44,17 @@ export default function ModalSaidaEstoque({
 
   if (!aberta) return null;
 
+  function fecharModal() {
+    if (carregando) return;
+
+    setQuantidade("");
+    setErros([]);
+    setSucesso("");
+    onFechar();
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+        e.preventDefault();
     setErros([]);
     setSucesso("");
 
@@ -86,63 +96,76 @@ export default function ModalSaidaEstoque({
   }
 
   return (
-    <div className="modalSaida-overlay">
-      <div className="modalSaida-container">
+    <div className="modal-overlay" onClick={fecharModal}>
+      <div
+        className="modal-caixa modal-usuario modal-saida"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-usuario-cabecalho">
+          <div className="modal-usuario-titulo">
+            <div className="modal-titulos-7">
+              <h2>Registrar saída de estoque</h2>
+            </div>
+          </div>
 
-        <div className="modalSaida-header">
-          <h2>Registrar saída</h2>
-          <button type="button" onClick={onFechar}>
-            ×
+          <button
+            type="button"
+            className="modal-close"
+            onClick={fecharModal}
+            disabled={carregando}
+          >
+            <IoClose />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form className="modal-usuario-form" onSubmit={handleSubmit}>
+          <h3>Informações do produto</h3>
 
-          <div className="modalSaida-info">
-            <p>Produto selecionado</p>
-            <h3>{estoque.produtoNome}</h3>
+          <div className="saida-info">
+            <label>Produto selecionado</label>
+            <strong>{estoque.produtoNome}</strong>
 
-            <p>Quantidade disponível</p>
-            <strong>
-              {estoque.quantidadeDisponivel}
-            </strong>
+            <label>Quantidade disponível</label>
+            <strong>{estoque.quantidadeDisponivel}</strong>
           </div>
 
-          <div className="modalSaida-campo">
-            <label htmlFor="quantidadeSaida">
-              Quantidade a retirar
-            </label>
+          <h3>Quantidade da saída</h3>
 
-            <input
-              id="quantidadeSaida"
-              type="number"
-              min="0.01"
-              max={estoque.quantidadeDisponivel}
-              step="any"
-              placeholder="Digite a quantidade"
-              value={quantidade}
-              onChange={(e) => setQuantidade(e.target.value)}
-            />
-          </div>
+          <label htmlFor="quantidadeSaida">
+            Quantidade a retirar
+          </label>
+
+          <input
+            id="quantidadeSaida"
+            type="number"
+            min="0.01"
+            max={estoque.quantidadeDisponivel}
+            step="any"
+            placeholder="Digite a quantidade"
+            value={quantidade}
+            onChange={(e) => setQuantidade(e.target.value)}
+            required
+          />
 
           {erros.length > 0 && (
-            <div className="modalSaida-erros">
+            <div className="mensagens-erro" role="alert">
               {erros.map((erro, index) => (
-                <p key={index} className="modalSaida-erro">
-                  {erro}
-                </p>
+                <p key={`${index}-${erro}`}>{erro}</p>
               ))}
             </div>
           )}
 
           {sucesso && (
-            <p className="modalSaida-sucesso">{sucesso}</p>
+            <p className="mensagem-sucesso" role="status">
+              {sucesso}
+            </p>
           )}
 
-          <div className="modalSaida-botoes">
+          <div className="fornecedor-botoes-etapas">
             <button
               type="button"
-              onClick={onFechar}
+              className="fornecedor-voltar"
+              onClick={fecharModal}
               disabled={carregando}
             >
               Cancelar
@@ -150,12 +173,12 @@ export default function ModalSaidaEstoque({
 
             <button
               type="submit"
+              className="modal-usuario-submit"
               disabled={carregando}
             >
               {carregando ? "Registrando..." : "Confirmar saída"}
             </button>
           </div>
-
         </form>
       </div>
     </div>

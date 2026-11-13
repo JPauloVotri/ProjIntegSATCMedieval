@@ -3,6 +3,9 @@ import { apiFetch } from "../../services/api";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 
+import ModalEditarUsuario from "../components/modals/modalEditarUsuarioInfo"
+import ModalExcluirUsuario from "../components/modals/modalExcluirUsuario";
+
 import "../styles/usuarioDetalhes.css";
 
 interface Usuario {
@@ -18,6 +21,8 @@ export default function UsuarioDetalhes() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(true);
+  const [modalExcluir, setModalExcluir] = useState(false);
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
 
@@ -98,11 +103,15 @@ export default function UsuarioDetalhes() {
           </div>
         </div>
 
-      <Link to="/administracao" className="button-voltar">
-        Voltar para a lista
-      </Link>
+      <div>
+        <ModalEditarUsuario />
+        <ModalExcluirUsuario />
+      </div>
 
       </section>
+        <Link to="/administracao" className="button-voltar">
+          Voltar para a lista
+        </Link>
     </main>
   );
 }

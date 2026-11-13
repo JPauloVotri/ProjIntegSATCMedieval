@@ -1,8 +1,11 @@
+
+import { IoClose } from "react-icons/io5";
+
 import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
 
+import "../../styles/modalObs.css";
 import "../../styles/modalCriacaoMensagem.css";
-import "../../styles/ModalCadastro.css";
 
 import SelectProduto from "../selects/selectProduto";
 
@@ -28,67 +31,93 @@ export default function ModalCadastro({
   const [dataSolicitacao, setDataSolicitacao] = useState("");
   const [dataLimiteResposta, setDataLimiteResposta] = useState("");
   const [observacao, setObservacao] = useState("");
+
   const [produtoId, setProdutoId] = useState<number | "">("");
-  const [unidadeMedidaId, setUnidadeMedidaId] = useState<number | "">("");
   const [quantidade, setQuantidade] = useState("");
 
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
-
-  let idUsuario = localStorage.getItem("usuario_id");
+  const [carregando, setCarregando] = useState(false);
 
   if (!aberta) return null;
 
-  async function CotacaoFornecedoresAdicionar(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function fecharModal() {
+    if (carregando) return;
 
-      async function buscarProdutos(): Promise<Produto[]> {
-      const resposta = await apiFetch("/api/Produtos", {
-        method: "GET",
-      });
-    
-      return resposta as Produto[];
-    }
+    setDataSolicitacao("");
+    setDataLimiteResposta("");
+    setObservacao("");
+    setProdutoId("");
+    setQuantidade("");
 
     setErros([]);
     setSucesso("");
 
-    if (dataSolicitacao === "") {
-      setErros(["Data de solicitação é obrigatória."]);
-      return;
-    } else if (dataLimiteResposta === "") {
-      setErros(["Data limite de resposta é obrigatória."]);
+    onFechar();
+  }
+
+  async function cadastrarCotacao(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    setErros([]);
+    setSucesso("");
+
+    const novosErros: string[] = [];
+
+    if (!dataSolicitacao) {
+      novosErros.push("Data de solicitação é obrigatória.");
+    }
+
+    if (!dataLimiteResposta) {
+      novosErros.push("Data limite de resposta é obrigatória.");
+    }
+
+    if (!produtoId) {
+      novosErros.push("Selecione um produto.");
+    }
+
+    if (!quantidade.trim() || Number(quantidade) <= 0) {
+      novosErros.push("Informe uma quantidade válida.");
+    }
+
+    if (novosErros.length > 0) {
+      setErros(novosErros);
       return;
     }
 
-    const produtos = await buscarProdutos();
+    const idUsuario = localStorage.getItem("usuario_id");
 
-    const produtoCriado = produtos.find(
-      (produto) =>
-        produto.id === produtoId
+    if (!idUsuario) {
+      setErros(["Não foi possível identificar o usuário logado."]);
+      return;
+    }
+
+    setCarregando(true);
+
+    try {
+      const produtos = await apiFetch("/api/Produtos", {
+        method: "GET",
+      }) as Produto[];
+
+      const produtoCriado = produtos.find(
+        (produto) => produto.id === Number(produtoId)
       );
 
-    if (!produtoCriado) {
-      setErros(["Não foi possível localizar o produto cadastrado."]);
-      return;
-    }
+      if (!produtoCriado) {
+        throw new Error("Não foi possível localizar o produto selecionado.");
+      }
 
-    console.log("Produto encontrado:", produtoCriado);
+      const cotacaoCriada = await apiFetch("/api/Cotacoes", {
+        method: "POST",
+        body: JSON.stringify({
+          usuarioId: Number(idUsuario),
+          dataSolicitacao: new Date(dataSolicitacao),
+          dataLimiteResposta: new Date(dataLimiteResposta),
+          status: 1,
+          observacao,
+        }),
+      }) as Cotacao;
 
-    const cotacaoCriada = await apiFetch("/api/Cotacoes", {
-      method: "POST",
-      body: JSON.stringify({
-        usuarioId: Number(idUsuario),
-        dataSolicitacao,
-        dataLimiteResposta,
-        status: 1,
-        observacao,
-      }),
-    }) as Cotacao;
-
-    console.log("ID da cotação:", cotacaoCriada.id);
-
-  try {
       await apiFetch("/api/CotacaoItens", {
         method: "POST",
         body: JSON.stringify({
@@ -101,104 +130,127 @@ export default function ModalCadastro({
         }),
       });
 
-      setSucesso("Cotacao cadastrada com sucesso!");
+      setSucesso("Cotação cadastrada com sucesso!");
+
       setDataSolicitacao("");
       setDataLimiteResposta("");
       setObservacao("");
       setProdutoId("");
-      setUnidadeMedidaId("");
       setQuantidade("");
+
     } catch (error) {
       const mensagem =
         error instanceof Error
           ? error.message
-          : "Não foi possível cadastrar a cotacao.";
+          : "Não foi possível cadastrar a cotação.";
 
       setErros(mensagem.split("\n"));
+
+    } finally {
+      setCarregando(false);
     }
   }
 
-  function fecharModal() {
-    setErros([]);
-    setSucesso("");
-  }
-
   return (
-    <div className="modal-overlay" onClick={() => { fecharModal(); onFechar();}}>
+    <div className="modal-overlay" onClick={fecharModal}>
       <div
-        className="modal-cadastro"
+        className="modal-caixa modal-usuario modal-cotacao"
         onClick={(e) => e.stopPropagation()}
       >
-        <form onSubmit={CotacaoFornecedoresAdicionar}>
-          <label htmlFor="dataSolicitacao">Data de Solicitação:</label>
+        <div className="modal-usuario-cabecalho">
+          <div className="modal-usuario-titulo">
+            <div className="modal-titulos-4">
+              <h2>Adicionar Cotação</h2>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="modal-close"
+            onClick={fecharModal}
+            disabled={carregando}
+          >
+            <IoClose />
+          </button>
+        </div>
+
+        <form
+          className="modal-usuario-form"
+          onSubmit={cadastrarCotacao}
+        >
+          <h3>Informações da cotação</h3>
+
+          <label>Data de Solicitação</label>
           <input
-            id="dataSolicitacao"
             type="date"
             value={dataSolicitacao}
             onChange={(e) => setDataSolicitacao(e.target.value)}
           />
 
-          <label htmlFor="dataLimiteResposta">Data Limite de Resposta:</label>
+          <label>Data Limite de Resposta</label>
           <input
-            id="dataLimiteResposta"
             type="date"
             value={dataLimiteResposta}
             onChange={(e) => setDataLimiteResposta(e.target.value)}
           />
 
-          <label htmlFor="observacao">Observação:</label>
-          <input
-            id="observacao"
-            type="text"
+          <label>Observação</label>
+          <textarea
+            placeholder="Digite uma observação"
             value={observacao}
             onChange={(e) => setObservacao(e.target.value)}
           />
 
-          <label htmlFor="produtoId">Produto:</label>
+          <h3>Produto da cotação</h3>
+
+          <label>Produto</label>
           <SelectProduto
             produtoId={produtoId}
             setProdutoId={setProdutoId}
           />
 
-          <label htmlFor="quantidade">Quantidade:</label>
+          <label>Quantidade</label>
           <input
-            id="quantidade"
             type="number"
+            placeholder="Digite a quantidade"
             value={quantidade}
             onChange={(e) => setQuantidade(e.target.value)}
           />
 
-          <div className="modal-botoes">
+          {erros.length > 0 && (
+            <div className="mensagens-erro" role="alert">
+              {erros.map((mensagem, index) => (
+                <p key={`${index}-${mensagem}`}>
+                  {mensagem}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {sucesso && (
+            <p className="mensagem-sucesso" role="status">
+              {sucesso}
+            </p>
+          )}
+
+          <div className="fornecedor-botoes-etapas">
             <button
               type="button"
-              onClick={onFechar}
-              className="modal-cancelar"
+              className="fornecedor-voltar"
+              onClick={fecharModal}
+              disabled={carregando}
             >
               Cancelar
             </button>
 
-            <button type="submit" className="modal-salvar">
-              Salvar
+            <button
+              type="submit"
+              className="modal-usuario-submit"
+              disabled={carregando}
+            >
+              {carregando ? "Cadastrando..." : "Cadastrar"}
             </button>
-            </div>
-            
-            <div>
-            {erros.length > 0 && (
-              <div className="mensagens-erro" role="alert">
-                {erros.map((mensagem, index) => (
-                  <p key={`${index}-${mensagem}`}>
-                    {mensagem}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {sucesso && (
-              <p className="mensagem-sucesso" role="status">
-                {sucesso}
-              </p>
-            )}
-            </div>
+          </div>
         </form>
       </div>
     </div>

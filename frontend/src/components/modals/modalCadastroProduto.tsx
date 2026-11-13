@@ -1,8 +1,12 @@
-import { apiFetch } from "../../../services/api";
-import { useState, useEffect, type FormEvent } from "react";
 
+import { IoClose } from "react-icons/io5";
+
+import "../../styles/modalObs.css";
 import "../../styles/modalCriacaoMensagem.css";
-import "../../styles/ModalCadastro.css";
+import "../../styles/modalCriacaoFornecedor.css";
+
+import { apiFetch } from "../../../services/api";
+import { useState, type FormEvent } from "react";
 
 import SelectGruposProdutos from "../selects/selectGrupoProdutos";
 import SelectUnidadeMedida from "../selects/selectUnidadeMedida";
@@ -18,18 +22,23 @@ interface Produto {
   codigo: number;
 }
 
-export default function ModalCadastro({
+export default function ModalCadastroProduto({
   aberta,
   onFechar,
 }: ModalCadastroProps) {
+  const [etapa, setEtapa] = useState(1);
+
   const [grupoProdutoId, setGrupoProdutoId] = useState<number | "">("");
   const [unidadeMedidaId, setUnidadeMedidaId] = useState<number | "">("");
+
   const [nome, setNome] = useState("");
   const [codigo, setCodigo] = useState("");
   const [descricao, setDescricao] = useState("");
+
   const [estoqueMinimo, setEstoqueMinimo] = useState("");
   const [estoqueMaximo, setEstoqueMaximo] = useState("");
   const [validadeDias, setValidadeDias] = useState("");
+
   const [quantidadeDisponivel, setQuantidadeDisponivel] = useState("");
   const [valorTotal, setValorTotal] = useState("");
   const [ultimaEntrada, setUltimaEntrada] = useState("");
@@ -37,56 +46,120 @@ export default function ModalCadastro({
 
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  if (!aberta) return null;
+  function limparCampos() {
+    setGrupoProdutoId("");
+    setUnidadeMedidaId("");
+    setNome("");
+    setCodigo("");
+    setDescricao("");
 
-  async function buscarProdutos(): Promise<Produto[]> {
-  const resposta = await apiFetch("/api/Produtos", {
-    method: "GET",
-  });
+    setEstoqueMinimo("");
+    setEstoqueMaximo("");
+    setValidadeDias("");
 
-  return resposta as Produto[];
-}
+    setQuantidadeDisponivel("");
+    setValorTotal("");
+    setUltimaEntrada("");
+    setUltimaSaida("");
+  }
+
+  function fecharModal() {
+    if (carregando) return;
+
+    setEtapa(1);
+    setErros([]);
+    setSucesso("");
+    onFechar();
+  }
+
+  function validarEtapa(): boolean {
+    const novosErros: string[] = [];
+
+    if (etapa === 1) {
+      if (!grupoProdutoId) {
+        novosErros.push("Selecione um grupo de produto.");
+      }
+
+      if (!unidadeMedidaId) {
+        novosErros.push("Selecione uma unidade de medida.");
+      }
+
+      if (!nome.trim()) {
+        novosErros.push("Informe o nome do produto.");
+      }
+    }
+
+    if (etapa === 2) {
+      if (!estoqueMinimo.trim()) {
+        novosErros.push("Informe o estoque mínimo.");
+      }
+
+      if (!estoqueMaximo.trim()) {
+        novosErros.push("Informe o estoque máximo.");
+      }
+
+      if (!validadeDias.trim()) {
+        novosErros.push("Informe a validade em dias.");
+      }
+    }
+
+    if (etapa === 3) {
+      if (!quantidadeDisponivel.trim()) {
+        novosErros.push("Informe a quantidade disponível.");
+      }
+
+      if (!valorTotal.trim()) {
+        novosErros.push("Informe o valor total.");
+      }
+
+      if (!ultimaEntrada.trim()) {
+        novosErros.push("Informe a última entrada.");
+      }
+
+      if (!ultimaSaida.trim()) {
+        novosErros.push("Informe a última saída.");
+      }
+    }
+
+    setErros(novosErros);
+
+    return novosErros.length === 0;
+  }
+
+  function avancarEtapa() {
+    if (!validarEtapa()) return;
+
+    setErros([]);
+
+    if (etapa < 3) {
+      setEtapa(etapa + 1);
+    }
+  }
+
+  function voltarEtapa() {
+    setErros([]);
+
+    if (etapa > 1) {
+      setEtapa(etapa - 1);
+    }
+  }
 
   async function cadastrarProduto(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const nomeProduto = nome;
-    const codigoProduto = Number(codigo);
+    if (etapa !== 3) {
+      avancarEtapa();
+      return;
+    }
+
+    if (!validarEtapa()) return;
 
     setErros([]);
     setSucesso("");
-    if (nome === "") {
-      setErros(["Nome é obrigatório."]);
-      return;
-    } else if (estoqueMinimo == "") {
-      setErros(["Estoque minimo é obrigatório."]);
-      return;
-    } else if (estoqueMaximo == "") {
-      setErros(["Estoque máximo é obrigatório."]);
-      return;
-    } else if (grupoProdutoId == "") {
-      setErros(["Grupo do Produto é Obrigatório"]);
-      return;
-    } else if (unidadeMedidaId == "") {
-      setErros(["Unidade de Medida é Obrigatório"]);
-      return;
-    } else if (validadeDias == "") {
-      setErros(["Validade de Dias é Obrigatório"]);
-      return;
-    } else if (quantidadeDisponivel == "") {
-      setErros(["Quantidade Disponivel é Obrigatório"]);
-      return;
-    } else if (valorTotal == "") {
-      setErros(["Valor Total é Obrigatório"]);
-      return;
-    } else if (quantidadeDisponivel == "") {
-      setErros(["Última Entrada é Obrigatório"]);
-      return;
-    } else if (ultimaSaida == "") {
-      setErros(["Última Saida é Obrigatório"]);
-      return;
-    }
+    setCarregando(true);
+
     try {
       await apiFetch("/api/Produtos", {
         method: "POST",
@@ -102,6 +175,36 @@ export default function ModalCadastro({
         }),
       });
 
+      const produtos = await apiFetch("/api/Produtos") as Produto[];
+
+      const produtoCriado = produtos.find(
+        (produto) =>
+          produto.nome.trim() === nome.trim() &&
+          String(produto.codigo) === String(codigo)
+      );
+
+      if (!produtoCriado) {
+        throw new Error(
+          "Produto cadastrado, mas não foi possível localizar seu registro."
+        );
+      }
+
+      await apiFetch("/api/Estoques", {
+        method: "POST",
+        body: JSON.stringify({
+          produtoId: produtoCriado.id,
+          quantidadeDisponivel,
+          valorTotal,
+          ultimaEntrada: new Date(ultimaEntrada),
+          ultimaSaida: new Date(ultimaSaida),
+        }),
+      });
+
+      setSucesso("Produto e estoque cadastrados com sucesso!");
+
+      limparCampos();
+      setEtapa(1);
+
     } catch (error) {
       const mensagem =
         error instanceof Error
@@ -109,196 +212,238 @@ export default function ModalCadastro({
           : "Não foi possível cadastrar o produto.";
 
       setErros(mensagem.split("\n"));
-      return
-    }
 
-    setErros([]);
-    setSucesso("");
-
-    const produtos = await buscarProdutos();
-
-    const produtoCriado = produtos.find(
-      (produto) =>
-        produto.nome?.trim() === nomeProduto.trim() &&
-        String(produto.codigo) === String(codigoProduto)
-      );
-
-    if (!produtoCriado) {
-      setErros(["Não foi possível localizar o produto cadastrado."]);
-      return;
-    }
-
-    try {
-      await apiFetch("/api/Estoques", {
-        method: "POST",
-        body: JSON.stringify({
-          produtoId: produtoCriado.id,
-          quantidadeDisponivel,
-          valorTotal,
-          ultimaEntrada,
-          ultimaSaida,
-        }),
-      });
-
-      setSucesso("Grupo de produtos cadastrado com sucesso!");
-      setGrupoProdutoId("");
-      setUnidadeMedidaId("");
-      setNome("");
-      setCodigo("");
-      setDescricao("");
-      setEstoqueMinimo("");
-      setEstoqueMaximo("");
-      setValidadeDias("");
-      setQuantidadeDisponivel("")
-      setValorTotal("")
-      setUltimaEntrada("")
-      setUltimaSaida("")
-    } catch (error) {
-      const mensagem =
-        error instanceof Error
-          ? error.message
-          : "Não foi possível cadastrar o grupo de produtos.";
-
-      setErros(mensagem.split("\n"));
+    } finally {
+      setCarregando(false);
     }
   }
 
-  function fecharModal() {
-    setErros([]);
-    setSucesso("");
-  }
+  if (!aberta) return null;
 
   return (
-    <div className="modal-overlay" onClick={() => { fecharModal(); onFechar();}}>
+    <div className="modal-overlay" onClick={fecharModal}>
       <div
-        className="modal-cadastro"
+        className="modal-caixa modal-usuario modal-fornecedor"
         onClick={(e) => e.stopPropagation()}
       >
-        <form onSubmit={cadastrarProduto}>
-
-          <label htmlFor="grupoProdutoId">Grupo de Produto:</label>
-          <SelectGruposProdutos
-            grupoProdutoId={grupoProdutoId}
-            setGrupoProdutoId={setGrupoProdutoId}
-          />
-
-          <label htmlFor="grupoUnidadeId">Grupo de Produto:</label>
-          <SelectUnidadeMedida
-            unidadeMedidaId={unidadeMedidaId}
-            setUnidadeMedidaId={setUnidadeMedidaId}
-          />
-
-          <label htmlFor="nome">Nome:</label>
-          <input
-            id="nome"
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-
-          <label htmlFor="codigo">Codigo:</label>
-          <input
-            id="codigo"
-            type="number"
-            value={codigo}
-            onChange={(e) => setCodigo(e.target.value)}
-          />
-
-          <label htmlFor="descricao">Descrição:</label>
-          <input
-            id="descricao"
-            type="text"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-          />
-
-          <label htmlFor="estoqueMinimo">Estoque Minimo:</label>
-          <input
-            id="estoque minimo"
-            type="number"
-            value={estoqueMinimo}
-            onChange={(e) => setEstoqueMinimo(e.target.value)}
-          />
-
-          <label htmlFor="estoqueMaximo">Estoque Maximo:</label>
-          <input
-            id="estoque maximo"
-            type="number"
-            value={estoqueMaximo}
-            onChange={(e) => setEstoqueMaximo(e.target.value)}
-          />
-
-          <label htmlFor="validadeDias">Validade de Dias:</label>
-          <input
-            id="validade dias"
-            type="number"
-            value={validadeDias}
-            onChange={(e) => setValidadeDias(e.target.value)}
-          />
-
-          <label htmlFor="quantidadeDisponivel">Quantidade Disponivel:</label>
-          <input
-            id="quantidade disponivel"
-            type="number"
-            value={quantidadeDisponivel}
-            onChange={(e) => setQuantidadeDisponivel(e.target.value)}
-          />
-
-        <label htmlFor="ValorTotal">Valor Total:</label>
-          <input
-            id="Valor total"
-            type="number"
-            value={valorTotal}
-            onChange={(e) => setValorTotal(e.target.value)}
-          />
-
-        <label htmlFor="ultimaEntrada">Ultima Entrada:</label>
-          <input
-            id="ultima entrada"
-            type="date"
-            value={ultimaEntrada}
-            onChange={(e) => setUltimaEntrada(e.target.value)}
-          />
-
-        <label htmlFor="ultimaSaida">Ultima Saida:</label>
-          <input
-            id="ultima saida"
-            type="date"
-            value={ultimaSaida}
-            onChange={(e) => setUltimaSaida(e.target.value)}
-          />
-
-          <div className="modal-botoes">
-            <button
-              type="button"
-              onClick={onFechar}
-              className="modal-cancelar"
-            >
-              Cancelar
-            </button>
-
-            <button type="submit" className="modal-salvar">
-              Salvar
-            </button>
+        <div className="modal-usuario-cabecalho">
+          <div className="modal-usuario-titulo">
+            <div className="modal-titulos-2">
+              <h2>Adicionar Produto</h2>
             </div>
-            
-            <div>
-            {erros.length > 0 && (
-              <div className="mensagens-erro" role="alert">
-                {erros.map((mensagem, index) => (
-                  <p key={`${index}-${mensagem}`}>
-                    {mensagem}
-                  </p>
-                ))}
-              </div>
+          </div>
+
+          <button
+            type="button"
+            className="modal-close"
+            onClick={fecharModal}
+            disabled={carregando}
+          >
+            <IoClose />
+          </button>
+        </div>
+
+        {/* PROGRESSO DAS ETAPAS */}
+        <div className="fornecedor-progresso">
+          <div className="fornecedor-progresso-info">
+            <span>Etapa {etapa} de 3</span>
+
+            <span>
+              {etapa === 1
+                ? "Informações do produto"
+                : etapa === 2
+                  ? "Controle de estoque"
+                  : "Estoque inicial"}
+            </span>
+          </div>
+
+          <div className="fornecedor-progresso-barra">
+            <div
+              className="fornecedor-progresso-preenchimento"
+              style={{ width: `${(etapa / 3) * 100}%` }}
+            />
+          </div>
+
+          <div className="fornecedor-etapas">
+            <span className={etapa >= 1 ? "ativa" : ""}>
+              1. Produto
+            </span>
+
+            <span className={etapa >= 2 ? "ativa" : ""}>
+              2. Controle
+            </span>
+
+            <span className={etapa >= 3 ? "ativa" : ""}>
+              3. Estoque
+            </span>
+          </div>
+        </div>
+
+        <form
+          className="modal-usuario-form"
+          onSubmit={cadastrarProduto}
+        >
+          {/* ETAPA 1 */}
+          {etapa === 1 && (
+            <>
+              <h3>Informações do produto</h3>
+
+              <label>Grupo de Produto</label>
+              <SelectGruposProdutos
+                grupoProdutoId={grupoProdutoId}
+                setGrupoProdutoId={setGrupoProdutoId}
+              />
+
+              <label>Unidade de Medida</label>
+              <SelectUnidadeMedida
+                unidadeMedidaId={unidadeMedidaId}
+                setUnidadeMedidaId={setUnidadeMedidaId}
+              />
+
+              <label>Nome</label>
+              <input
+                type="text"
+                placeholder="Nome do produto"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+
+              <label>Código</label>
+              <input
+                type="text"
+                placeholder="Código do produto"
+                value={codigo}
+                onChange={(e) => setCodigo(e.target.value)}
+              />
+
+              <label>Descrição</label>
+              <textarea
+                placeholder="Descrição do produto"
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+              />
+            </>
+          )}
+
+          {/* ETAPA 2 */}
+          {etapa === 2 && (
+            <>
+              <h3>Controle de estoque</h3>
+
+              <label>Estoque mínimo</label>
+              <input
+                type="number"
+                placeholder="Quantidade mínima"
+                value={estoqueMinimo}
+                onChange={(e) => setEstoqueMinimo(e.target.value)}
+              />
+
+              <label>Estoque máximo</label>
+              <input
+                type="number"
+                placeholder="Quantidade máxima"
+                value={estoqueMaximo}
+                onChange={(e) => setEstoqueMaximo(e.target.value)}
+              />
+
+              <label>Validade (dias)</label>
+              <input
+                type="number"
+                placeholder="Validade em dias"
+                value={validadeDias}
+                onChange={(e) => setValidadeDias(e.target.value)}
+              />
+            </>
+          )}
+
+          {/* ETAPA 3 */}
+          {etapa === 3 && (
+            <>
+              <h3>Estoque inicial</h3>
+
+              <label>Quantidade disponível</label>
+              <input
+                type="number"
+                placeholder="Quantidade inicial"
+                value={quantidadeDisponivel}
+                onChange={(e) =>
+                  setQuantidadeDisponivel(e.target.value)
+                }
+              />
+
+              <label>Valor total</label>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="Valor total"
+                value={valorTotal}
+                onChange={(e) => setValorTotal(e.target.value)}
+              />
+
+              <label>Última entrada</label>
+              <input
+                type="date"
+                value={ultimaEntrada}
+                onChange={(e) => setUltimaEntrada(e.target.value)}
+              />
+
+              <label>Última saída</label>
+              <input
+                type="date"
+                value={ultimaSaida}
+                onChange={(e) => setUltimaSaida(e.target.value)}
+              />
+            </>
+          )}
+
+          {/* BOTÕES DAS ETAPAS */}
+          <div className="fornecedor-botoes-etapas">
+            {etapa > 1 && (
+              <button
+                type="button"
+                className="fornecedor-voltar"
+                onClick={voltarEtapa}
+                disabled={carregando}
+              >
+                Voltar
+              </button>
             )}
 
-            {sucesso && (
-              <p className="mensagem-sucesso" role="status">
-                {sucesso}
-              </p>
+            {etapa < 3 ? (
+              <button
+                type="button"
+                className="modal-usuario-submit"
+                onClick={avancarEtapa}
+              >
+                Próximo
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="modal-usuario-submit"
+                disabled={carregando}
+              >
+                {carregando ? "Cadastrando..." : "Cadastrar"}
+              </button>
             )}
+          </div>
+
+          {/* MENSAGENS */}
+          {erros.length > 0 && (
+            <div className="mensagens-erro" role="alert">
+              {erros.map((mensagem, index) => (
+                <p key={`${index}-${mensagem}`}>
+                  {mensagem}
+                </p>
+              ))}
             </div>
+          )}
+
+          {sucesso && (
+            <p className="mensagem-sucesso" role="status">
+              {sucesso}
+            </p>
+          )}
         </form>
       </div>
     </div>

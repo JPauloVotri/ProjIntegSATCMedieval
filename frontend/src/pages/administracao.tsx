@@ -5,8 +5,8 @@ function App() {
 
     return (
         <main className="login-page">
-            <UserCard />
             <UserCardAdicionar />
+            <UserCard />
         </main>
     )
 }

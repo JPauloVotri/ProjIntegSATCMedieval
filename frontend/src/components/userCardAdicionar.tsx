@@ -67,15 +67,10 @@ export default function UserCardAdicionar() {
 
     return (
         <>
-            <div className="user-card">
-                <FaUser className="user-icon" />
-
-                <p
-                    className="user-name"
-                    onClick={() => setCriarUsuario(true)}
-                >
-                    Adicionar Usuário
-                </p>
+            <div>
+                <button className="adicionar-button" onClick={() => setCriarUsuario(true)}>
+                    Adicionar usuário
+                </button>
             </div>
 
             {criarUsuario && (

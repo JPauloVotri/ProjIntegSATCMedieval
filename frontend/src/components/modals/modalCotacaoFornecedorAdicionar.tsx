@@ -1,11 +1,14 @@
+
+import { IoClose } from "react-icons/io5";
+
 import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 
 import SelectFornecedor from "../selects/selectFornecedor";
 
+import "../../styles/modalObs.css";
 import "../../styles/modalCriacaoMensagem.css";
-import "../../styles/ModalCadastro.css";
 
 interface ModalCadastroProps {
   aberta: boolean;
@@ -26,122 +29,169 @@ export default function ModalCadastro({
 
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
   if (!aberta) return null;
 
-  async function cadastrarUnidadeMedida(e: FormEvent<HTMLFormElement>) {
+  function limparCampos() {
+    setFornecedorId("");
+    setValorUnitario("");
+    setPrazoEntregaDias("");
+    setCondicaoPagamento("");
+    setObservacao("");
+  }
+
+  function fecharModal() {
+    if (carregando) return;
+
+    setErros([]);
+    setSucesso("");
+    limparCampos();
+    onFechar();
+  }
+
+  async function cadastrarFornecedor(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setErros([]);
     setSucesso("");
 
-    console.log("ID da cotação:", id);
+    setCarregando(true);
 
     try {
       await apiFetch("/api/CotacaoItemFornecedores", {
         method: "POST",
         body: JSON.stringify({
           cotacaoItemId: Number(id),
-          fornecedorId,
-          valorUnitario,
-          prazoEntregaDias,
+          fornecedorId: Number(fornecedorId),
+          valorUnitario: Number(valorUnitario),
+          prazoEntregaDias: Number(prazoEntregaDias),
           condicaoPagamento,
           observacao,
         }),
       });
 
-      setSucesso("Unidade de medida cadastrada com sucesso!");
+      setSucesso("Fornecedor adicionado à cotação com sucesso!");
+
+      limparCampos();
+
     } catch (error) {
       const mensagem =
         error instanceof Error
           ? error.message
-          : "Não foi possível cadastrar a unidade de medida.";
+          : "Não foi possível adicionar o fornecedor à cotação.";
 
       setErros(mensagem.split("\n"));
+
+    } finally {
+      setCarregando(false);
     }
   }
 
-  function fecharModal() {
-    setErros([]);
-    setSucesso("");
-  }
-
   return (
-    <div className="modal-overlay" onClick={() => { fecharModal(); onFechar();}}>
+    <div className="modal-overlay" onClick={fecharModal}>
       <div
-        className="modal-cadastro"
+        className="modal-caixa modal-usuario modal-cotacao-fornecedor"
         onClick={(e) => e.stopPropagation()}
       >
-        <form onSubmit={cadastrarUnidadeMedida}>
-          <label htmlFor="fornecedorId">Fornecedor:</label>
-            <SelectFornecedor
-              fornecedorId={fornecedorId}
-              setFornecedorId={setFornecedorId}
-            />
+        <div className="modal-usuario-cabecalho">
+          <div className="modal-usuario-titulo">
+            <div className="modal-titulos-5">
+              <h2>Adicionar Fornecedor à Cotação</h2>
+            </div>
+          </div>
 
-          <label htmlFor="valorUnitario">Valor Unitário:</label>
+          <button
+            type="button"
+            className="modal-close"
+            onClick={fecharModal}
+            disabled={carregando}
+          >
+            <IoClose />
+          </button>
+        </div>
+
+        <form
+          className="modal-usuario-form"
+          onSubmit={cadastrarFornecedor}
+        >
+          <h3>Informações do fornecedor</h3>
+
+          <label>Fornecedor</label>
+          <SelectFornecedor
+            fornecedorId={fornecedorId}
+            setFornecedorId={setFornecedorId}
+          />
+
+          <h3>Informações da oferta</h3>
+
+          <label>Valor Unitário</label>
           <input
             type="number"
-            id="valorUnitario"
+            step="0.01"
+            placeholder="Digite o valor unitário"
             value={valorUnitario}
             onChange={(e) => setValorUnitario(e.target.value)}
           />
 
-          <label htmlFor="prazoEntregaDias">Prazo de Entrega (dias):</label>
+          <label>Prazo de Entrega (dias)</label>
           <input
             type="number"
-            id="prazoEntregaDias"
+            min="0"
+            placeholder="Ex: 3"
             value={prazoEntregaDias}
             onChange={(e) => setPrazoEntregaDias(e.target.value)}
           />
 
-          <label htmlFor="condicaoPagamento">Condição de Pagamento:</label>
+          <label>Condição de Pagamento</label>
           <input
             type="text"
-            id="condicaoPagamento"
+            placeholder="Ex: 30 dias"
             value={condicaoPagamento}
             onChange={(e) => setCondicaoPagamento(e.target.value)}
           />
 
-          <label htmlFor="observacao">Observação:</label>
-          <input
-            type="text"
-            id="observacao"
+          <label>Observação</label>
+          <textarea
+            placeholder="Digite uma observação (opcional)"
             value={observacao}
             onChange={(e) => setObservacao(e.target.value)}
           />
 
-          <div className="modal-botoes">
+          {erros.length > 0 && (
+            <div className="mensagens-erro" role="alert">
+              {erros.map((mensagem, index) => (
+                <p key={`${index}-${mensagem}`}>
+                  {mensagem}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {sucesso && (
+            <p className="mensagem-sucesso" role="status">
+              {sucesso}
+            </p>
+          )}
+
+          <div className="fornecedor-botoes-etapas">
             <button
               type="button"
-              onClick={onFechar}
-              className="modal-cancelar"
+              className="fornecedor-voltar"
+              onClick={fecharModal}
+              disabled={carregando}
             >
               Cancelar
             </button>
 
-            <button type="submit" className="modal-salvar">
-              Salvar
+            <button
+              type="submit"
+              className="modal-usuario-submit"
+              disabled={carregando}
+            >
+              {carregando ? "Cadastrando..." : "Cadastrar"}
             </button>
-            </div>
-            
-            <div>
-            {erros.length > 0 && (
-              <div className="mensagens-erro" role="alert">
-                {erros.map((mensagem, index) => (
-                  <p key={`${index}-${mensagem}`}>
-                    {mensagem}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {sucesso && (
-              <p className="mensagem-sucesso" role="status">
-                {sucesso}
-              </p>
-            )}
-            </div>
+          </div>
         </form>
       </div>
     </div>

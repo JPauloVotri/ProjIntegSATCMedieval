@@ -1,9 +1,12 @@
+
+import { IoClose } from "react-icons/io5";
+
+import "../../styles/modalObs.css";
+import "../../styles/modalCriacaoMensagem.css";
+
 import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
 import SelectEstados from "../selects/selectEstados";
-
-import "../../styles/modalCriacaoMensagem.css";
-import "../../styles/ModalCadastro.css";
 
 interface ModalCadastroProps {
   aberta: boolean;
@@ -14,12 +17,15 @@ export default function ModalCadastro({
   aberta,
   onFechar,
 }: ModalCadastroProps) {
+  const [etapa, setEtapa] = useState(1);
+
   const [razaoSocial, setRazaoSocial] = useState("");
   const [nomeFantasia, setNomeFantasia] = useState("");
   const [documento, setDocumento] = useState("");
   const [inscricaoEstadual, setInscricaoEstadual] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
+
   const [cep, setCep] = useState("");
   const [logradouro, setLogradouro] = useState("");
   const [numero, setNumero] = useState("");
@@ -27,19 +33,48 @@ export default function ModalCadastro({
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
+
   const [diasEntrega, setDiasEntrega] = useState("");
   const [condicaoPagamento, setCondicaoPagamento] = useState("");
 
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  if (!aberta) return null;
+  function fecharModal() {
+    setEtapa(1);
+    setErros([]);
+    setSucesso("");
+    onFechar();
+  }
+
+  function avancarEtapa() {
+    setErros([]);
+
+    if (etapa < 3) {
+      setEtapa(etapa + 1);
+    }
+  }
+
+  function voltarEtapa() {
+    setErros([]);
+
+    if (etapa > 1) {
+      setEtapa(etapa - 1);
+    }
+  }
 
   async function cadastrarFornecedor(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (etapa !== 3) {
+      avancarEtapa();
+      return;
+    }
+
     setErros([]);
     setSucesso("");
+    setCarregando(true);
 
     try {
       await apiFetch("/api/Fornecedores", {
@@ -64,6 +99,7 @@ export default function ModalCadastro({
       });
 
       setSucesso("Fornecedor cadastrado com sucesso!");
+
       setRazaoSocial("");
       setNomeFantasia("");
       setDocumento("");
@@ -79,6 +115,8 @@ export default function ModalCadastro({
       setEstado("");
       setDiasEntrega("");
       setCondicaoPagamento("");
+      setEtapa(1);
+
     } catch (error) {
       const mensagem =
         error instanceof Error
@@ -86,174 +124,253 @@ export default function ModalCadastro({
           : "Não foi possível cadastrar o fornecedor.";
 
       setErros(mensagem.split("\n"));
+
+    } finally {
+      setCarregando(false);
     }
   }
 
-  function fecharModal() {
-    setErros([]);
-    setSucesso("");
-  }
+  if (!aberta) return null;
 
   return (
-    <div className="modal-overlay" onClick={() => { fecharModal(); onFechar();}}>
+    <div className="modal-overlay" onClick={fecharModal}>
       <div
-        className="modal-cadastro"
+        className="modal-caixa modal-usuario modal-fornecedor"
         onClick={(e) => e.stopPropagation()}
       >
-        <form onSubmit={cadastrarFornecedor}>
-          <label htmlFor="razaoSocial">Razão Social:</label>
-          <input
-            id="razao social"
-            type="text"
-            value={razaoSocial}
-            onChange={(e) => setRazaoSocial(e.target.value)}
-          />
-
-          <label htmlFor="nomeFantasia">Nome Fantasia:</label>
-          <input
-            id="nome fantasia"
-            type="text"
-            value={nomeFantasia}
-            onChange={(e) => setNomeFantasia(e.target.value)}
-          />
-
-          <label htmlFor="documento">Documento:</label>
-          <input
-            id="documento"
-            type="text"
-            value={documento}
-            onChange={(e) => setDocumento(e.target.value)}
-          />
-
-          <label htmlFor="inscricaoEstadual">Inscricao Estadual:</label>
-          <input
-            id="inscricao estadual"
-            type="text"
-            value={inscricaoEstadual}
-            onChange={(e) => setInscricaoEstadual(e.target.value)}
-          />
-
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          
-          <label htmlFor="telefone">Telefone:</label>
-          <input
-            id="telefone"
-            type="text"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-          />
-
-          - Endereço -
-
-          <label htmlFor="cep">Cep:</label>
-          <input
-            id="cep"
-            type="text"
-            value={cep}
-            onChange={(e) => setCep(e.target.value)}
-          />
-
-          <label htmlFor="logradouro">Logradouro:</label>
-          <input
-            id="logradouro"
-            type="text"
-            value={logradouro}
-            onChange={(e) => setLogradouro(e.target.value)}
-          />
-
-          <label htmlFor="numero">Numero:</label>
-          <input
-            id="numero"
-            type="text"
-            value={numero}
-            onChange={(e) => setNumero(e.target.value)}
-          />
-
-          <label htmlFor="complemento">Complemento:</label>
-          <input
-            id="complemento"
-            type="text"
-            value={complemento}
-            onChange={(e) => setComplemento(e.target.value)}
-          />
-
-          <label htmlFor="bairro">Bairro:</label>
-          <input
-            id="bairro"
-            type="text"
-            value={bairro}
-            onChange={(e) => setBairro(e.target.value)}
-          />
-
-          <label htmlFor="cidade">Cidade:</label>
-          <input
-            id="cidade"
-            type="text"
-            value={cidade}
-            onChange={(e) => setCidade(e.target.value)}
-          />
-
-          <label htmlFor="estado">Estado:</label>
-          <SelectEstados
-            estado={estado}
-            setEstado={setEstado}
-          />
-
-          - Outros -
-
-          <label htmlFor="dias Entregas">Dias de Entregas:</label>
-          <input
-            id="dias entregas"
-            type="text"
-            value={diasEntrega}
-            onChange={(e) => setDiasEntrega(e.target.value)}
-          />
-
-          <label htmlFor="condicao Pagamento">Condicao de Pagamento:</label>
-          <input
-            id="condicao pagamento"
-            type="text"
-            value={condicaoPagamento}
-            onChange={(e) => setCondicaoPagamento(e.target.value)}
-          />
-
-          <div className="modal-botoes">
-            <button
-              type="button"
-              onClick={onFechar}
-              className="modal-cancelar"
-            >
-              Cancelar
-            </button>
-
-            <button type="submit" className="modal-salvar">
-              Salvar
-            </button>
+        <div className="modal-usuario-cabecalho">
+          <div className="modal-usuario-titulo">
+            <div className="modal-titulos">
+              <h2>Adicionar Fornecedor</h2>
             </div>
-            
-            <div>
-            {erros.length > 0 && (
-              <div className="mensagens-erro" role="alert">
-                {erros.map((mensagem, index) => (
-                  <p key={`${index}-${mensagem}`}>
-                    {mensagem}
-                  </p>
-                ))}
-              </div>
+          </div>
+
+          <button
+            type="button"
+            className="modal-close"
+            onClick={fecharModal}
+          >
+            <IoClose />
+          </button>
+        </div>
+
+        {/* Progresso das etapas */}
+        <div className="fornecedor-progresso">
+          <div className="fornecedor-progresso-info">
+            <span>Etapa {etapa} de 3</span>
+            <span>
+              {etapa === 1
+                ? "Dados do fornecedor"
+                : etapa === 2
+                  ? "Endereço"
+                  : "Outras informações"}
+            </span>
+          </div>
+
+          <div className="fornecedor-progresso-barra">
+            <div
+              className="fornecedor-progresso-preenchimento"
+              style={{ width: `${(etapa / 3) * 100}%` }}
+            />
+          </div>
+
+          <div className="fornecedor-etapas">
+            <span className={etapa >= 1 ? "ativa" : ""}>1. Dados</span>
+            <span className={etapa >= 2 ? "ativa" : ""}>2. Endereço</span>
+            <span className={etapa >= 3 ? "ativa" : ""}>3. Outros</span>
+          </div>
+        </div>
+
+        <form
+          className="modal-usuario-form"
+          onSubmit={cadastrarFornecedor}
+        >
+          {/* ETAPA 1 */}
+          {etapa === 1 && (
+            <>
+              <h3>Dados do fornecedor</h3>
+
+              <label>Razão Social</label>
+              <input
+                type="text"
+                placeholder="Digite a razão social"
+                value={razaoSocial}
+                onChange={(e) => setRazaoSocial(e.target.value)}
+                required
+              />
+
+              <label>Nome Fantasia</label>
+              <input
+                type="text"
+                placeholder="Digite o nome fantasia"
+                value={nomeFantasia}
+                onChange={(e) => setNomeFantasia(e.target.value)}
+              />
+
+              <label>Documento</label>
+              <input
+                type="text"
+                placeholder="Digite o CNPJ ou CPF"
+                value={documento}
+                onChange={(e) => setDocumento(e.target.value)}
+              />
+
+              <label>Inscrição Estadual</label>
+              <input
+                type="text"
+                placeholder="Digite a inscrição estadual"
+                value={inscricaoEstadual}
+                onChange={(e) => setInscricaoEstadual(e.target.value)}
+              />
+
+              <label>E-mail</label>
+              <input
+                type="email"
+                placeholder="Digite o e-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <label>Telefone</label>
+              <input
+                type="text"
+                placeholder="Digite o telefone"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
+              />
+            </>
+          )}
+
+          {/* ETAPA 2 */}
+          {etapa === 2 && (
+            <>
+              <h3>Endereço do fornecedor</h3>
+
+              <label>CEP</label>
+              <input
+                type="text"
+                placeholder="Digite o CEP"
+                value={cep}
+                onChange={(e) => setCep(e.target.value)}
+              />
+
+              <label>Logradouro</label>
+              <input
+                type="text"
+                placeholder="Digite o logradouro"
+                value={logradouro}
+                onChange={(e) => setLogradouro(e.target.value)}
+              />
+
+              <label>Número</label>
+              <input
+                type="text"
+                placeholder="Digite o número"
+                value={numero}
+                onChange={(e) => setNumero(e.target.value)}
+              />
+
+              <label>Complemento</label>
+              <input
+                type="text"
+                placeholder="Digite o complemento"
+                value={complemento}
+                onChange={(e) => setComplemento(e.target.value)}
+              />
+
+              <label>Bairro</label>
+              <input
+                type="text"
+                placeholder="Digite o bairro"
+                value={bairro}
+                onChange={(e) => setBairro(e.target.value)}
+              />
+
+              <label>Cidade</label>
+              <input
+                type="text"
+                placeholder="Digite a cidade"
+                value={cidade}
+                onChange={(e) => setCidade(e.target.value)}
+              />
+
+              <label>Estado</label>
+              <SelectEstados
+                estado={estado}
+                setEstado={setEstado}
+              />
+            </>
+          )}
+
+          {/* ETAPA 3 */}
+          {etapa === 3 && (
+            <>
+              <h3>Outras informações</h3>
+
+              <label>Dias de Entrega</label>
+              <input
+                type="text"
+                placeholder="Ex: 3 dias úteis"
+                value={diasEntrega}
+                onChange={(e) => setDiasEntrega(e.target.value)}
+              />
+
+              <label>Condição de Pagamento</label>
+              <input
+                type="text"
+                placeholder="Ex: 30 dias"
+                value={condicaoPagamento}
+                onChange={(e) => setCondicaoPagamento(e.target.value)}
+              />
+            </>
+          )}
+
+          {/* NAVEGAÇÃO */}
+          <div className="fornecedor-botoes-etapas">
+            {etapa > 1 && (
+              <button
+                type="button"
+                className="fornecedor-voltar"
+                onClick={voltarEtapa}
+              >
+                Voltar
+              </button>
             )}
 
-            {sucesso && (
-              <p className="mensagem-sucesso" role="status">
-                {sucesso}
-              </p>
+            {etapa < 3 ? (
+              <button
+                type="button"
+                className="modal-usuario-submit"
+                onClick={avancarEtapa}
+              >
+                Próximo
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="modal-usuario-submit"
+                disabled={carregando}
+              >
+                {carregando ? "Cadastrando..." : "Cadastrar"}
+              </button>
             )}
+          </div>
+
+          {erros.length > 0 && (
+            <div className="mensagens-erro" role="alert">
+              {erros.map((mensagem, index) => (
+                <p key={`${index}-${mensagem}`}>
+                  {mensagem}
+                </p>
+              ))}
             </div>
+          )}
+
+          {sucesso && (
+            <p className="mensagem-sucesso" role="status">
+              {sucesso}
+            </p>
+          )}
         </form>
       </div>
     </div>

@@ -1,8 +1,11 @@
+
+import { IoClose } from "react-icons/io5";
+
+import "../../styles/modalObs.css";
+import "../../styles/modalCriacaoMensagem.css";
+
 import { apiFetch } from "../../../services/api";
 import { useState, type FormEvent } from "react";
-
-import "../../styles/modalCriacaoMensagem.css";
-import "../../styles/ModalCadastro.css";
 
 interface ModalCadastroProps {
   aberta: boolean;
@@ -19,14 +22,20 @@ export default function ModalCadastro({
 
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  if (!aberta) return null;
+  function fecharModal() {
+    setErros([]);
+    setSucesso("");
+    onFechar();
+  }
 
   async function cadastrarUnidadeMedida(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setErros([]);
     setSucesso("");
+    setCarregando(true);
 
     try {
       await apiFetch("/api/UnidadesMedida", {
@@ -39,9 +48,11 @@ export default function ModalCadastro({
       });
 
       setSucesso("Unidade de medida cadastrada com sucesso!");
+
       setNome("");
       setSigla("");
       setTipo("");
+
     } catch (error) {
       const mensagem =
         error instanceof Error
@@ -49,76 +60,92 @@ export default function ModalCadastro({
           : "Não foi possível cadastrar a unidade de medida.";
 
       setErros(mensagem.split("\n"));
+
+    } finally {
+      setCarregando(false);
     }
   }
 
-  function fecharModal() {
-    setErros([]);
-    setSucesso("");
-  }
+  if (!aberta) return null;
 
   return (
-    <div className="modal-overlay" onClick={() => { fecharModal(); onFechar();}}>
+    <div className="modal-overlay" onClick={fecharModal}>
       <div
-        className="modal-cadastro"
+        className="modal-caixa modal-usuario modal-unidade-medida"
         onClick={(e) => e.stopPropagation()}
       >
-        <form onSubmit={cadastrarUnidadeMedida}>
-          <label htmlFor="nome">Nome:</label>
+        <div className="modal-usuario-cabecalho">
+          <div className="modal-usuario-titulo">
+            <div className="modal-titulos">
+              <h2>Adicionar Unidade de Medida</h2>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="modal-close"
+            onClick={fecharModal}
+          >
+            <IoClose />
+          </button>
+        </div>
+
+        <form
+          className="modal-usuario-form"
+          onSubmit={cadastrarUnidadeMedida}
+        >
+          <h3>Informações da unidade</h3>
+
+          <label>Nome</label>
           <input
-            id="nome"
             type="text"
+            placeholder="Digite o nome da unidade"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+            required
           />
 
-          <label htmlFor="sigla">Sigla:</label>
+          <label>Sigla</label>
           <input
-            id="sigla"
             type="text"
+            placeholder="Ex: KG, UN, L"
             value={sigla}
             onChange={(e) => setSigla(e.target.value)}
+            required
           />
 
-          <label htmlFor="tipo">Tipo:</label>
+          <label>Tipo</label>
           <input
-            id="tipo"
             type="text"
+            placeholder="Digite o tipo da unidade"
             value={tipo}
             onChange={(e) => setTipo(e.target.value)}
+            required
           />
 
-          <div className="modal-botoes">
-            <button
-              type="button"
-              onClick={onFechar}
-              className="modal-cancelar"
-            >
-              Cancelar
-            </button>
+          <button
+            type="submit"
+            className="modal-usuario-submit"
+            disabled={carregando}
+          >
+            {carregando ? "Cadastrando..." : "Cadastrar unidade"}
+          </button>
 
-            <button type="submit" className="modal-salvar">
-              Salvar
-            </button>
+          {erros.length > 0 && (
+            <div className="mensagens-erro" role="alert">
+              {erros.map((mensagem, index) => (
+                <p key={`${index}-${mensagem}`}>
+                  {mensagem}
+                </p>
+              ))}
             </div>
-            
-            <div>
-            {erros.length > 0 && (
-              <div className="mensagens-erro" role="alert">
-                {erros.map((mensagem, index) => (
-                  <p key={`${index}-${mensagem}`}>
-                    {mensagem}
-                  </p>
-                ))}
-              </div>
-            )}
+          )}
 
-            {sucesso && (
-              <p className="mensagem-sucesso" role="status">
-                {sucesso}
-              </p>
-            )}
-            </div>
+          {sucesso && (
+            <p className="mensagem-sucesso" role="status">
+              {sucesso}
+            </p>
+          )}
         </form>
       </div>
     </div>
