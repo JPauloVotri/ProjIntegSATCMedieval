@@ -27,7 +27,7 @@ interface PedidoItem {
   id: number;
   pedidoCompraId: number;
   produtoId: number;
-  quantidadeRecebida: number;
+  quantidadeSolicitada: number;
 }
 
 interface PedidoCompra {
@@ -103,7 +103,7 @@ export default function ModalConfirmarPedido({
         );
       }
 
-      const quantidadeNova = estoqueEncontrado.quantidadeDisponivel + itemPedido.quantidadeRecebida;
+      const quantidadeNova = estoqueEncontrado.quantidadeDisponivel + itemPedido.quantidadeSolicitada;
 
       await apiFetch(`/api/Estoques/${estoqueEncontrado.id}`, {
         method: "PUT",

@@ -124,7 +124,7 @@ export default function ModalCadastro({
           cotacaoId: Number(cotacaoCriada.id),
           produtoId: Number(produtoId),
           unidadeMedidaId: Number(produtoCriado.unidadeMedidaId),
-          quantidade: Number(quantidade),
+          quantidade: 1,
           status: 1,
           observacao,
         }),
@@ -207,14 +207,6 @@ export default function ModalCadastro({
           <SelectProduto
             produtoId={produtoId}
             setProdutoId={setProdutoId}
-          />
-
-          <label>Quantidade</label>
-          <input
-            type="number"
-            placeholder="Digite a quantidade"
-            value={quantidade}
-            onChange={(e) => setQuantidade(e.target.value)}
           />
 
           {erros.length > 0 && (
