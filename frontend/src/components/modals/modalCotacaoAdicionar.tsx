@@ -76,10 +76,6 @@ export default function ModalCadastro({
       novosErros.push("Selecione um produto.");
     }
 
-    if (!quantidade.trim() || Number(quantidade) <= 0) {
-      novosErros.push("Informe uma quantidade válida.");
-    }
-
     if (novosErros.length > 0) {
       setErros(novosErros);
       return;

@@ -12,13 +12,8 @@ interface ModalCadastroProps {
   fornecedorId: number;
   cotacaoId: string | undefined;
   produtoId: string | undefined;
+  unidadeMedidaId?: number;
   valorUnitario: number | undefined;
-}
-
-interface Produto {
-  id: number;
-  nome: string;
-  unidadeMedidaId: number;
 }
 
 export default function ModalCadastro({
@@ -27,6 +22,7 @@ export default function ModalCadastro({
   fornecedorId,
   cotacaoId,
   produtoId,
+  unidadeMedidaId,
   valorUnitario,
 }: ModalCadastroProps) {
   const idUsuario = localStorage.getItem("usuario_id");
@@ -39,18 +35,6 @@ export default function ModalCadastro({
   const [carregando, setCarregando] = useState(false);
 
   if (!aberta) return null;
-
-  async function pegarUnidadeMedida(
-    produtoId: number
-  ): Promise<number | undefined> {
-    const produtos = await apiFetch<Produto[]>("/api/Produtos");
-
-    const produtoSelecionado = produtos.find(
-      (produto) => produto.id === produtoId
-    );
-
-    return produtoSelecionado?.unidadeMedidaId;
-  }
 
   function limparCampos() {
     setTotal("");
@@ -83,7 +67,7 @@ export default function ModalCadastro({
       return;
     }
 
-    if (!cotacaoId || !produtoId) {
+    if (!cotacaoId || !produtoId || Number.isNaN(Number(produtoId))) {
       setErros(["Não foi possível identificar a cotação ou o produto."]);
       return;
     }
@@ -96,12 +80,7 @@ export default function ModalCadastro({
     setCarregando(true);
 
     try {
-      const unidadeMedidaId = await pegarUnidadeMedida(Number(produtoId));
-
-      if (unidadeMedidaId === undefined) {
-        setErros(["Não foi possível obter a unidade de medida do produto."]);
-        return;
-      }
+      const unidadeMedida = unidadeMedidaId ?? 1;
 
       const quantidade = Number(total);
       const valorTotal = quantidade * (valorUnitario || 0);
@@ -129,7 +108,7 @@ export default function ModalCadastro({
         body: JSON.stringify({
           pedidoCompraId: Number(pedidoCriado.id),
           produtoId: Number(produtoId),
-          unidadeMedidaId: Number(unidadeMedidaId),
+          unidadeMedidaId: Number(unidadeMedida),
           cotacaoItemId: Number(cotacaoId),
           quantidadeSolicitada: quantidade,
           quantidadeRecebida: 1,

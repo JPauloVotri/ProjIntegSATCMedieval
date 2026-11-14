@@ -18,7 +18,6 @@ type TipoModal = "cotacao" | null;
 interface Cotacao {
     id: number;
     usuarioId: number;
-    produtoId?: number;
     dataSolicitacao: string;
     dataLimiteResposta: string | null;
     status: number;
@@ -157,7 +156,7 @@ export default function CotacaoList() {
                                 <button
                                     className="cotacao-botao"
                                     onClick={() =>
-                                        navigate(`/cotacaoFornecedores/${cotacao.id}/${cotacao.produtoId}`)
+                                        navigate(`/cotacaoFornecedores/${cotacao.id}`)
                                     }
                                     aria-label="Ver fornecedores"
                                 >

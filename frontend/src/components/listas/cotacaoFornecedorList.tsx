@@ -17,6 +17,13 @@ type CotacaoItemFornecedores = {
     prazoEntregaDias: number;
 };
 
+type CotacaoItem = {
+    id: number;
+    cotacaoId: number;
+    produtoId: number;
+    unidadeMedidaId: number;
+};
+
 type Fornecedor = {
     id: number;
     razaoSocial: string;
@@ -25,6 +32,7 @@ type Fornecedor = {
 export default function CotacaoItemFornecedorList() {
     const [loading, setLoading] = useState(true);
     const [cotacoes, setCotacoes] = useState<CotacaoItemFornecedores[]>([]);
+    const [cotacaoItem, setCotacaoItem] = useState<CotacaoItem | null>(null);
     const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
     const [fornecedorSelecionado, setFornecedorSelecionado] = useState(0);
     const [cotacaoSelecionada, setCotacaoSelecionada] =
@@ -33,9 +41,8 @@ export default function CotacaoItemFornecedorList() {
 
     const [modalAberta, setModalAberta] = useState<TipoModal>(null);
 
-    const { id, produtoId } = useParams<{
+    const { id } = useParams<{
         id: string;
-        produtoId: string;
     }>();
 
     useEffect(() => {
@@ -46,12 +53,22 @@ export default function CotacaoItemFornecedorList() {
                     "/api/CotacaoItemFornecedores"
                 );
 
+                const dadosCotacaoItens = await apiFetch<CotacaoItem[]>(
+                    "/api/CotacaoItens"
+                );
+
                 const dadosFornecedores = await apiFetch<Fornecedor[]>(
                     "/api/Fornecedores"
                 );
 
                 setCotacoes(dadosCotacoes);
                 setFornecedores(dadosFornecedores);
+
+                const itemDaCotacao = dadosCotacaoItens.find(
+                    (item) => item.cotacaoId === Number(id)
+                );
+
+                setCotacaoItem(itemDaCotacao ?? null);
             } catch (error) {
                 setErro("Não foi possível carregar os dados.");
                 console.error(error);
@@ -61,7 +78,7 @@ export default function CotacaoItemFornecedorList() {
         }
 
         carregarDados();
-    }, []);
+    }, [id]);
 
     const cotacoesFiltradas = cotacoes.filter(
         (cotacao) => cotacao.cotacaoItemId === Number(id)
@@ -81,7 +98,9 @@ export default function CotacaoItemFornecedorList() {
 
                     {cotacoesFiltradas.length === 0 ? (
                         <div className="cotacao-fornecedor-vazio">
-                            Nenhum fornecedor encontrado para este item.
+                            {cotacaoItem
+                                ? "Nenhum fornecedor encontrado para este item."
+                                : "Não foi possível encontrar o item desta cotação."}
                         </div>
                     ) : (
                         <div className="cotacao-fornecedor-lista">
@@ -131,13 +150,14 @@ export default function CotacaoItemFornecedorList() {
                         </div>
                     )}
 
-                    {cotacaoSelecionada && (
+                    {cotacaoSelecionada && cotacaoItem && (
                         <ModalRealizarPedido
                             aberta={modalAberta === "pedido"}
                             onFechar={() => setModalAberta(null)}
                             fornecedorId={fornecedorSelecionado}
                             cotacaoId={id}
-                            produtoId={produtoId}
+                            produtoId={String(cotacaoItem.produtoId)}
+                            unidadeMedidaId={cotacaoItem.unidadeMedidaId}
                             valorUnitario={cotacaoSelecionada.valorUnitario}
                         />
                     )}

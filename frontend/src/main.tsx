@@ -50,7 +50,7 @@ ReactDOM.createRoot(
             <Route path="/cotacao" element={<Cotacao />} />
             <Route path="/Usuario/:id" element={<Usuario />} />
             <Route path="/fornecedores" element={<Fornecedores />} />
-            <Route path="/cotacaoFornecedores/:id/:produtoId" element={<CotacaoFornecedores />} />
+            <Route path="/cotacaoFornecedores/:id" element={<CotacaoFornecedores />} />
             <Route path="/pedidos" element={<Pedidos />} />
             <Route path="/grupoProduto" element={<GrupoProduto />} />
           </Route>
